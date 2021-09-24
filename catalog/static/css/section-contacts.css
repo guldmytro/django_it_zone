@@ -1,0 +1,144 @@
+.contacts-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    grid-gap: 5rem;
+}
+
+.contacts__info {
+    border-right: 1px solid #89b5f3;
+    padding-right: 5rem;
+}
+
+.contacts-group__title {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: 2.3rem;
+    font-weight: 400;
+}
+
+.contacts-group__title .thumb {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: #f1fbfa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1.6rem;
+}
+
+.contacts-group__title img {
+    width: 45%;
+    height: 50%;
+    flex-shrink: 0;
+    filter: invert(65%) sepia(21%) saturate(1276%) hue-rotate(123deg) brightness(102%) contrast(84%);
+    object-fit: contain;
+}
+
+.contacts-group__link {
+    display: inline-flex;
+    font-weight: 800;
+    font-size: 1.8rem;
+    margin-top: 0.6em;
+}
+
+.contacts-group__desc {
+    font-size: 1.6rem;
+}
+
+.contacts-group + .contacts-group {
+    margin-top: 2.8rem;
+}
+
+.contacts__map iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.feadback {
+    background: url('../img/bg-feadback.jpg') no-repeat center / cover;
+    color: var(--color-text-invert);
+}
+
+.feadback-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.feadback .section-header__title {
+    font-size: 3.8rem;
+    margin-bottom: 2rem;
+}
+
+.section-header__subtitle {
+    width: 100%;
+    max-width: 52rem;
+    line-height: 1.5;
+}
+
+.feadback-form {
+    display: block;
+    padding: 4.5rem 3rem;
+    background-color: var(--color-text-invert);
+    color: var(--color-accent);
+    text-align: center;
+    border-radius: 2rem;
+    max-width: 44rem;
+    width: 100%;
+    margin-left: auto;
+}
+
+.feadback-form__title {
+    font-family: 'Merelblack';
+    font-weight: 900;
+    font-size: 3.8rem;
+    margin-bottom: 0.8em;
+}
+
+.feadback-form__input {
+    display: block;
+    width: 100%;
+    height: 5rem;
+    padding: 0 3rem;
+    border-radius: 100px;
+    border: none;
+    background-color: #f3f5ff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
+.feadback-form__input + .feadback-form__input {
+    margin-top: 1rem;
+}
+
+.checkout-form ::-webkit-input-placeholder,
+.feadback-form__input::-webkit-input-placeholder {
+    color: #85a4d4;
+}
+
+.checkout-form ::-moz-placeholder,
+.feadback-form__input::-moz-placeholder {
+    color: #85a4d4;
+}
+
+.checkout-form :-ms-input-placeholder,
+.feadback-form__input:-ms-input-placeholder {
+    color: #85a4d4;
+}
+
+.checkout-form :-moz-placeholder,
+.feadback-form__input:-moz-placeholder {
+    color: #85a4d4;
+}
+
+.checkout-form ::placeholder,
+.feadback-form__input::placeholder {
+    color: #85a4d4;
+}
+
+.feadback-form__submit {
+    width: 100%;
+    margin-top: 1rem;
+}

@@ -1,0 +1,140 @@
+.top-products__slider {
+    margin-top: -1.5rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-bottom: 3rem;
+    list-style: none;
+}
+
+.top-products__slider .slick-list::before {
+    right: calc(100% - 3rem);
+}
+
+.top-products__slider .slick-list::after {
+    left: calc(100% - 3rem);
+}
+
+.archive-product {
+    padding: 1.5rem;
+}
+
+.archive-product__inner {
+    position: relative;
+    overflow: hidden;
+    padding: 2.5rem;
+    background-color: var(--color-text-invert);
+    box-shadow: 0 0 1.4rem 0 rgba(38, 106, 201, 0.14);
+    border-radius: 1rem;
+}
+
+.archive-product__inner .thumb {
+    position: relative;
+    height: 0;
+    padding-top: 100%;
+}
+
+.archive-product__inner .thumb img {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    width: calc(100% - 3rem);
+    height: calc(100% - 3rem);
+    object-fit: contain;
+}
+
+.archive-product__title {
+    margin-top: 1em;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.archive-product__price {
+    margin-top: 0.6em;
+    font-weight: 800;
+}
+
+.archive-product__controls {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    margin-top: 0.6em;
+}
+
+.archive-product .btn__add-to-cart {
+    flex-grow: 1;
+    margin-left: 1rem;
+}
+
+.archive-product__inner::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: '';
+    display: block;
+    height: 0.7rem;
+    background-color: var(--color-accent);
+}
+
+.top-products__slider .slick-arrow,
+.latest-products__slider .slick-arrow {
+    position: absolute;
+    z-index: 2;
+    top: 100%;
+    background-color: #f1fbfa;
+}
+
+.top-products__slider .slick-next,
+.latest-products__slider .slick-next {
+    left: calc(50% + 0.9rem);
+}
+
+.top-products__slider .slick-prev,
+.latest-products__slider .slick-prev {
+    right: calc(50% + 0.9rem);
+    transform: scaleX(-1);
+}
+
+.top-products__slider .slick-arrow,
+.latest-products__slider .slick-arrow {
+    transition: background 200ms;
+}
+
+.top-products__slider .slick-arrow:hover,
+.latest-products__slider .slick-arrow:hover {
+    background-color: var(--color-accent-third);
+
+}
+
+.top-products__slider .slick-arrow::before,
+.top-products__slider .slick-arrow::after,
+.latest-products__slider .slick-arrow::before,
+.latest-products__slider .slick-arrow::after {
+    background-image: url('../img/arrow-dark.png');
+}
+.top-products__slider .slick-arrow::before,
+.latest-products__slider .slick-arrow::before {
+    filter: invert(23%) sepia(52%) saturate(344%) hue-rotate(122deg) brightness(97%) contrast(90%);
+}
+
+.top-products__slider .slick-arrow::after,
+.latest-products__slider .slick-arrow::after {
+    filter: invert(1);
+}
+
+.top-products__slider .slick-arrow::after,
+.latest-products__slider .slick-arrow::after {
+    opacity: 0;
+}
+
+.top-products__slider .slick-arrow:hover::before,
+.latest-products__slider .slick-arrow:hover::before {
+    opacity: 0;
+}
+
+.top-products__slider .slick-arrow:hover::after,
+.latest-products__slider .slick-arrow:hover::after {
+    opacity: 1;
+}
+
+

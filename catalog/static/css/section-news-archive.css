@@ -1,0 +1,11 @@
+.news-group {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-column-gap: 1.8rem;
+    grid-row-gap: 4.2rem;
+}
+
+.news-group .news-slider__item {
+    padding: 0;
+}

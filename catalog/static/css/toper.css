@@ -1,0 +1,57 @@
+.toper {
+    padding: 1.2rem 0;
+    font-size: 1.3rem;
+    background-color: var(--color-toper-bg);
+    color: var(--color-toper-text);
+    line-height: 1;
+}
+
+.toper-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toper-menu {
+    flex-shrink: 0;
+    width: 70%;
+    display: flex;
+    flex-flow: row nowrap;
+    list-style: none;
+    padding-right: 6rem;
+}
+
+.toper-menu__item + .toper-menu__item {
+    margin-left: 5rem;
+}
+
+.toper-contacts {
+    flex-shrink: 0;
+    width: 30%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.toper-contacts__item + .toper-contacts__item {
+    margin-left: 2ch;
+}
+
+.toper-contacts__item a {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.toper-contacts__item img {
+    position: relative;
+    top: -1px;
+    flex-shrink: 0;
+    width: 1.3rem;
+    height: 1.3rem;
+    object-fit: contain;
+    object-position: center right;
+    margin-right: 0.5ch;
+    filter: invert(1);
+}

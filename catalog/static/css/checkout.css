@@ -1,0 +1,263 @@
+.checkout-form {
+    display: grid;
+    grid-gap: 4rem;
+}
+
+.checkout-section {
+    position: relative;
+    font-size: 1.4rem;
+    padding: 3.5rem 6rem;
+    border-radius: 3rem;
+    box-shadow: 0 0 2.5rem .1rem rgba(4,98,229,.1);
+    overflow: hidden;
+}
+
+.checkout-section::before {
+    content: '';
+    display: block;
+    width: 7rem;
+    height: 7rem;
+    position: absolute;
+    background-color: var(--color-accent);
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.checkout__title {
+    font-family: 'Merelblack', sans-serif;
+    font-size: 3.2rem;
+    margin-bottom: 0.8em;
+}
+
+.checkout-fields {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    row-gap: 2.5rem;
+    column-gap: 1.5rem;
+}
+
+.checkout-fields__name {
+    grid-column: auto / span 6;
+}
+
+.checkout-fields__client-type {
+    grid-column: auto / span 3;
+}
+
+.checkout-fields__email,
+.checkout-fields__tel,
+.checkout-fields__address {
+    grid-column: auto / span 4;
+}
+
+.checkout-fields__comfirm {
+    grid-column: 1 / -1;
+}
+
+.checkout input[type="text"],
+.checkout input[type="email"],
+.checkout input[type="tel"] {
+    height: 6rem;
+    padding: 0 2rem;
+    background-color: #f3f5ff;
+    border-radius: 2rem;
+    border: none;
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.checkout-fields input[type="checkbox"],
+.checkout-fields input[type="radio"] {
+    position: absolute;
+    appearance: none;
+    display: block;
+    width: 0;
+    height: 0;
+    z-index: -1;
+}
+
+.checkout-fields label {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-weight: 600;
+    color: #85a4d4;
+}
+
+.checkout-fields .checkbox__custom {
+    position: relative;
+    display: block;
+    width: 3.8rem;
+    height: 3.8rem;
+    border: 2px solid #85a4d4;
+    border-radius: 1rem;
+    background-color: #f3f5ff;
+    margin-right: 0.8rem;
+    flex-shrink: 0;
+}
+
+.checkout-fields .checkbox__custom::before {
+    content: '';
+    display: block;
+    width: 45%;
+    height: 45%;
+    position: absolute;
+    background-color: var(--color-accent);
+    border-radius: 0.5rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.checkout-fields :checked + .checkbox__custom {
+    border-color: var(--color-accent);
+}
+
+.checkout-fields :checked + .checkbox__custom::before {
+    opacity: 1;
+}
+
+.checkout-delivery {
+    display: grid;
+    column-gap: 3rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.checkout-delivery .checkout__title {
+    grid-column: 1 / -1;
+}
+
+.checkout-devivery__label {
+    position: relative;
+    border-radius: 1rem;
+    padding: 2.5rem 3rem;
+    border: 1px solid #d5e5fb;
+}
+
+.checkout-devivery__label input[type="radio"] {
+    position: absolute;
+    appearance: none;
+    display: block;
+    width: 0;
+    height: 0;
+    z-index: -1;
+}
+
+.delivery-item__title {
+    font-size: 1.4rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    padding-right: 2.5rem;
+}
+
+.delivery-item__time,
+.delivery-item__description {
+    font-weight: 600;
+}
+
+.delivery-item__time {
+    margin-top: 1em;
+}
+
+.delivery-item .radio__custom {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    height: 2.4rem;
+    width: 2.5rem;
+    border: 2px solid #85a4d4;
+    border-radius: 50%;
+}
+
+.delivery-item .radio__custom::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    background-color: var(--color-accent-secondary);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.delivery-item :checked + .radio__custom::before {
+    opacity: 1;
+}
+
+.checkout-payment {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 3rem;
+}
+
+.checkout-payment .checkout__title {
+    grid-column: 1 / -1;
+}
+
+.checkout-payment__label {
+    border-radius: 1rem;
+    padding: 2.5rem 3rem;
+    background-color: #f1fbfa;
+    color: #33cbb7;
+}
+
+.checkout-payment__label [type="radio"] {
+    position: absolute;
+    appearance: none;
+    display: block;
+    width: 0;
+    height: 0;
+    z-index: -1;
+}
+
+.payment-item__title {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+}
+
+.payment-item__description {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.checkout-section textarea {
+    border-radius: 1rem;
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #fff6e5;
+    padding: 2rem 2.5rem;
+    color: #af9051;
+    font-weight: 600;
+    resize: none;
+}
+
+.checkout-section textarea::-webkit-input-placeholder {
+    color: #d6b97f;
+}
+
+.checkout-section textarea::-moz-placeholder {
+    color: #d6b97f;
+}
+
+.checkout-section textarea:-ms-input-placeholder {
+    color: #d6b97f;
+}
+
+.checkout-section textarea:-moz-placeholder {
+    color: #d6b97f;
+}
+
+.checkout-section textarea::placeholder {
+    color: #d6b97f;
+}

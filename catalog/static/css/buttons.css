@@ -1,0 +1,153 @@
+.btn__add-to-cart {
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-add-to-cart-bg);
+    padding: 0 2ch;
+    height: 4rem;
+    line-height: 4rem;
+    font-size: 1.4rem;
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.slick-arrow {
+    width: 5.7rem;
+    height: 5.7rem;
+    overflow: hidden;
+    border-radius: 50%;
+    text-indent: -9999px;
+    border: none;
+}
+
+.slick-arrow::before,
+.slick-arrow::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 30%;
+    background: url('../img/arrow-dark.png') no-repeat center / contain;
+}
+
+.btn_add-to-cart {
+    display: inline-flex;
+    justify-content: center;
+    height: 5rem;
+    line-height: 4.9rem;
+    background-color: var(--color-accent-secondary);
+    color: var(--color-text-invert);
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding: 0 2.6rem;
+    border-radius: 10rem;
+    min-width: 20rem;
+    box-shadow: 0 0 1.7rem 0.1rem rgba(246, 170, 28, 0.34);
+    border: 1px solid var(--color-accent-secondary);
+    transition: background 200ms, color 200ms ease;
+}
+
+.btn_add-to-cart:hover {
+    background-color: #FFF;
+    color: var(--color-accent-secondary);
+}
+
+.btn_add-to-wishlist {
+    position: relative;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: #fdf3f4;
+    transition: background 200ms ease;
+}
+
+button.btn_add-to-wishlist:hover,
+button.btn_add-to-wishlist.active {
+    background-color: #dd4d5e;
+}
+
+.btn_add-to-wishlist img {
+    width: 40%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    filter: invert(55%) sepia(55%) saturate(5617%) hue-rotate(324deg) brightness(91%) contrast(90%);
+    transition: filter 200ms ease;
+}
+
+button.btn_add-to-wishlist.active img,
+button.btn_add-to-wishlist:hover img {
+    filter: invert(1);
+}
+
+.btn_cart-link {
+    background-color: #fff4e1;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1rem;
+}
+
+.btn_secondary {
+    display: inline-flex;
+    justify-content: center;
+    white-space: nowrap;
+    height: 5rem;
+    line-height: 5rem;
+    min-width: 20rem;
+    border-radius: 10rem;
+    border: none;
+    color: #33cbb7;
+    background-color: #f1fbfa;
+    font-weight: 800;
+    padding: 0 1.5rem;
+}
+
+.btn_submit {
+    display: inline-flex;
+    background-color: var(--color-accent);
+    color: var(--color-text-invert);
+    font-weight: 600;
+    font-size: 1.4rem;
+    border-radius: 100px;
+    padding-right: 3rem;
+    padding-left: 3rem;
+    border: none;
+    height: 5rem;
+    line-height: 4.9rem;
+    justify-content: center;
+    border: 1px solid var(--color-accent);
+    transition: color 200ms, background 200ms;
+}
+
+.btn_submit:hover {
+    background-color: var(--color-text-invert);
+    color: var(--color-accent);
+}
+
+.btn_submit-cart {
+    display: inline-flex;
+    justify-content: center;
+    background-color: var(--color-accent-secondary);
+    border: none;
+    height: 5rem;
+    line-height: 5rem;
+    border-radius: 100px;
+    padding-right: 3rem;
+    padding-left: 3rem;
+    color: var(--color-text-invert);
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    font-weight: 800;
+    transition: color 200ms, background 200ms;
+}
+
+.btn_submit-cart:hover {
+    background-color: #FFF;
+    color: var(--color-accent-secondary);
+}
+

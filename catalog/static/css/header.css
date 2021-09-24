@@ -1,0 +1,229 @@
+.header {
+    position: sticky;
+    top: -0.1px;
+    padding: 1.6rem 0;
+    font-size: 1.3rem;
+    background-color: #fefeff;
+    border-bottom: 1px solid #d5dde5;
+    z-index: 999;
+}
+
+.header-row {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header-logo {
+    width: 15rem;
+}
+
+.header-logo img {
+    width: 100%;
+    object-fit: contain;
+    object-position: left center;
+}
+
+.header-services {
+    margin-left: 4rem;
+    display: flex;
+    list-style: none;
+}
+
+.header-services__item {
+    padding-left: 1.6rem;
+    position: relative;
+}
+
+.header-services__item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--color-accent);
+}
+
+.header-services__item + .header-services__item {
+    margin-left: 4rem;
+}
+
+.header-controls {
+    margin-left: auto;
+    width: 30%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-menu_btn {
+    background-image: var(--background-header-menu);
+    padding: 0.6rem 0.6rem 0.6rem 2.5rem;
+    border-radius: 2rem;
+    min-width: 28rem;
+    margin-left: 9rem;
+    border: none;
+}
+
+.header-menu__group {
+    display: none;
+    list-style: none;
+}
+
+.header-menu__controls {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-menu__title {
+    position: relative;
+    top: 1px;
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-text-invert);
+    line-height: 1;
+}
+
+.header-menu__controls .btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    justify-content: center;
+    border: none;
+    width: 4.2rem;
+    height: 3.5rem;
+    background-color: #FFF;
+    border-radius: 1.4rem;
+    color: rgb(0,147,239);
+}
+
+.header-menu__controls .btn::before,
+.header-menu__controls .btn::after {
+    position: absolute;
+    content: '';
+    display: block;
+    background-color: rgb(0,147,239);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.header-menu__controls .btn::before {
+    height: 2px;
+    width: 1rem;
+}
+
+.header-menu__controls .btn::after {
+    height: 1rem;
+    width: 2px;
+    transition: transform 150ms ease;
+}
+
+.header-menu_btn.active .btn::after {
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.header-controls__links {
+    display: flex;
+}
+
+.header-controls__links a,
+.archive-product__favorite-link {
+    position: relative;
+    border: none;
+}
+
+.header-controls__links a img,
+.archive-product__favorite-link img {
+    width: 40%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.header-cart-link {
+    background-color: #fff4e1;
+    border-radius: var(--radius-header-elements);
+}
+
+a.header-cart-link img {
+    width: 43%;
+}
+
+.header-controls__links a .cnt {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-invert);
+    background-color: var(--color-accent);
+    min-width: 1.5rem;
+    line-height: 1.5rem;
+    padding: 0 0.2rem;
+    height: 1.5rem;
+    text-align: center;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+.header-controls__links a + a {
+    margin-left: 0.6rem;
+}
+
+.header-favorite-link {
+    background-color: #fdf3f4;
+}
+
+.header-controls__search {
+    position: relative;
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+.header-controls__search .search-query {
+    display: block;
+    width: 100%;
+    background-color: #f2f5f8;
+    border-radius: 1rem;
+    border: none;
+    height: 4rem;
+    line-height: 4rem;
+    padding-right: 4.5rem;
+    padding-left: 2rem;
+}
+
+.header-controls__search [type="submit"] {
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    height: 2.5rem;
+    top: 50%;
+    right: 1.5rem;
+    transform: translateY(-50%);
+}
+
+.header-controls__search [type="submit"] img {
+    height: 70%;
+    width: auto;
+}
+
+.btn__mobile-menu {
+    display: none;
+}
+
+.mobile-menu-wrapper {
+    display: none;
+}

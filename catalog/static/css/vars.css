@@ -1,0 +1,16 @@
+:root {
+    --color-toper-bg: #191919;
+    --color-toper-text: #FFF;
+    --color-footer-bg: #191919;
+    --color-footer-text: #FFF;
+    --color-text-invert: #FFF;
+    --color-accent: #0462e5;
+    --background-header-menu: linear-gradient( -163deg, rgb(0,147,239) 0%, rgb(4,98,229) 100%);
+    --color-text: #101010;
+    --color-placeholder-text: #9fa0a2;
+    --color-input-border: #5e5e5e;
+    --color-accent-secondary: #f6aa1c;
+    --color-accent-third: #33cbb7;
+    --color-add-to-cart-bg: #f0f4f9;
+    --border-light: 1px solid #e8e8e8;
+}
