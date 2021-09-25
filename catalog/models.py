@@ -6,10 +6,9 @@ from django.core import validators
 class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='название')
     slug = models.SlugField(max_length=200, unique=True, verbose_name='слаг')
-    parent_category = models.ForeignKey('self', blank=True, verbose_name='родительска категория',
+    parent_category = models.ForeignKey('self', blank=True, null=True, verbose_name='родительска категория',
                                         on_delete=models.CASCADE)
     description = models.TextField(blank=True, verbose_name='описание')
-    image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, verbose_name='изображение')
 
     class Meta:
         ordering = ('name',)
@@ -38,7 +37,6 @@ class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='название')
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг')
     attributes = models.ManyToManyField(Attribute, through='Kit', through_fields=('product', 'attribute'))
-    image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, verbose_name='изображение')
     description = models.TextField(blank=True, verbose_name='описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
                                 validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')])
@@ -50,7 +48,7 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')
 
     class Meta:
-        ordering = ('-updated',)
+        ordering = ('-created',)
         index_together = (('id', 'slug'),)
         verbose_name = 'товар'
         verbose_name_plural = 'товары'
@@ -77,3 +75,18 @@ class Kit(models.Model):
 
     def __str__(self):
         return self.attribute.name
+
+
+class GalleryImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    file = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение')
+    alt = models.CharField(max_length=200, blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = 'изображение'
+        verbose_name_plural = 'изображения'
+
+    def __str__(self):
+        return self.file.url
