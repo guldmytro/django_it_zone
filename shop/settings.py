@@ -131,6 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 THUMBNAIL_ALIASES = {
     '': {
         'small': {'size': (150, 150), 'crop': False},
+        'medium': {'size': (900, 900), 'crop': False},
     },
 }
 

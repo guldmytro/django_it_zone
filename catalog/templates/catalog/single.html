@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% load thumbnail %}
+{% load static %}
 
 {% block content %}
     <main class="product">
@@ -8,49 +9,33 @@
                 {{ product.name }}
             </h1>
             <p class="product__sku">
-                Код: 65Y53FF
+                Код: {% firstof product.sku '#Н/Д' %}
             </p>
 
             <div class="product__content">
 
                 <!-- class gallery or static -->
                 <div class="product__gallery gallery">
-                    <div class="aside-gallery gallery">
+                    <div class="aside-gallery {% if product.images.count > 4 %}gallery{% else %}static{% endif %}">
                         {% for image in product.images.all %}
-                        <div class="aside-gallery__item">
-                            <img src="{{ image.file | thumbnail_url:'small' }}" alt="{{ image.alt }}">
-                        </div>
+                            <div class="aside-gallery__item">
+                                <img src="{{ image.file | thumbnail_url:'small' }}"
+                                     alt="{{ image.alt }}" loading="lazy">
+                            </div>
                         {% endfor %}
                     </div>
                     <div class="main-product-gallery">
-                        <div class="main-product-gallery__item">
-                            <div class="thumb">
-                                <img src="./img/product-thumb.png" alt="операционная система">
+                        {% for image in product.images.all %}
+                            <div class="main-product-gallery__item">
+                                <div class="thumb">
+                                    <img src="{{ image.file | thumbnail_url:'medium' }}"
+                                         alt="{{ image.alt }}" loading="lazy">
+                                </div>
                             </div>
-                        </div>
-                        <div class="main-product-gallery__item">
-                            <div class="thumb">
-                                <img src="./img/product-thumb.png" alt="операционная система">
-                            </div>
-                        </div>
-                        <div class="main-product-gallery__item">
-                            <div class="thumb">
-                                <img src="./img/product-thumb.png" alt="операционная система">
-                            </div>
-                        </div>
-                        <div class="main-product-gallery__item">
-                            <div class="thumb">
-                                <img src="./img/product-thumb.png" alt="операционная система">
-                            </div>
-                        </div>
-                        <div class="main-product-gallery__item">
-                            <div class="thumb">
-                                <img src="./img/product-thumb.png" alt="операционная система">
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <button class="btn btn_add-to-wishlist">
-                        <img src="./img/icon-heart.png" alt="сердце">
+                        <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
                     </button>
                 </div>
                 <!-- /.product__gallery -->
@@ -85,7 +70,7 @@
                     <ul class="product__features product-features">
                         <li class="product-features__item">
                             <div class="thumb">
-                                <img src="./img/icon-delivery-secondary.png" alt="доставка">
+                                <img src="{% static 'img/icon-delivery-secondary.png' %}" alt="доставка">
                             </div>
                             Доставка по Москве за 2-3 дня <br>
                             Доставка по всей России
