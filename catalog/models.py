@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.core import validators
 
 
 class Category(models.Model):
@@ -20,7 +22,11 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг')
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, verbose_name='изображение')
     description = models.TextField(blank=True, verbose_name='описание')
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
+                                validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')])
+    price_sale = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена со скидкой', blank=True,
+                                     validators=[validators.MinValueValidator(0, message='Цена со скидкой не может \
+                                     быть ниже нуля')])
     available = models.BooleanField(default=True, verbose_name='в наличии')
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')
@@ -33,3 +39,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        errors = {}
+        if self.price_sale and self.price_sale > self.price:
+            errors['price_sale'] = ValidationError(message='Цена со скидкой должна быть ниже обычной цены')
+
+        if errors:
+            raise ValidationError(errors)
