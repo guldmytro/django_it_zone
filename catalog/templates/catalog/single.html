@@ -1,10 +1,11 @@
 {% extends 'layout/base.html' %}
+{% load thumbnail %}
 
 {% block content %}
     <main class="product">
         <div class="container">
             <h1 class="product__title">
-                Моноблок Acer Aspire C24-1651 23.8" сенсорный monoblock, DQ.BG9ER.001
+                {{ product.name }}
             </h1>
             <p class="product__sku">
                 Код: 65Y53FF
@@ -15,21 +16,11 @@
                 <!-- class gallery or static -->
                 <div class="product__gallery gallery">
                     <div class="aside-gallery gallery">
+                        {% for image in product.images.all %}
                         <div class="aside-gallery__item">
-                            <img src="./img/product-thumb.png" alt="операционная система">
+                            <img src="{{ image.file | thumbnail_url:'small' }}" alt="{{ image.alt }}">
                         </div>
-                        <div class="aside-gallery__item">
-                            <img src="./img/product-thumb.png" alt="операционная система">
-                        </div>
-                        <div class="aside-gallery__item">
-                            <img src="./img/product-thumb.png" alt="операционная система">
-                        </div>
-                        <div class="aside-gallery__item">
-                            <img src="./img/product-thumb.png" alt="операционная система">
-                        </div>
-                        <div class="aside-gallery__item">
-                            <img src="./img/product-thumb.png" alt="операционная система">
-                        </div>
+                        {% endfor %}
                     </div>
                     <div class="main-product-gallery">
                         <div class="main-product-gallery__item">
@@ -66,13 +57,19 @@
 
                 <div class="product__info">
                     <div class="product__price">
+                        {% if product.price_sale %}
                         <del>
-                            6500 руб.
+                            {{ product.price | floatformat:"0" }} руб.
                         </del>
-
+                        &nbsp;
                         <ins>
-                            4397 руб.
+                            {{ product.price_sale | floatformat:"0" }} руб.
                         </ins>
+                        {% else %}
+                            <span>
+                                {{ product.price | floatformat:"0" }} руб.
+                            </span>
+                        {% endif %}
                     </div>
                     <div class="product__quantity quantity">
                         <span>Выберите количество:</span>

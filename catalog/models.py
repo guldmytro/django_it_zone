@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core import validators
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -35,12 +36,13 @@ class Attribute(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, verbose_name='категория')
     name = models.CharField(max_length=200, db_index=True, verbose_name='название')
-    slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг')
+    slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг', unique=True)
     attributes = models.ManyToManyField(Attribute, through='Kit', through_fields=('product', 'attribute'))
     description = models.TextField(blank=True, verbose_name='описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
                                 validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')])
     price_sale = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена со скидкой', blank=True,
+                                     null=True,
                                      validators=[validators.MinValueValidator(0, message='Цена со скидкой не может \
                                      быть ниже нуля')])
     available = models.BooleanField(default=True, verbose_name='в наличии')
@@ -63,6 +65,9 @@ class Product(models.Model):
         if errors:
             raise ValidationError(errors)
 
+    def get_absolute_url(self):
+        return reverse('catalog:product_detail', args=[self.slug])
+
 
 class Kit(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='товар')
@@ -78,7 +83,7 @@ class Kit(models.Model):
 
 
 class GalleryImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     file = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение')
     alt = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
