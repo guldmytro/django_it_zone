@@ -8,9 +8,15 @@ def index(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    product_attributes = []
+    for attribute in product.attributes.all():
+        kit = attribute.kit_set.get(product=product)
+        product_attributes.append({
+            'name': attribute.name,
+            'value': kit.value
+        })
     context = {
-        'product': product
+        'product': product,
+        'product_attributes': product_attributes
     }
-    print('Images:')
-    print(product.images.all())
     return render(request, 'catalog/single.html', context)

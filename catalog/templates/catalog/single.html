@@ -2,6 +2,10 @@
 {% load thumbnail %}
 {% load static %}
 
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
 {% block content %}
     <main class="product">
         <div class="container">
@@ -16,9 +20,9 @@
 
                 <!-- class gallery or static -->
                 <div class="product__gallery gallery">
-                    <div class="aside-gallery {% if product.images.count > 4 %}gallery{% else %}static{% endif %}">
+                    <div class="aside-gallery {% if product.images.count > 3 %}gallery{% else %}static{% endif %}">
                         {% for image in product.images.all %}
-                            <div class="aside-gallery__item">
+                            <div class="aside-gallery__item" data-slick-index="{{ forloop.counter0 }}">
                                 <img src="{{ image.file | thumbnail_url:'small' }}"
                                      alt="{{ image.alt }}" loading="lazy">
                             </div>
@@ -35,7 +39,7 @@
                         {% endfor %}
                     </div>
                     <button class="btn btn_add-to-wishlist">
-                        <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
+                        <img src="{% static 'img/icon-heart.png' %}" alt="сердце" loading="lazy">
                     </button>
                 </div>
                 <!-- /.product__gallery -->
@@ -64,9 +68,11 @@
                             <button type="button" class="inc">+</button>
                         </div>
                     </div>
-                    <div class="product__excerpt">
-                        Моноблок Acer - Aspire C24-1651, 23.8", сенсорный, Intel Core i5 1135G7 2400MHz, SODIMM DDR4 8GB, SSD 512GB, nVidia GeForce MX450 2GB, Wi-Fi, Bluetooth, Серебристый, Windows 10 Home 64, Monoblock, DQ.BG9ER.001
-                    </div>
+                    {% if product.excerpt %}
+                        <div class="product__excerpt">
+                            {{ product.excerpt }}
+                        </div>
+                    {% endif %}
                     <ul class="product__features product-features">
                         <li class="product-features__item">
                             <div class="thumb">
@@ -87,16 +93,38 @@
 
             <div class="product__tabs product-tabs">
                 <div class="product-tabs__group tabs-header">
-                    <button type="button" class="tabs-header__item active">Описание</button>
-                    <button type="button" class="tabs-header__item">Характеристики</button>
+                    {% if product.content %}
+                        <button type="button" class="tabs-header__item" data-id="tab-1">Описание</button>
+                    {% endif %}
+                    {% if product_attributes %}
+                        <button type="button" class="tabs-header__item" data-id="tab-2">Характеристики</button>
+                    {% endif %}
                     <button type="button" class="tabs-header__item">Оплата и доставка</button>
                     <button type="button" class="tabs-header__item">Отзывы</button>
                     <button type="button" class="tabs-header__item">Задать вопрос</button>
                 </div>
                 <div class="tabs-content">
-                    <div class="tabs-content" id="tab-1">
-                        Моноблок Acer Aspire C24-1651 DQ.BG9ER.001 в корпусе Monoblock на базе процессора Intel Core i5 1135G7. Предустановлена дискретная графическая карта nVidia GeForce MX450 с объемом памяти 2GB. Установлены 8GB оперативной памяти, диск SSD 512GB, привод, операционная система Windows 10 Home 64.
-                    </div>
+                    {% if product.content %}
+                        <div class="tabs-content__item" id="tab-1">
+                            {{ product.content.html | safe }}
+                        </div>
+                    {% endif %}
+                    {% if product_attributes  %}
+                        <div class="tabs-content__item" id="tab-2">
+                            <ul class="attributes-list">
+                            {% for attribute in product_attributes %}
+                                <li class="attributes-list__item attribute-item">
+                                    <em class="attribute-item__label">
+                                        {{ attribute.name }}
+                                    </em>
+                                    <strong class="attribute-item__value">
+                                        {{ attribute.value }}
+                                    </strong>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <!-- /.product-tabs -->

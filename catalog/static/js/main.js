@@ -223,5 +223,23 @@ $(document).ready(function() {
         }
     });
 
+    // product tabs
+    $('.product-tabs__group button').on('click', function() {
+        const $this = $(this);
+        if ($this.hasClass('active')) {
+            return false;
+        }
+        const id = $this.attr('data-id');
+        const tabContent = $(`#${id}`);
+        if (!tabContent.length) {
+            return false;
+        }
+        $('.product-tabs__group button.active').removeClass('active');
+        $('.tabs-content .tabs-content__item.active').removeClass('active');
+        $this.addClass('active');
+        tabContent.addClass('active');
+    });
+    $('.product-tabs__group button:first-child').click();
+
 }); // end ready
 

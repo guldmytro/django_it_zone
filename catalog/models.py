@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.core import validators
 from django.urls import reverse
+from django_quill.fields import QuillField
 
 
 class Category(models.Model):
@@ -39,7 +40,8 @@ class Product(models.Model):
     sku = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг', unique=True)
     attributes = models.ManyToManyField(Attribute, through='Kit', through_fields=('product', 'attribute'))
-    description = models.TextField(blank=True, verbose_name='описание')
+    content = QuillField(verbose_name='Описание', blank=True, null=True)
+    excerpt = models.TextField(blank=True, null=True, verbose_name='краткое описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
                                 validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')])
     price_sale = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена со скидкой', blank=True,
@@ -49,6 +51,7 @@ class Product(models.Model):
     available = models.BooleanField(default=True, verbose_name='в наличии')
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')
+    accessories = models.ManyToManyField('self', blank=True, null=True, verbose_name='аксесуары')
 
     class Meta:
         ordering = ('-created',)
