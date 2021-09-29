@@ -51,7 +51,7 @@ class Product(models.Model):
     available = models.BooleanField(default=True, verbose_name='в наличии')
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')
-    accessories = models.ManyToManyField('self', blank=True, null=True, verbose_name='аксесуары')
+    accessories = models.ManyToManyField('self', blank=True, verbose_name='аксесуары')
 
     class Meta:
         ordering = ('-created',)
@@ -93,7 +93,7 @@ class GalleryImage(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('created',)
         verbose_name = 'изображение'
         verbose_name_plural = 'изображения'
 

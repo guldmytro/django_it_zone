@@ -73,6 +73,9 @@ sub {
 sup {
     top: -0.5em;
 }
+del {
+    opacity: 0.7;
+}
 img {
     border-style: none;
     display: block;

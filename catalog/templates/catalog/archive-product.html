@@ -1,0 +1,41 @@
+{% load static %}
+{% load thumbnail %}
+<li class="archive-product">
+    <div class="archive-product__inner">
+        <a href="{{ product.get_absolute_url }}" class="thumb">
+            <img src="{{ product.images.first.file | thumbnail_url:'medium' }}" alt="{{ product.images.first.alt  }}"
+            loading="lazy">
+        </a>
+        <h3 class="archive-product__title">
+            <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+        </h3>
+        {% if product.excerpt %}
+        <p class="archive-product__desc">
+            {{ product.excerpt }}
+        </p>
+        {% endif %}
+        <p class="archive-product__price">
+            <span class="current">
+                {% if product.price_sale %}
+                <del>
+                    {{ product.price | floatformat:"0" }} руб.
+                </del>
+                &nbsp;
+                <ins>
+                    {{ product.price_sale | floatformat:"0" }} руб.
+                </ins>
+                {% else %}
+                    <span>
+                        {{ product.price | floatformat:"0" }} руб.
+                    </span>
+                {% endif %}
+            </span>
+        </p>
+        <div class="archive-product__controls">
+            <button class="btn_add-to-wishlist">
+                <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
+            </button>
+            <a href="#" class="btn btn__add-to-cart">В корзину</a>
+        </div>
+    </div>
+</li>
