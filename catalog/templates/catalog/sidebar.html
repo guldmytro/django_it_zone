@@ -1,0 +1,45 @@
+{% load static %}
+<aside class="catalog__aside sidebar">
+    <form class="sidebar_search">
+        <input type="text" name="s" placeholder="Поиск">
+        <button type="submit">
+            <img src="{% static 'img/icon-search.png' %}" alt="поиск">
+        </button>
+    </form>
+
+    <div class="sidebar_prices">
+        <input type="text" class="js-range-slider" name="price" value="">
+    </div>
+
+    <div class="sidebar-filters">
+        <h3 class="sidebar-filters__header">Произодитель</h3>
+        <ul class="sidebar-filters__items">
+            <li>
+                <input type="checkbox" id="f-1" name="producer" value="1">
+                <span class="custom-checkbox"></span>
+                <label for="f-1">Acer (5)</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-2" name="producer" value="1">
+                <span class="custom-checkbox"></span>
+                <label for="f-2">Apple (10)</label>
+            </li>
+        </ul>
+    </div>
+
+    <div class="sidebar-filters">
+        <h3 class="sidebar-filters__header">Тип компютера</h3>
+        <ul class="sidebar-filters__items">
+            <li>
+                <input type="checkbox" id="f-3" name="producer" value="1">
+                <span class="custom-checkbox"></span>
+                <label for="f-3">Компютерный модуль (10)</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-4" name="producer" value="1">
+                <span class="custom-checkbox"></span>
+                <label for="f-4">Микрокомпютер (5)</label>
+            </li>
+        </ul>
+    </div>
+</aside>

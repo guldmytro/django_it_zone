@@ -5,7 +5,6 @@ from django.template.defaultfilters import slugify
 
 def get_filters(category):
     result = []
-
     for attribute in Attribute.objects.filter(Q(product__category=category)).distinct():
         attribute_dict = {
             'name': attribute.name,
@@ -22,7 +21,5 @@ def get_filters(category):
                     'slug': slug,
                     'cnt': kit.cnt,
                 }
-
         result.append(attribute_dict)
-
     return result

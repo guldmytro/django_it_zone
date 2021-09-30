@@ -48,6 +48,8 @@ class Product(models.Model):
                                      null=True,
                                      validators=[validators.MinValueValidator(0, message='Цена со скидкой не может \
                                      быть ниже нуля')])
+    price_current = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Текущая цена', editable=False,
+                                        blank=True, null=True)
     available = models.BooleanField(default=True, verbose_name='в наличии')
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')

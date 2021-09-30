@@ -24,6 +24,13 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     inlines = [GalleryImageInline, KitInline]
 
+    def save_model(self, request, obj, form, change):
+        if obj.price_sale:
+            obj.price_current = obj.price_sale
+        else:
+            obj.price_current = obj.price
+        super().save_model(request, obj, form, change)
+
 
 @admin.register(Attribute)
 class AttributeAdmin(admin.ModelAdmin):
