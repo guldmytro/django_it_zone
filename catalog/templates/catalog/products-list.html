@@ -1,0 +1,12 @@
+{% if products.count %}
+    <ul class="products-group">
+      {% for product in products %}
+          {% include 'catalog/archive-product.html' %}
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-products">По Вашему запросу товаров не найдено.</p>
+{% endif %}
+<div class="catalog__show-more">
+  <button class="btn btn_secondary" type="button">Показать еще</button>
+</div>

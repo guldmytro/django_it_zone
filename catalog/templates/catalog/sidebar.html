@@ -1,4 +1,5 @@
 {% load static %}
+{% load catalog_tags %}
 <aside class="catalog__aside sidebar">
     <form class="sidebar_search">
         <input type="text" name="s" placeholder="Поиск">
@@ -7,39 +8,33 @@
         </button>
     </form>
 
-    <div class="sidebar_prices">
-        <input type="text" class="js-range-slider" name="price" value="">
-    </div>
+    <form class="form-filters" action="." method="get">
+        {% csrf_token %}
+        <div class="sidebar_prices">
+            <input type="text" class="js-range-slider" name="price" value=""
+            data-min="{{ prices.min | floatformat:'0' | min_price }}"
+            data-max="{{ prices.max | floatformat:'0' | max_price }}"
+            data-from="{{ prices.current_min }}"
+            data-to="{{ prices.current_max }}"
+            data-step="1000">
+        </div>
 
-    <div class="sidebar-filters">
-        <h3 class="sidebar-filters__header">Произодитель</h3>
-        <ul class="sidebar-filters__items">
-            <li>
-                <input type="checkbox" id="f-1" name="producer" value="1">
-                <span class="custom-checkbox"></span>
-                <label for="f-1">Acer (5)</label>
-            </li>
-            <li>
-                <input type="checkbox" id="f-2" name="producer" value="1">
-                <span class="custom-checkbox"></span>
-                <label for="f-2">Apple (10)</label>
-            </li>
-        </ul>
-    </div>
+        {% for filter in filters %}
 
-    <div class="sidebar-filters">
-        <h3 class="sidebar-filters__header">Тип компютера</h3>
-        <ul class="sidebar-filters__items">
-            <li>
-                <input type="checkbox" id="f-3" name="producer" value="1">
-                <span class="custom-checkbox"></span>
-                <label for="f-3">Компютерный модуль (10)</label>
-            </li>
-            <li>
-                <input type="checkbox" id="f-4" name="producer" value="1">
-                <span class="custom-checkbox"></span>
-                <label for="f-4">Микрокомпютер (5)</label>
-            </li>
-        </ul>
-    </div>
+        <div class="sidebar-filters">
+            <h3 class="sidebar-filters__header">{{ filter.name }}</h3>
+            <ul class="sidebar-filters__items">
+                {% for key in filter.values %}
+                <li>
+                    <input type="checkbox" id="{{ key.slug }}" name="{{ filter.slug }}"
+                           value="{{ key.value }}"{% if key.checked %}checked{% endif %}>
+                    <span class="custom-checkbox"></span>
+                    <label for="{{ key.slug }}">{{ key.value }} ({{ key.cnt }})</label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+        <button class="sidebar-filters__submit" type="submit" disabled>Применить</button>
+    </form>
 </aside>

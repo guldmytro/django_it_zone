@@ -1,4 +1,16 @@
 $(document).ready(function() {
+    const csrftoken = $('[name="csrfmiddlewaretoken"]').val();
+    function csrfSafeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken);
+            }
+        }
+    });
 
     // banner
     $('.main-banner__brands').on('init', function() {
@@ -142,20 +154,6 @@ $(document).ready(function() {
         $('.main-product-gallery').slick('slickGoTo', index);
         $('.aside-gallery__item.slick-current').removeClass('slick-current');
         $(this).addClass('slick-current');
-    });
-
-    // range slider
-    $(".js-range-slider").ionRangeSlider({
-        type: 'double',
-        min: 10,
-        max: 70000,
-        postfix: ' ₽'
-    });
-
-    // filters
-    $('.sidebar-filters__header').click(function() {
-        const $this = $(this);
-        $this.toggleClass('active').next('.sidebar-filters__items').slideToggle(200);
     });
 
     // header-menu
