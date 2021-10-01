@@ -58,7 +58,7 @@
             <div class="container">
                 <div class="header-row">
                     <a href="{% url 'catalog:home' %}" class="header-logo">
-                        <img src="{% static 'img/logo.png' %}" alt="логотип" class="header-logo__img">
+                        <img src="{% static 'img/logo.png' %}" width="150" height="30" alt="логотип" class="header-logo__img">
                     </a>
                     <ul class="header-services">
                         <li class="header-services__item">
@@ -96,7 +96,7 @@
                         <form class="header-controls__search">
                             <input type="text" class="search-query" name="s" placeholder="Поиск">
                             <button type="submit" aria-label="Поиск">
-                                <img src="{% static 'img/icon-search.png' %}" alt="поиск">
+                                <img src="{% static 'img/icon-search.png' %}" width="32" height="32" alt="поиск">
                             </button>
                         </form>
                         <div class="header-controls__links control-links">
@@ -697,6 +697,8 @@
         </header>
         <!-- /.header -->
 
+        {% block breadcrumbs %}{% endblock %}
+
         {% block content %}{% endblock %}
 
     </div>
@@ -707,7 +709,7 @@
             <div class="footer-row">
                 <div class="footer-logo">
                     <a href="{% url 'catalog:home' %}">
-                        <img src="{% static 'img/logo-footer.png' %}" alt="логотип">
+                        <img src="{% static 'img/logo-footer.png' %}" width="150" height="31" alt="логотип">
                     </a>
                     <p>© Все права защищены</p>
                 </div>

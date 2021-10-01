@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'catalog.apps.CatalogConfig',
     'easy_thumbnails',
     'django_quill'
@@ -83,6 +84,8 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
+# sudo -i -u postgres
+# psql itzone_db;
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

@@ -200,7 +200,7 @@ $(document).ready(function() {
         e.preventDefault();
         $(this).toggleClass('active');
         $('.catalog__aside').toggleClass('active');
-        $('.products-group').toggleClass('off');
+        $('.products-group_wrapper').toggleClass('off');
     });
 
     // add to wishlist
@@ -216,10 +216,17 @@ $(document).ready(function() {
 
         if (!$this.hasClass('active')) {
             $('.header-controls__btn.active').removeClass('active');
-            $('.products-group').removeClass('grid').removeClass('list').addClass($this.attr('data-class'));
+            const currentClass = $this.attr('data-class');
+            window.localStorage.setItem('catalog-layout', currentClass);
+            $('.products-group_wrapper').removeClass('grid').removeClass('list').addClass(currentClass);
             $this.addClass('active');
         }
     });
+    const catalogLayout = localStorage.getItem('catalog-layout');
+    console.log(catalogLayout);
+    if (catalogLayout) {
+        $(`.header-controls__btn[data-class="${catalogLayout}"`).click();
+    }
 
     // product tabs
     $('.product-tabs__group button').on('click', function() {
@@ -240,4 +247,3 @@ $(document).ready(function() {
     $('.product-tabs__group button:first-child').click();
 
 }); // end ready
-

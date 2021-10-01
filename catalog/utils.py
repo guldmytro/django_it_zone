@@ -3,16 +3,20 @@ from django.db.models import Count, Q, Min, Max
 from django.template.defaultfilters import slugify
 
 
-def get_filters(request, category):
+def get_filters(request, category, children_categories):
     result = []
-    for attribute in Attribute.objects.filter(Q(product__category=category)).distinct():
+    q = Q(product__category=category)
+    for children_category in children_categories:
+        q |= Q(product__category=children_category)
+
+    for attribute in Attribute.objects.filter(q).distinct():
         attribute_dict = {
             'name': attribute.name,
             'slug': attribute.slug,
             'values': []
         }
         for kit in Kit.objects.filter(attribute=attribute).annotate(cnt=Count('product',
-                                                                              filter=Q(product__category=category))):
+                                                                              filter=q)):
             slug = slugify(kit.value)
             found = False
             for filter in attribute_dict['values']:
@@ -27,22 +31,30 @@ def get_filters(request, category):
                     checked = True
                 else:
                     checked = False
-                attribute_dict['values'].append({
-                    'value': kit.value,
-                    'slug': slug,
-                    'cnt': kit.cnt,
-                    'checked': checked
-                })
+                if kit.cnt > 0:
+                    attribute_dict['values'].append({
+                        'value': kit.value,
+                        'slug': slug,
+                        'cnt': kit.cnt,
+                        'checked': checked
+                    })
         result.append(attribute_dict)
     return result
 
 
 def get_prices(products, request):
     result = products.aggregate(min_price=Min('price_current'), max_price=Max('price_current'))
-    result = {
-        'min': result['min_price'],
-        'max': result['max_price']
-    }
+    try:
+        result = {
+            'min': int(result['min_price']),
+            'max': int(result['max_price'])
+        }
+    except:
+        result = {
+            'min': 0,
+            'max': 0
+        }
+
     if request.GET.get('price'):
         prices = parse_price(request.GET.get('price'))
         result['current_min'] = prices['min']
@@ -56,11 +68,12 @@ def get_filtered_products(request, products, query_filters):
         if query_filter['key'] == 'price':
             prices = parse_price(request.GET.get('price'))
             products = products.filter(price_current__gte=prices['min'], price_current__lte=prices['max'])
-        elif query_filter['key'] == 'csrfmiddlewaretoken':
-            pass
         else:
             key = query_filter['key']
-            attribute = Attribute.objects.get(slug=key)
+            try:
+                attribute = Attribute.objects.get(slug=key)
+            except:
+                continue
             values = query_filter['values']
             q = Q()
             for value in values:
@@ -75,11 +88,12 @@ def get_filtered_products_p(request, products, query_filters):
         if query_filter['key'] == 'price':
             prices = parse_price(query_filter['values'][0])
             products = products.filter(price_current__gte=prices['min'], price_current__lte=prices['max'])
-        elif query_filter['key'] == 'csrfmiddlewaretoken':
-            pass
         else:
             key = query_filter['key']
-            attribute = Attribute.objects.get(slug=key)
+            try:
+                attribute = Attribute.objects.get(slug=key)
+            except:
+                continue
             values = query_filter['values']
             q = Q()
             for value in values:
@@ -97,3 +111,15 @@ def parse_price(price):
         'max': max(prices)
     }
     return result
+
+
+def get_page_from_query(query):
+    for query_filter in query:
+        if query_filter['key'] == 'page':
+            return query_filter['values'][0]
+
+
+def get_full_path_from_query(query):
+    for query_filter in query:
+        if query_filter['key'] == 'full_path':
+            return query_filter['values'][0]

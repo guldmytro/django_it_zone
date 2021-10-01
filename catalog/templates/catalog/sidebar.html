@@ -1,15 +1,16 @@
 {% load static %}
 {% load catalog_tags %}
 <aside class="catalog__aside sidebar">
-    <form class="sidebar_search">
-        <input type="text" name="s" placeholder="Поиск">
+    <form class="sidebar_search" method="get" action=".">
+        {{ search_form.as_p }}
         <button type="submit">
-            <img src="{% static 'img/icon-search.png' %}" alt="поиск">
+            <img width="32" height="32" src="{% static 'img/icon-search.png' %}" alt="поиск">
         </button>
     </form>
 
     <form class="form-filters" action="." method="get">
         {% csrf_token %}
+        <input type="hidden" name="page" value="1">
         <div class="sidebar_prices">
             <input type="text" class="js-range-slider" name="price" value=""
             data-min="{{ prices.min | floatformat:'0' | min_price }}"

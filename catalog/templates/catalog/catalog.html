@@ -2,6 +2,11 @@
 {% load static %}
 
 {% block title %} {{ category.name }} {% endblock %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
 {% block content %}
 <main class="catalog">
     <div class="container">
@@ -23,7 +28,11 @@
         <div class="catalog-group">
             {% include 'catalog/sidebar.html' %}
             <div class="catalog__products">
-                <div class="notice"></div>
+                <div class="notice">
+                    {% if query_string %}
+                    <h2 class="catalog-results">Результаты поиска <em>"{{ query_string }}":</em></h2>
+                    {% endif %}
+                </div>
                 <div class="products-group_wrapper">
                     {% include 'catalog/products-list.html' %}
                 </div>

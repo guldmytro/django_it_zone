@@ -6,6 +6,10 @@
     {{ product.name }}
 {% endblock %}
 
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
 {% block content %}
     <main class="product">
         <div class="container">
