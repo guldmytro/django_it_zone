@@ -23,6 +23,7 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('catalog:products_by_cat', args=[self.slug])
 
+
 class Attribute(models.Model):
     name = models.CharField(max_length=100, verbose_name='название')
     slug = models.SlugField(max_length=100, unique=True, verbose_name='слаг')

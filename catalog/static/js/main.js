@@ -247,3 +247,19 @@ $(document).ready(function() {
     $('.product-tabs__group button:first-child').click();
 
 }); // end ready
+
+// add to cart
+// change quantity input
+$('.quantity__group .inc').click(function() {
+    const quantityInput = $(this).siblings('.quantity__input');
+    quantityInput.val(Number(quantityInput.val()) + 1);
+});
+
+$('.quantity__group .decr').click(function() {
+    const quantityInput = $(this).siblings('.quantity__input');
+    let newValue = Number(quantityInput.val()) - 1;
+    if (newValue < 1) {
+        newValue = 1;
+    }
+    quantityInput.val(newValue);
+});

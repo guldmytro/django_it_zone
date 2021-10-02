@@ -64,31 +64,37 @@
                             </span>
                         {% endif %}
                     </div>
-                    <div class="product__quantity quantity">
-                        <span>Выберите количество:</span>
-                        <div class="quantity__group">
-                            <button type="button" class="decr">-</button>
-                            <input type="text" class="quantity__input" value="1">
-                            <button type="button" class="inc">+</button>
-                        </div>
-                    </div>
-                    {% if product.excerpt %}
-                        <div class="product__excerpt">
-                            {{ product.excerpt }}
-                        </div>
-                    {% endif %}
-                    <ul class="product__features product-features">
-                        <li class="product-features__item">
-                            <div class="thumb">
-                                <img src="{% static 'img/icon-delivery-secondary.png' %}" alt="доставка">
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="product__quantity quantity">
+                            <span>Выберите количество:</span>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                {% for field in cart_product_form %}
+                                    {{ field }}
+                                {% endfor %}
+                                <button type="button" class="inc">+</button>
                             </div>
-                            Доставка по Москве за 2-3 дня <br>
-                            Доставка по всей России
-                        </li>
-                    </ul>
-                    <div class="product__add-to-cart">
-                        <a href="#" class="btn btn_add-to-cart">Купить</a>
-                    </div>
+                        </div>
+
+                        {% if product.excerpt %}
+                            <div class="product__excerpt">
+                                {{ product.excerpt }}
+                            </div>
+                        {% endif %}
+                        <ul class="product__features product-features">
+                            <li class="product-features__item">
+                                <div class="thumb">
+                                    <img src="{% static 'img/icon-delivery-secondary.png' %}" alt="доставка">
+                                </div>
+                                Доставка по Москве за 2-3 дня <br>
+                                Доставка по всей России
+                            </li>
+                        </ul>
+                        <div class="product__add-to-cart">
+                            <button type="submit" class="btn btn_add-to-cart">Купить</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.product__info -->
 

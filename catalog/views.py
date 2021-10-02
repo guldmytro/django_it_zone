@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SearchForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q
+from cart.forms import CartAddProductForm
 
 
 def index(request):
@@ -16,6 +17,7 @@ def index(request):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     category = product.category
+    cart_product_form = CartAddProductForm()
     parent_category = category.parent_category
     product_attributes = []
     breadcrumbs = []
@@ -45,7 +47,8 @@ def product_detail(request, slug):
     context = {
         'product': product,
         'product_attributes': product_attributes,
-        'breadcrumbs': breadcrumbs
+        'breadcrumbs': breadcrumbs,
+        'cart_product_form': cart_product_form
     }
     return render(request, 'catalog/single.html', context)
 

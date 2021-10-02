@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'catalog.apps.CatalogConfig',
+    'cart.apps.CartConfig',
     'easy_thumbnails',
     'django_quill'
 ]
@@ -138,4 +139,7 @@ THUMBNAIL_ALIASES = {
         'medium': {'size': (900, 900), 'crop': False},
     },
 }
+
+# Cart Session
+CART_SESSION_ID = 'cart'
 

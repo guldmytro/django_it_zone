@@ -977,6 +977,16 @@ h6 {
 ::placeholder {
     color: var(--color-placeholder-text);
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 a:focus,
 button:focus,
 input:focus {
