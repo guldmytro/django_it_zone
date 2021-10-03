@@ -64,7 +64,7 @@
                             </span>
                         {% endif %}
                     </div>
-                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post" class="add-to-cart-form">
                         {% csrf_token %}
                         <div class="product__quantity quantity">
                             <span>Выберите количество:</span>
@@ -92,7 +92,11 @@
                             </li>
                         </ul>
                         <div class="product__add-to-cart">
-                            <button type="submit" class="btn btn_add-to-cart">Купить</button>
+                            <button type="submit" class="btn btn_add-to-cart"><span>Купить</span></button>
+                            <a href="{% url 'cart:cart_detail' %}" class="cart-link">
+                                <img src="{% static 'img/icon-cart-dark.png' %}" alt="корзина">
+                                <span>Корзина</span>
+                            </a>
                         </div>
                     </form>
                 </div>

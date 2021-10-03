@@ -19,6 +19,7 @@ class Cart:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
+        self.save()
 
     def save(self):
         # it will save session in database
@@ -37,9 +38,9 @@ class Cart:
         for product in products:
             cart[str(product.id)]['product'] = product
         for item in cart.values():
-            item['price'] = Decimal(item['price_current'])
+            item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
-        yield item
+            yield item
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())

@@ -3,8 +3,10 @@
 <li class="archive-product">
     <div class="archive-product__inner">
         <a href="{{ product.get_absolute_url }}" class="thumb">
-            <img src="{{ product.images.first.file | thumbnail_url:'medium' }}" alt="{{ product.images.first.alt  }}"
-            loading="lazy">
+            {% if product.images.first %}
+                <img src="{{ product.images.first.file | thumbnail_url:'medium' }}" alt="{{ product.images.first.alt  }}"
+                loading="lazy">
+            {% endif %}
         </a>
         <h3 class="archive-product__title">
             <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>

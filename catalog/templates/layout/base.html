@@ -104,9 +104,9 @@
                                 <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
                                 <span class="cnt" data-cnt="4">4</span>
                             </a>
-                            <a class="control-links__item btn_cart-link" href="#" aria-label="корзина">
+                            <a class="control-links__item btn_cart-link" href="{% url 'cart:cart_detail' %}" aria-label="корзина">
                                 <img src="{% static 'img/icon-cart.png' %}" alt="корзина">
-                                <span class="cnt" data-cnt="2">2</span>
+                                <span class="cnt" data-cnt="{{ cart_len }}">{{ cart_len }}</span>
                             </a>
                         </div>
                     </div>

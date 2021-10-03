@@ -143,3 +143,6 @@ THUMBNAIL_ALIASES = {
 # Cart Session
 CART_SESSION_ID = 'cart'
 
+# Add cart in all views
+TEMPLATES[0]['OPTIONS']['context_processors'].append('cart.context_processors.cart_processor')
+

@@ -1,4 +1,97 @@
 {% extends 'layout/base.html' %}
 {% load static %}
+{% load thumbnail %}
 
 {% block title %}Корзина{% endblock %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<section class="cart">
+    <div class="container">
+        <div class="section-header">
+            <h1 class="section-header__title">Корзина</h1>
+        </div>
+        {% if cart %}
+        <form class="cart-form">
+            <ul class="cart-form__products cart-products">
+
+                {% for item in cart  %}
+                    {% with product=item.product %}
+                        <li class="cart-products__item cart-product">
+                            <div class="cart-product__thumb">
+                                <a href="{{ product.get_absolute_url }}" class="thumb">
+                                    {% if product.images.first %}
+                                        <img src="{{ product.images.first.file | thumbnail_url:'medium' }}"
+                                             alt="{{ product.images.first.alt  }}"
+                                        loading="lazy">
+                                    {% endif %}
+                                </a>
+                            </div>
+
+                            <div class="cart-product__name" data-label="Товар">
+                                <h2 class="cart-product__title">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        {{ product.name }}
+                                    </a>
+                                </h2>
+                                <p class="cart-product__sku">
+                                    <span>Артикул:</span>
+                                    <strong>{% firstof product.sku '#Н/Д' %}</strong>
+                                </p>
+                            </div>
+                            <div class="cart-product__info">
+                                <p class="cart-product__quantity" data-label="Количество">
+                                    <span>Количество: </span>
+                                    <strong>{{ item.quantity }}</strong>
+                                </p>
+                                <p class="cart-product__price" data-label="Цена">
+                                    <span>Цена: </span>
+                                    <strong>{{ item.total_price | floatformat:"0" }} руб.</strong>
+                                </p>
+                            </div>
+                            <div class="product-remove__wrapper">
+                                <a href="{% url 'cart:cart_remove' product.id %}" class="cart-product__remove"
+                                   aria-label="удалить товар из корзины"></a>
+                            </div>
+
+                        </li>
+                    {% endwith %}
+                {% endfor %}
+            </ul>
+
+            <div class="cart-form__totals cart-totals">
+                <div class="cart-totals__label">
+                    <div class="thumb">
+                        <img src="{% static 'img/icon-cart-dark.png' %}" alt="корзина">
+                    </div>
+                    <h2 class="cart-totals__title">Итого</h2>
+                </div>
+                <div class="cart-totals__info">
+                    <p class="cart-totals__subtotal">
+                        <span>Итого:</span>
+                        <strong>₽ {{ cart.get_total_price | floatformat:"0" }}</strong>
+                    </p>
+                    <p class="cart-totals__delivery">
+                        <span>Доставка:</span>
+                        <strong>₽ 0,00</strong>
+                    </p>
+                </div>
+                <div class="cart-totals__to-checkout">
+                    <p class="cart-totals__total">
+                        <span>Всего:</span>
+                        <strong>₽ {{ cart.get_total_price | floatformat:"0" }}</strong>
+                    </p>
+                    <button type="submit" class="btn_submit-cart">Оформить заказ</button>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <p>Ваша корзина пуста.</p>
+        {% endif %}
+    </div>
+</section>
+<!-- /.cart -->
+{% endblock %}

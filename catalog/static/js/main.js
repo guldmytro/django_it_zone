@@ -223,7 +223,6 @@ $(document).ready(function() {
         }
     });
     const catalogLayout = localStorage.getItem('catalog-layout');
-    console.log(catalogLayout);
     if (catalogLayout) {
         $(`.header-controls__btn[data-class="${catalogLayout}"`).click();
     }
@@ -263,3 +262,32 @@ $('.quantity__group .decr').click(function() {
     }
     quantityInput.val(newValue);
 });
+
+$('.add-to-cart-form').on('submit', function(e) {
+    e.preventDefault();
+    const $this = $(this);
+    const action = $this.attr('action');
+    const data = $this.serialize();
+    const btn = $this.find('[type="submit"]');
+    btn.prop('disabled', true).addClass('loading');
+    $.ajax({
+        url: action,
+        method: 'post',
+        data: data,
+        success: function(response) {
+            if (response.status === 'ok') {
+                btn.prop('disabled', false).removeClass('loading').addClass('added');
+                btn.text('Добавлено!');
+                updateCartCnt(response.cnt);
+            }
+        }
+    });
+});
+
+function updateCartCnt(cnt) {
+    let quantity = parseInt(cnt, 10);
+    if (!isNaN(quantity)) {
+        quantity = quantity > 9 ? '9+' : quantity;
+        $('.control-links__item.btn_cart-link .cnt').attr('data-cnt', quantity).text(quantity);
+    }
+}
