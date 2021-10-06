@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'catalog.apps.CatalogConfig',
     'cart.apps.CartConfig',
+    'orders.apps.OrdersConfig',
     'easy_thumbnails',
     'django_quill'
 ]
@@ -66,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart_processor',
             ],
         },
     },
@@ -142,7 +144,4 @@ THUMBNAIL_ALIASES = {
 
 # Cart Session
 CART_SESSION_ID = 'cart'
-
-# Add cart in all views
-TEMPLATES[0]['OPTIONS']['context_processors'].append('cart.context_processors.cart_processor')
 
