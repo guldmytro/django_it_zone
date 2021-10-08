@@ -10,6 +10,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, unique=True, verbose_name='слаг')
     parent_category = models.ForeignKey('self', blank=True, null=True, verbose_name='родительска категория',
                                         on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение', blank=True)
     description = models.TextField(blank=True, verbose_name='описание')
 
     class Meta:

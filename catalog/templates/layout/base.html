@@ -1,4 +1,6 @@
 {% load static %}
+{% load thumbnail %}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -73,23 +75,6 @@
                             <h3 class="header-menu__title">Каталог</h3>
                             <div class="btn"></div>
                         </div>
-                        <ul class="header-menu__group">
-                            <li class="header-menu__item">
-                                <a href="#">
-                                    Категория 1
-                                </a>
-                            </li>
-                            <li class="header-menu__item">
-                                <a href="#">
-                                    Категория 2
-                                </a>
-                            </li>
-                            <li class="header-menu__item">
-                                <a href="#">
-                                    Категория 3
-                                </a>
-                            </li>
-                        </ul>
                     </button>
 
                     <div class="header-controls">
@@ -115,547 +100,57 @@
                     </button>
                 </div>
             </div>
+            {% if categories|length %}
             <div class="header-menu-wrapper">
                 <div class="container">
                     <ul class="main-menu">
+                        {% for item in categories %}
+                        {% with parent_cat=item.category %}
                         <li class="main-menu__item">
-                            <span>Компьютеры</span>
+                            <span>{{ parent_cat.name }}</span>
                             <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Компьютеры</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
+                                <h2 class="sub-wrapper__title"><a href="{{ parent_cat.get_absolute_url }}">{{ parent_cat.name }}</a></h2>
+
+                                {% if parent_cat.description %}
+                                    <p class="sub-wrapper__subtitle">
+                                        {{ parent_cat.description|linebreaks }}
+                                    </p>
+                                {% endif %}
+                                {% if item.childrens|length > 0 %}
                                 <ul class="sub-wrapper__group sub-menu">
+                                    {% for child_cat in item.childrens %}
                                     <li class="sub-menu__item sub-item">
-                                        <a href="#">
+                                        <a href="{{ child_cat.get_absolute_url }}">
+                                            {% if child_cat.image %}
                                             <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
+                                                <img src="{{ child_cat.image | thumbnail_url:'small' }}"
+                                                     alt="{{ child_cat.name }}">
                                             </div>
+                                            {% endif %}
                                             <div class="sub-item__info">
                                                 <h3 class="sub-item__title">
-                                                    Ноутбуки
+                                                    {{ child_cat.name }}
                                                 </h3>
+                                                {% if child_cat.description %}
                                                 <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
+                                                    {{ child_cat.description|linebreaks }}
                                                 </p>
+                                                {% endif %}
                                             </div>
                                         </a>
                                     </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
+                                    {% endfor %}
                                 </ul>
+                                {% endif %}
                             </div>
                         </li>
-
-                        <li class="main-menu__item">
-                            <span>Моноблоки</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Моноблоки</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Рабочие станции</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Рабочие станции</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Ноутбуки и аксесуары</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Ноутбуки и аксесуары</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Электропитание</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Электропитание</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Оргтехника</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Оргтехника</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Серверное оборудование</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Серверное оборудование</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Мониторы и проекторы</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Мониторы и проекторы</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Расходные материалы</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Расходные материалы</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Тонкие клиенты</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Тонкие клиенты</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Програмное обеспечение</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Програмное обеспечение</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="main-menu__item">
-                            <span>Планшеты</span>
-                            <div class="main-menu__sub sub-wrapper">
-                                <h2 class="sub-wrapper__title">Планшеты</h2>
-                                <p class="sub-wrapper__subtitle">
-                                    Ноутбук — компактная и мобильная альтернатива персональному компьютеру. В нашем каталоге представлено множество моделей в разных ценовых категориях: среди них можно выбрать ту, которая лучше всего подходит для ваших задач.
-                                </p>
-                                <ul class="sub-wrapper__group sub-menu">
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-notebooks.png' %}" alt="ноутбуки">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Ноутбуки
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="sub-menu__item sub-item">
-                                        <a href="#">
-                                            <div class="thumb">
-                                                <img src="{% static 'img/menu-battery.png' %}" alt="батарея">
-                                            </div>
-                                            <div class="sub-item__info">
-                                                <h3 class="sub-item__title">
-                                                    Батареи к ноутбукам
-                                                </h3>
-                                                <p class="sub-item__subtitle">
-                                                    Современные пользователи ценят ноутбуки за их мобильность и компактность. В ответ на запрос потребителя, производители выпускают модели для разных задач: для дома и офиса, для игр, для работы с видео и графикой.
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
+                        {% endwith %}
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
             <!-- /.header-menu-wrapper -->
+            {% endif %}
 
             <div class="mobile-menu-wrapper">
                 <div class="container">

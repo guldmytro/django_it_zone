@@ -70,7 +70,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart_processor',
                 'cart.context_processors.add_to_cart_processor',
-                'wishlist.context_processors.wishlist_processor'
+                'wishlist.context_processors.wishlist_processor',
+                'catalog.context_processors.menu_catalog_processor'
             ],
         },
     },

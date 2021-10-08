@@ -174,7 +174,6 @@ $(document).ready(function() {
     });
 
     $('.main-menu__item').click(function(e) {
-        e.preventDefault();
         if (document.documentElement.clientWidth <= 991) {
             $(this).find('.main-menu__sub').slideToggle(300);
         }
