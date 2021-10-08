@@ -1,0 +1,114 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block breadcrumbs %}
+    {% include 'breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<section class="checkout">
+    <div class="container">
+        <div class="section-header">
+            <h1 class="section-header__title">Оформление заказа</h1>
+        </div>
+
+        <form class="checkout-form" action="." method="POST">
+            {% csrf_token %}
+            {% include 'cart/cart.html' %}
+
+            <div class="checkout-section checkout-contact">
+                <h2 class="checkout__title">
+                    Контактная информация
+                </h2>
+                <div class="checkout__fields checkout-fields">
+                    {{ checkout_form.full_name }}
+                    {% for value, label in checkout_form.fields.client_type.choices %}
+                    <label class="checkout-fields__client-type">
+                        <input type="radio" name="{{ checkout_form.client_type.name }}" value="{{ value }}"
+                        {% if checkout_form.client_type.value == value %} checked{% endif %}>
+                        <span class="checkbox__custom"></span>
+                        <span class="checkbox__label">{{ label }}</span>
+                    </label>
+                    {% endfor %}
+                    {{ checkout_form.email }}
+                    {{ checkout_form.phone }}
+                    {{ checkout_form.address }}
+                    <label class="checkout-fields__comfirm">
+                        {{ checkout_form.agree }}
+                        <span class="checkbox__custom"></span>
+                        <span class="checkbox__label">Согласен на обработку персональных данных</span>
+                    </label>
+                </div>
+            </div>
+            <!-- /.checkout-contact -->
+
+            <div class="checkout-section checkout-delivery">
+                <h2 class="checkout__title">
+                    Способ получения
+                </h2>
+                {% for value, label in checkout_form.fields.shipping.choices %}
+                <label class="checkout-devivery__label delivery-item">
+                    <input type="radio" name="{{ checkout_form.shipping.name }}" value="{{ value }}"
+                    {% if checkout_form.shipping.value == value %}checked{% endif %}>
+                    <span class="radio__custom"></span>
+                    <h3 class="delivery-item__title">{{ label }}</h3>
+                    <p class="delivery-item__description">
+                        {% if value == 'Самовывоз со склада в Москве' %}
+                            Вы можете самостоятельно забрать заказ из нашего магазина.
+                        {% else %}
+                            Доставка осуществляется в течение дня с 10 до 18 часов.
+                        {% endif %}
+                    </p>
+                    <p class="delivery-item__time">
+                        от 1 до 3 дней, Бесплатно
+                    </p>
+                </label>
+                {% endfor %}
+            </div>
+            <!-- /.checkout-delivery -->
+
+<!--            <div class="checkout-section checkout-payment">-->
+<!--                <h2 class="checkout__title">-->
+<!--                    Способ оплаты-->
+<!--                </h2>-->
+<!--                <label class="checkout-payment__label payment-item">-->
+<!--                    <input type="radio" name="payment" value="Вариант 1">-->
+<!--                    <span class="radio__custom"></span>-->
+<!--                    <h3 class="payment-item__title">Вариант 1</h3>-->
+<!--                    <p class="payment-item__description">-->
+<!--                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo ut nesciunt, dicta quod doloremque alias!-->
+<!--                    </p>-->
+<!--                </label>-->
+<!--                <label class="checkout-payment__label payment-item">-->
+<!--                    <input type="radio" name="payment" value="Вариант 2">-->
+<!--                    <span class="radio__custom"></span>-->
+<!--                    <h3 class="payment-item__title">Вариант 2</h3>-->
+<!--                    <p class="payment-item__description">-->
+<!--                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo ut nesciunt, dicta quod doloremque alias!-->
+<!--                    </p>-->
+<!--                </label>-->
+<!--                <label class="checkout-payment__label payment-item">-->
+<!--                    <input type="radio" name="payment" value="Вариант 3">-->
+<!--                    <span class="radio__custom"></span>-->
+<!--                    <h3 class="payment-item__title">Вариант 3</h3>-->
+<!--                    <p class="payment-item__description">-->
+<!--                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo ut nesciunt, dicta quod doloremque alias!-->
+<!--                    </p>-->
+<!--                </label>-->
+<!--            </div>-->
+            <!-- /.checkout-payment -->
+
+            <div class="checkout-section checkout-comment">
+                <h2 class="checkout__title">
+                    Комментарий к заказу
+                </h2>
+                {{ checkout_form.comment }}
+            </div>
+            {% include 'cart/cart-totals.html' %}
+        </form>
+    </div>
+</section>
+<!-- /.checkout -->
+{% endblock %}

@@ -1,0 +1,32 @@
+{% load static %}
+
+<div class="cart-form__totals cart-totals">
+    <div class="cart-totals__label">
+        <div class="thumb">
+            <img src="{% static 'img/icon-cart-dark.png' %}" alt="корзина">
+        </div>
+        <h2 class="cart-totals__title">Итого</h2>
+    </div>
+    <div class="cart-totals__info">
+        <p class="cart-totals__subtotal">
+            <span>Итого:</span>
+            <strong>₽ {{ cart.get_total_price | floatformat:"0" }}</strong>
+        </p>
+        <p class="cart-totals__delivery">
+            <span>Доставка:</span>
+            <strong>₽ 0,00</strong>
+        </p>
+    </div>
+    <div class="cart-totals__to-checkout">
+        <p class="cart-totals__total">
+            <span>Всего:</span>
+            <strong>₽ {{ cart.get_total_price | floatformat:"0" }}</strong>
+        </p>
+        {% if submit_text %}
+            <button type="submit" class="btn_submit-cart">{% firstof submit_text 'Оформить заказ' %}</button>
+        {% else %}
+        <a href="{% url 'orders:checkout' %}" class="btn_submit-cart">
+            {% firstof submit_text 'Оформить заказ' %}</a>
+        {% endif %}
+    </div>
+</div>

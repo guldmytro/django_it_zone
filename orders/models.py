@@ -2,8 +2,13 @@ from django.db import models
 from catalog.models import Product
 
 CLIENT_TYPES = (
-    ('Физическое лицо', 'Юридическое лицо'),
-    ('Юридическое', 'Физическое лицо'),
+    ('Физическое лицо', 'Физическое лицо'),
+    ('Юридическое лицо', 'Юридическое лицо'),
+)
+
+SHIPPING_CHOICES = (
+    ('Самовывоз со склада в Москве', 'Самовывоз со склада в Москве'),
+    ('Бесплатная доставка', 'Бесплатная доставка'),
 )
 
 
@@ -17,9 +22,12 @@ class Order(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name='Обновлено')
     paid = models.BooleanField(default=False, verbose_name='Оплачено')
     comment = models.TextField(verbose_name='Комментарий к заказу', blank=True, null=True)
+    shipping = models.CharField(verbose_name='Доставка', choices=SHIPPING_CHOICES, max_length=200)
 
     class Meta:
         ordering = ('-created',)
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
 
     def __str__(self):
         return f'Заказ {self.pk}'
