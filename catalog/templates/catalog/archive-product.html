@@ -34,10 +34,14 @@
             </span>
         </p>
         <div class="archive-product__controls">
-            <button class="btn_add-to-wishlist">
-                <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-            </button>
-            <a href="#" class="btn btn__add-to-cart">В корзину</a>
+            {% include 'wishlist/add-to-wishlist-form.html' %}
+            <form class="add-to-cart-form add-to-cart-form_acrhive" action="{% url 'cart:cart_add' product.id %}" method="post">
+                {% csrf_token %}
+                {{ cart_product_form.as_p }}
+                <button type="submit" class="btn btn__add-to-cart">В корзину</button>
+                <a class="go-to-cart-link" href="{% url 'cart:cart_detail' %}" aria-label="перейти в корзину"></a>
+            </form>
+
         </div>
     </div>
 </li>

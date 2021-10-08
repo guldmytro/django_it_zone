@@ -7,7 +7,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SearchForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q
-from cart.forms import CartAddProductForm
 
 
 def index(request):
@@ -17,7 +16,6 @@ def index(request):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     category = product.category
-    cart_product_form = CartAddProductForm()
     parent_category = category.parent_category
     product_attributes = []
     breadcrumbs = []
@@ -48,7 +46,6 @@ def product_detail(request, slug):
         'product': product,
         'product_attributes': product_attributes,
         'breadcrumbs': breadcrumbs,
-        'cart_product_form': cart_product_form
     }
     return render(request, 'catalog/single.html', context)
 
@@ -73,6 +70,20 @@ def products_by_cat(request, slug):
             products_list = products_list.annotate(similarity=TrigramSimilarity('name', query))\
                 .filter(similarity__gt=0.045).order_by('-similarity')
 
+            breadcrumbs = []
+            parent_category = category.parent_category
+            if parent_category:
+                breadcrumbs.append({
+                    'label': parent_category.name,
+                    'url': parent_category.get_absolute_url,
+                    'type': 'link'
+                })
+            breadcrumbs.append({
+                'label': category.name,
+                'url': category.get_absolute_url,
+                'type': 'text'
+            })
+
             context = {
                 'category': category,
                 'products': products_list,
@@ -80,6 +91,7 @@ def products_by_cat(request, slug):
                 'filters': filters,
                 'search_form': form,
                 'query_string': query,
+                'breadcrumbs': breadcrumbs
             }
 
             return render(request, 'catalog/catalog.html', context)

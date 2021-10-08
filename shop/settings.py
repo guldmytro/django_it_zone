@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'wishlist.apps.WishlistConfig',
     'easy_thumbnails',
     'django_quill'
 ]
@@ -68,6 +69,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart_processor',
+                'cart.context_processors.add_to_cart_processor',
+                'wishlist.context_processors.wishlist_processor'
             ],
         },
     },
@@ -144,4 +147,7 @@ THUMBNAIL_ALIASES = {
 
 # Cart Session
 CART_SESSION_ID = 'cart'
+
+# Wishlist Session
+WISHLIST_SESSION_ID = 'wishlist'
 

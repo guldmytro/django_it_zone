@@ -1,0 +1,23 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Избранное{% endblock %}
+
+{% block content %}
+<main class="catalog">
+    <div class="container">
+        <div class="section-header section-header_flex">
+            <h1 class="section-header__title">Избранное</h1>
+        </div>
+
+        <div class="catalog-group_wishlist">
+            <div class="catalog__products">
+                <ul class="wishlist-group">
+                    {% for item in wishlist %}
+                    {% include 'catalog/archive-product.html' with product=item.product %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

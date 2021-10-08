@@ -203,12 +203,6 @@ $(document).ready(function() {
         $('.products-group_wrapper').toggleClass('off');
     });
 
-    // add to wishlist
-    $('button.btn_add-to-wishlist').on('click', function(e) {
-        e.preventDefault();
-        $(this).toggleClass('active');
-    });
-
     // controls btn
     $('.header-controls__btn').on('click', function(e) {
         e.preventDefault();
@@ -263,7 +257,7 @@ $('.quantity__group .decr').click(function() {
     quantityInput.val(newValue);
 });
 
-$('.add-to-cart-form').on('submit', function(e) {
+$('body').on('submit', '.add-to-cart-form', function(e) {
     e.preventDefault();
     const $this = $(this);
     const action = $this.attr('action');
@@ -278,16 +272,43 @@ $('.add-to-cart-form').on('submit', function(e) {
             if (response.status === 'ok') {
                 btn.prop('disabled', false).removeClass('loading').addClass('added');
                 btn.text('Добавлено!');
-                updateCartCnt(response.cnt);
+                btn.siblings('.go-to-cart-link').addClass('active');
+                updateCnt(response.cnt, $('.control-links__item.btn_cart-link .cnt'));
             }
         }
     });
 });
 
-function updateCartCnt(cnt) {
+function updateCnt(cnt, element) {
     let quantity = parseInt(cnt, 10);
     if (!isNaN(quantity)) {
         quantity = quantity > 9 ? '9+' : quantity;
-        $('.control-links__item.btn_cart-link .cnt').attr('data-cnt', quantity).text(quantity);
+        element.attr('data-cnt', quantity).text(quantity);
     }
 }
+
+
+$('body').on('submit', '.add-to-wishlist-form', function(e) {
+    e.preventDefault();
+    const $this = $(this);
+    const action = $this.attr('action');
+    const data = $this.serialize();
+    const btn = $this.find('[type="submit"]');
+    btn.prop('disabled', true).addClass('loading');
+    $.ajax({
+        url: action,
+        method: 'post',
+        data: data,
+        success: function(response) {
+            if (response.status === 'removed') {
+                $this.find('[name="method"]').val('add');
+                btn.removeClass('active');
+            } else {
+                $this.find('[name="method"]').val('remove');
+                btn.addClass('active');
+            }
+            updateCnt(response.cnt, $('.header-controls__links .btn_add-to-wishlist .cnt'));
+            btn.prop('disabled', false).removeClass('loading');
+        }
+    });
+});

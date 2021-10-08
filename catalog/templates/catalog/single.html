@@ -42,9 +42,8 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <button class="btn btn_add-to-wishlist">
-                        <img src="{% static 'img/icon-heart.png' %}" alt="сердце" loading="lazy">
-                    </button>
+                    {% include 'wishlist/add-to-wishlist-form.html' %}
+
                 </div>
                 <!-- /.product__gallery -->
 

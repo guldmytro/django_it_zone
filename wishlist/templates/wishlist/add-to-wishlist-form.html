@@ -1,0 +1,12 @@
+{% load static %}
+<form class="add-to-wishlist-form" action="{% url 'wishlist:wishlist_add' product.id %}" method="post">
+    {% csrf_token %}
+    {% if product.id|stringformat:"i" in wishlist.wishlist %}
+    <input type="hidden" name="method" value="remove">
+    {% else %}
+    <input type="hidden" name="method" value="add">
+    {% endif %}
+    <button class="btn btn_add-to-wishlist{% if product.id|stringformat:'i' in wishlist.wishlist %} active{% endif %}" type="submit" aria-label="добавить или удалить из избранного">
+        <img src="{% static 'img/icon-heart.png' %}" alt="сердце" loading="lazy">
+    </button>
+</form>
