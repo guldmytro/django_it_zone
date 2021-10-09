@@ -1,0 +1,37 @@
+{% extends 'layout/base.html' %}
+
+{% load thumbnail %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <div class="section-header">
+            <h1 class="section-header__title">{{ page.title }}</h1>
+        </div>
+        <div class="page-row">
+            <ul class="page-menu">
+                {% for item in pages %}
+                <li class="page-menu__item">
+                    <a href="{{ item.get_absolute_url }}" class="page-menu__link{% if item.slug == page.slug %} active{% endif %}">
+                        {% if item.thumbnail %}
+                            <img src="{{ item.thumbnail | thumbnail_url:'small' }}" alt="{{ item.title }}">
+                        {% endif %}
+                        <span>{{ item.title }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="page-content">
+                {{ page.content.html | safe }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

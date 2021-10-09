@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'reviews.apps.ReviewsConfig',
     'wishlist.apps.WishlistConfig',
     'blog.apps.BlogConfig',
+    'pages.apps.PagesConfig',
+    'contacts.apps.ContactsConfig',
     'easy_thumbnails',
     'django_quill'
 ]

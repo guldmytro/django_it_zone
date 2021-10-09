@@ -1,0 +1,92 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+
+{% block content %}
+<section class="contacts">
+    <div class="container">
+        <div class="section-header">
+            <h1 class="section-header__title">Контакты</h1>
+        </div>
+        <div class="contacts-row">
+            <div class="contacts__info">
+
+                <div class="contacts__group contacts-group">
+                    <h3 class="contacts-group__title">
+                        <div class="thumb">
+                            <img src="{% static 'img/icon-phone.png' %}" alt="телефон">
+                        </div>
+                        <span>Телефоны</span>
+                    </h3>
+                    <a href="{{ phone_link }}" class="contacts-group__link">{{ page.phone_1 }}</a>
+                    <p class="contacts-group__desc">(Бесплатный звонок по России)</p>
+                </div>
+
+                <div class="contacts__group contacts-group">
+                    <h3 class="contacts-group__title">
+                        <div class="thumb">
+                            <img src="{% static 'img/icon-mail.png' %}" alt="почта">
+                        </div>
+                        <span>E-mail</span>
+                    </h3>
+                    <a href="malito:{{ page.email }}" class="contacts-group__link">{{ page.email }}</a>
+                </div>
+
+                <div class="contacts__group contacts-group">
+                    <h3 class="contacts-group__title">
+                        <div class="thumb">
+                            <img src="{% static 'img/icon-marker.png' %}" alt="маркер">
+                        </div>
+                        <span>Пункт Самовывоза</span>
+                    </h3>
+                    <p class="contacts-group__link">{{ page.address }}</p>
+                </div>
+
+                <div class="contacts__group contacts-group">
+                    <h3 class="contacts-group__title">
+                        <div class="thumb">
+                            <img src="{% static 'img/icon-schedule.png' %}" alt="график">
+                        </div>
+                        <span>Режим работы</span>
+                    </h3>
+                    <p class="contacts-group__link">{{ page.schedule }}</p>
+                </div>
+            </div>
+            <!-- /.contacts-info -->
+
+            <div class="contacts__map">
+                {{ page.map | safe }}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.contacts -->
+
+<section class="feadback">
+    <div class="container">
+        <div class="feadback-row">
+            <div class="section-header">
+                <h2 class="section-header__title">Задать вопрос</h2>
+                <p class="section-header__subtitle">Вы можете задать любой интересующий вас вопрос по товару или работе магазина. Наши квалифицированные специалисты обязательно вам помогут.</p>
+            </div>
+
+            <form class="feadback-form" method="post" action="{% url 'contacts:send_message' %}">
+                <h3 class="feadback-form__title">Форма связи</h3>
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="feadback-form__submit btn_submit">Отправить</button>
+            </form>
+        </div>
+
+
+
+    </div>
+</section>
+<!-- /.feadback -->
+{% endblock %}

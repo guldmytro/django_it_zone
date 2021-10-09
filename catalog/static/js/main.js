@@ -337,3 +337,22 @@ $('.form-product-review').on('submit', function(e) {
         }
     });
 });
+
+// send feadback message
+$('.feadback-form').on('submit', function(e) {
+    e.preventDefault();
+    const $this = $(this);
+    const action = $this.attr('action');
+    const data = $this.serialize();
+    const btn = $this.find('[type="submit"]');
+    btn.prop('disabled', true).addClass('loading').text('Отправка...');
+    $.ajax({
+        url: action,
+        method: 'post',
+        data: data,
+        success: function(response) {
+            btn.removeClass('loading').text('Отправлено!');
+        }
+    });
+});
+

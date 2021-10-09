@@ -10,11 +10,6 @@ def archive_blog(request):
     page = request.GET.get('page')
     if page:
         page = int(page)
-    breadcrumbs = [{
-        'label': 'Новости',
-        'url': '',
-        'type': 'text'
-    }]
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
