@@ -8,6 +8,8 @@ class Contact(models.Model):
     address = models.TextField(verbose_name='Адрес')
     map = models.TextField(verbose_name='iframe карты')
     schedule = models.CharField(max_length=200, verbose_name='График работы')
+    facebook = models.URLField()
+    instagram = models.URLField()
 
     def __str__(self):
         return 'Контакты'

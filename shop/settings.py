@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'pages.apps.PagesConfig',
     'contacts.apps.ContactsConfig',
+    'config.apps.ConfigConfig',
     'easy_thumbnails',
     'django_quill'
 ]
@@ -75,7 +76,8 @@ TEMPLATES = [
                 'cart.context_processors.cart_processor',
                 'cart.context_processors.add_to_cart_processor',
                 'wishlist.context_processors.wishlist_processor',
-                'catalog.context_processors.menu_catalog_processor'
+                'catalog.context_processors.menu_catalog_processor',
+                'config.context_processors.main_processor'
             ],
         },
     },

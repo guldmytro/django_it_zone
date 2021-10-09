@@ -19,37 +19,36 @@
         <div class="toper">
             <div class="container">
                 <div class="toper-row">
+                    {% if pages or contacts %}
                     <ul class="toper-menu">
+                        {% for page in pages %}
                         <li class="toper-menu__item">
-                            <a href="#">Оплата и доставка</a>
+                            <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
                         </li>
+                        {% endfor %}
+                        {% if contacts %}
                         <li class="toper-menu__item">
-                            <a href="#">Партнёры</a>
+                            <a href="{{ contacts.get_absolute_url }}">Контакты</a>
                         </li>
-                        <li class="toper-menu__item">
-                            <a href="#">О компании</a>
-                        </li>
-                        <li class="toper-menu__item">
-                            <a href="#">Блог</a>
-                        </li>
-                        <li class="toper-menu__item">
-                            <a href="#">Контакты</a>
-                        </li>
+                        {% endif %}
                     </ul>
+                    {% endif %}
+                    {% if contacts %}
                     <ul class="toper-contacts">
                         <li class="toper-contacts__item">
-                            <a href="#">
+                            <a href="mailto:{{ contacts.email }}">
                                 <img src="{% static 'img/icon-mail.png' %}" alt="конверт">
-                                <span>info@gmail.com</span>
+                                <span>{{ contacts.email }}</span>
                             </a>
                         </li>
                         <li class="toper-contacts__item">
-                            <a href="#">
+                            <a href="{{ phone_link }}">
                                 <img src="{% static 'img/icon-phone.png' %}" alt="телефон">
-                                <span>+7 (495) 748-07-77</span>
+                                <span>{{ contacts.phone_1 }}</span>
                             </a>
                         </li>
                     </ul>
+                    {% endif %}
                 </div>
                 <!-- /.toper-row -->
             </div>
@@ -168,37 +167,36 @@
 
             <div class="mobile-menu-wrapper">
                 <div class="container">
+                    {% if pages or contacts %}
                     <ul class="mobile-menu">
+                        {% for page in pages %}
                         <li class="mobile-menu__item">
-                            <a href="#">Оплата и доставка</a>
+                            <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
                         </li>
+                        {% endfor %}
+                        {% if contacts %}
                         <li class="mobile-menu__item">
-                            <a href="#">Партнёры</a>
+                            <a href="{{ contacts.get_absolute_url }}">Контакты</a>
                         </li>
-                        <li class="mobile-menu__item">
-                            <a href="#">О компании</a>
-                        </li>
-                        <li class="mobile-menu__item">
-                            <a href="#">Блог</a>
-                        </li>
-                        <li class="mobile-menu__item">
-                            <a href="#">Контакты</a>
-                        </li>
+                        {% endif %}
                     </ul>
+                    {% endif %}
+                    {% if contacts %}
                     <ul class="mobile-contacts">
                         <li class="mobile-contacts__item">
-                            <a href="#">
+                            <a href="mailto:{{ contacts.email }}">
                                 <img src="{% static 'img/icon-mail.png' %}" alt="конверт">
-                                <span>info@gmail.com</span>
+                                <span>{{ contacts.email }}</span>
                             </a>
                         </li>
                         <li class="mobile-contacts__item">
-                            <a href="#">
+                            <a href="{{ phone_link }}">
                                 <img src="{% static 'img/icon-phone.png' %}" alt="телефон">
-                                <span>+7 (495) 748-07-77</span>
+                                <span>{{ contacts.phone_1 }}</span>
                             </a>
                         </li>
                     </ul>
+                    {% endif %}
                 </div>
             </div>
             <!-- /.mobile-menu-wrapper -->
@@ -224,35 +222,34 @@
                 </div>
 
                 <div class="footer-middle">
+                    {% if pages or contacts %}
                     <ul class="footer-menu">
+                        {% for page in pages %}
                         <li class="footer-menu__item">
-                            <a href="#">Оплата и доставка</a>
+                            <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
                         </li>
+                        {% endfor %}
+                        {% if contacts %}
                         <li class="footer-menu__item">
-                            <a href="#">Партнёры</a>
+                            <a href="{{ contacts.get_absolute_url }}">Контакты</a>
                         </li>
-                        <li class="footer-menu__item">
-                            <a href="#">О компании</a>
-                        </li>
-                        <li class="footer-menu__item">
-                            <a href="#">Блог</a>
-                        </li>
-                        <li class="footer-menu__item">
-                            <a href="#">Контакты</a>
-                        </li>
+                        {% endif %}
                     </ul>
+                    {% endif %}
+                    {% if contacts %}
                     <ul class="footer-socials">
                         <li class="footer_socials__item">
-                            <a href="#" aria-label="перейти во фейсбук">
+                            <a href="{{ contacts.facebook }}" target="_blank" aria-label="перейти во фейсбук">
                                 <img src="{% static 'img/icon-facebook.png' %}" alt="фейсбук">
                             </a>
                         </li>
                         <li class="footer_socials__item">
-                            <a href="#" aria-label="перейти в инстаграм">
+                            <a href="{{ contacts.instagram }}" target="_blank" aria-label="перейти в инстаграм">
                                 <img src="{% static 'img/icon-instagram.png' %}" alt="инстаграм">
                             </a>
                         </li>
                     </ul>
+                    {% endif %}
                 </div>
                 <form class="footer-subscribe">
                     <h3 class="footer-subscribe__title">
