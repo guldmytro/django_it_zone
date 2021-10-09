@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, SHIPPING_CHOICES, CLIENT_TYPES
+from .models import Order, SHIPPING_CHOICES, CLIENT_TYPES, PAYMENT_CHOICES
 
 
 class OrderCreateForm(forms.ModelForm):
@@ -29,6 +29,9 @@ class OrderCreateForm(forms.ModelForm):
     shipping = forms.ChoiceField(label='', widget=forms.RadioSelect, choices=SHIPPING_CHOICES,
                                  initial='Самовывоз со склада в Москве')
 
+    payment = forms.ChoiceField(label='', widget=forms.RadioSelect, choices=PAYMENT_CHOICES,
+                                initial='online')
+
     class Meta:
         model = Order
-        fields = ['full_name', 'phone', 'email', 'shipping', 'address', 'comment', 'client_type']
+        fields = ['full_name', 'phone', 'email', 'shipping', 'address', 'comment', 'client_type', 'payment']

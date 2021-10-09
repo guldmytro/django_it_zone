@@ -67,38 +67,27 @@
                 </label>
                 {% endfor %}
             </div>
-            <!-- /.checkout-delivery -->
 
-<!--            <div class="checkout-section checkout-payment">-->
-<!--                <h2 class="checkout__title">-->
-<!--                    Способ оплаты-->
-<!--                </h2>-->
-<!--                <label class="checkout-payment__label payment-item">-->
-<!--                    <input type="radio" name="payment" value="Вариант 1">-->
-<!--                    <span class="radio__custom"></span>-->
-<!--                    <h3 class="payment-item__title">Вариант 1</h3>-->
-<!--                    <p class="payment-item__description">-->
-<!--                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo ut nesciunt, dicta quod doloremque alias!-->
-<!--                    </p>-->
-<!--                </label>-->
-<!--                <label class="checkout-payment__label payment-item">-->
-<!--                    <input type="radio" name="payment" value="Вариант 2">-->
-<!--                    <span class="radio__custom"></span>-->
-<!--                    <h3 class="payment-item__title">Вариант 2</h3>-->
-<!--                    <p class="payment-item__description">-->
-<!--                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo ut nesciunt, dicta quod doloremque alias!-->
-<!--                    </p>-->
-<!--                </label>-->
-<!--                <label class="checkout-payment__label payment-item">-->
-<!--                    <input type="radio" name="payment" value="Вариант 3">-->
-<!--                    <span class="radio__custom"></span>-->
-<!--                    <h3 class="payment-item__title">Вариант 3</h3>-->
-<!--                    <p class="payment-item__description">-->
-<!--                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo ut nesciunt, dicta quod doloremque alias!-->
-<!--                    </p>-->
-<!--                </label>-->
-<!--            </div>-->
-            <!-- /.checkout-payment -->
+            <div class="checkout-section checkout-payment">
+                <h2 class="checkout__title">
+                    Способ оплаты
+                </h2>
+                {% for value, label in checkout_form.fields.payment.choices %}
+                <label class="checkout-payment__label payment-item">
+                    <input type="radio" name="{{ checkout_form.payment.name }}" value="{{ value }}"
+                    {% if checkout_form.payment.value == value %}checked{% endif %}>
+                    <span class="radio__custom"></span>
+                    <h3 class="payment-item__title">{{ label }}</h3>
+                    <p class="payment-item__description">
+                        {% if value == 'online' %}
+                        Вы можете совершить оплату онлайн любой картой Visa или MasterCard
+                        {% else %}
+                            Платите при получении товара
+                        {% endif %}
+                    </p>
+                </label>
+                {% endfor %}
+            </div>
 
             <div class="checkout-section checkout-comment">
                 <h2 class="checkout__title">

@@ -20,7 +20,6 @@
             {% for post in posts %}
                 {% include 'blog/archive-post.html' %}
             {% endfor %}
-
         </ul>
         {% if posts.paginator.num_pages > 1 %}
             {% include 'blog/pagination.html' with page=posts %}

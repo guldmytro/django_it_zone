@@ -9,10 +9,27 @@ from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q
 from reviews.forms import ReviewForm
 from random import shuffle
+from blog.models import Article
+from config.models import Config
 
 
 def index(request):
-    return render(request, 'catalog/index.html', {})
+    articles = Article.published.all()[:12]
+    top_products = Product.objects.all().order_by('-sales')[:4]
+    exclude_list = list(item.id for item in top_products)
+    new_products = Product.objects.exclude(pk__in=exclude_list)[:4]
+    new_products_r = list(new_products)
+    shuffle(new_products_r)
+    config = Config.objects.first()
+    banner_products = list(config.main_product.all())
+    shuffle(banner_products)
+    context = {
+        'top_products': top_products,
+        'articles': articles,
+        'new_products': new_products_r,
+        'banner_product': banner_products[0]
+    }
+    return render(request, 'catalog/index.html', context)
 
 
 def product_detail(request, slug):
@@ -76,7 +93,7 @@ def products_by_cat(request, slug):
     for children_category in children_categories:
         q |= Q(category=children_category)
 
-    products_list = Product.objects.filter(q)
+    products_list = Product.objects.filter(q).order_by('-sales')
 
     form = SearchForm()
     query = None

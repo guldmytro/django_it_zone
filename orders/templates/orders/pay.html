@@ -1,0 +1,70 @@
+{% extends 'layout/base.html' %}
+{% block title %}Оплата заказа #{{ order.pk }}{% endblock %}
+
+{% block payment %}
+    <script src="https://3dsec.sberbank.ru/payment/docsite/assets/js/ipay.js"></script>
+    <script>
+    var ipay = new IPAY({api_token: 'YRF3C5RFICWISEWFR6GJ'});
+    </script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        function showSuccessfulPurchase(order) {
+            const csrftoken = getCookie('csrftoken');
+            const order_id = {{ order.pk }}
+            const url = '{% url 'orders:complete' %}';
+            fetch(url, {
+                'method': 'POST',
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({'order_id': order_id})
+            });
+            $('.payment-details').remove();
+        }
+        function showFailurefulPurchase(order) {
+            $('.payment-details').remove();
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+<section class="payment-details">
+    <div class="container">
+
+    <div class="section-header">
+        <h1 class="section-header__title">Оплата заказа #{{ order.pk }}</h1>
+    </div>
+        <h2>Ваш заказ:</h2>
+        <ul>
+            {% for item in order_items %}
+            <li>{{ item.product.name }} - <strong>{{ item.price | floatformat:"0" }} руб. ({{ item.quantity }} шт.)</strong></li>
+            {% endfor %}
+        </ul>
+        <p>Всего к оплате: {{ total_amount }} руб.</p>
+        <a onclick="ipayCheckout({
+            amount:{{ total_amount }},
+            currency:'RUB',
+            order_number:{{ order.pk }},
+            description: 'Оплата заказа номер {{ order.pk }}'},
+            function(order) { showSuccessfulPurchase(order) },
+            function(order) { showFailurefulPurchase(order) })"
+            class="btn btn-xs btn-outline btn-primary">Оплатить
+        </a>
+    </div>
+</section>
+{% endblock %}

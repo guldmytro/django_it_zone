@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% load thumbnail %}
 {% load static %}
 
 {% block content %}
@@ -12,16 +13,22 @@
                 Смотреть Каталог
             </a>
         </div>
-        <a href="#" class="main-banner__product main-product">
-            <div class="thumb">
-                <img src="{% static 'img/product-main.png' %}" alt="монитор">
-            </div>
+        {% if banner_product %}
+        {% with product=banner_product %}
+        <a href="{{ product.get_absolute_url }}" class="main-banner__product main-product">
+            {% if product.images.first %}
+                <div class="thumb">
+                    <img src="{{ product.images.first.file | thumbnail_url:'medium' }}" alt="{{ product.images.first.alt  }}">
+                 </div>
+            {% endif %}
             <div class="main-product__header">
                 <h2 class="main-product__title">
-                    Монитор Acer B277KBMIIPPRZX 27"
+                    {{ banner_product.name }}
                 </h2>
             </div>
         </a>
+        {% endwith %}
+        {% endif %}
         <ul class="main-banner__brands main-brands">
             <li class="main-brands__item brands-item">
                 <a href="#" class="brands-item__link">
@@ -63,494 +70,85 @@
 </main>
 <!-- /.main-banner -->
 
-<section class="top-products">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-header__title">Популярные товары</h2>
+    {% if top_products %}
+    <section class="top-products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-header__title">Популярные товары</h2>
+            </div>
+            <ul class="top-products__slider products-slider">
+                {% for product in top_products %}
+                    {% include 'catalog/archive-product.html' %}
+                {% endfor %}
+            </ul>
         </div>
-        <ul class="top-products__slider products-slider">
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-        </ul>
-    </div>
-</section>
-<!-- /.top-products -->
+    </section>
+    {% endif %}
 
-<section class="latest-products">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-header__title">Новинки</h2>
+    {% if new_products %}
+    <section class="latest-products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-header__title">Новинки</h2>
+            </div>
+            <ul class="latest-products__slider products-slider">
+                {% for product in new_products %}
+                    {% include 'catalog/archive-product.html' %}
+                {% endfor %}
+            </ul>
         </div>
-        <ul class="latest-products__slider products-slider">
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                <div class="archive-product__inner">
-                    <a href="#" class="thumb">
-                        <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                    </a>
-                    <h3 class="archive-product__title">
-                        <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                    </h3>
-                    <p class="archive-product__price">
-                        <span class="current">
-                            <strong>4 397 </strong> <span class="currency">руб.</span>
-                        </span>
-                    </p>
-                    <div class="archive-product__controls">
-                        <button class="btn_add-to-wishlist">
-                            <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                        </button>
-                        <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.archive-product -->
-            <li class="archive-product">
-                        <div class="archive-product__inner">
-                            <a href="#" class="thumb">
-                                <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                            </a>
-                            <h3 class="archive-product__title">
-                                <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                            </h3>
-                            <p class="archive-product__price">
-                                <span class="current">
-                                    <strong>4 397 </strong> <span class="currency">руб.</span>
-                                </span>
-                            </p>
-                            <div class="archive-product__controls">
-                                <button class="btn_add-to-wishlist">
-                                    <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                                </button>
-                                <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- /.archive-product -->
-                    <li class="archive-product">
-                        <div class="archive-product__inner">
-                            <a href="#" class="thumb">
-                                <img src="{% static 'img/product-thumb.png' %}" alt="продукт">
-                            </a>
-                            <h3 class="archive-product__title">
-                                <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                            </h3>
-                            <p class="archive-product__price">
-                                <span class="current">
-                                    <strong>4 397 </strong> <span class="currency">руб.</span>
-                                </span>
-                            </p>
-                            <div class="archive-product__controls">
-                                <button class="btn_add-to-wishlist">
-                                    <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                                </button>
-                                <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- /.archive-product -->
-                </ul>
-            </div>
-        </section>
-        <!-- /.latest-products -->
+    </section>
+    {% endif %}
 
-        <section class="news">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-header__title">Новости</h2>
-                </div>
-                <ul class="news-slider">
-                    <li class="news-slider__item new-item">
-                        <div class="new-item__inner">
-                            <a href="#" class="thumb">
-                                <img src="{% static 'img/post-thumb.png' %}" alt="докемент">
-                            </a>
-                            <div class="new-item__group">
-                                <time class="new-item__date">
-                                    18.06.2020
-                                </time>
-                                <h3 class="new-item__title">
-                                    <a href="#">Название статьи</a>
-                                </h3>
-                                <p class="new-item__excerpt">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="news-slider__item new-item">
-                        <div class="new-item__inner">
-                            <a href="#" class="thumb">
-                                <img src="{% static 'img/post-thumb.png' %}" alt="докемент">
-                            </a>
-                            <div class="new-item__group">
-                                <time class="new-item__date">
-                                    18.06.2020
-                                </time>
-                                <h3 class="new-item__title">
-                                    <a href="#">Название статьи</a>
-                                </h3>
-                                <p class="new-item__excerpt">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="news-slider__item new-item">
-                        <div class="new-item__inner">
-                            <a href="#" class="thumb">
-                                <img src="{% static 'img/post-thumb.png' %}" alt="докемент">
-                            </a>
-                            <div class="new-item__group">
-                                <time class="new-item__date">
-                                    18.06.2020
-                                </time>
-                                <h3 class="new-item__title">
-                                    <a href="#">Название статьи</a>
-                                </h3>
-                                <p class="new-item__excerpt">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="news-slider__item new-item">
-                        <div class="new-item__inner">
-                            <a href="#" class="thumb">
-                                <img src="{% static 'img/post-thumb.png' %}" alt="докемент">
-                            </a>
-                            <div class="new-item__group">
-                                <time class="new-item__date">
-                                    18.06.2020
-                                </time>
-                                <h3 class="new-item__title">
-                                    <a href="#">Название статьи</a>
-                                </h3>
-                                <p class="new-item__excerpt">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="news-slider__item new-item">
-                        <div class="new-item__inner">
-                            <a href="#" class="thumb">
-                                <img src="{% static 'img/post-thumb.png' %}" alt="докемент">
-                            </a>
-                            <div class="new-item__group">
-                                <time class="new-item__date">
-                                    18.06.2020
-                                </time>
-                                <h3 class="new-item__title">
-                                    <a href="#">Название статьи</a>
-                                </h3>
-                                <p class="new-item__excerpt">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+    {% if articles %}
+    <section class="news">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-header__title">Новости</h2>
             </div>
-        </section>
-        <!-- /.news -->
+            <ul class="news-slider">
+                {% for post in articles %}
+                    {% include 'blog/archive-post.html' %}
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    {% endif %}
 
-        <section class="advantages">
-            <div class="container">
-                <div class="section-header section-header_screenreader">
-                    <h2 class="section-header__title">Преимущества</h2>
-                </div>
-                <ol class="advantages-group">
-                    <li class="advantages-group__item advantages-item">
-                        <div class="thumb">
-                            <img src="{% static 'img/icon-guarantee.png' %}" alt="медаль">
-                        </div>
-                        <h3 class="advantages-item__title">
-                            Гарантия <strong>3 года</strong>
-                            на все серверы
-                        </h3>
-                    </li>
-                    <li class="advantages-group__item advantages-item">
-                        <div class="thumb">
-                            <img src="{% static 'img/icon-delivery.png' %}" alt="грузовик">
-                        </div>
-                        <h3 class="advantages-item__title">
-                            <strong>Бесплатная</strong>
-                            доставка по РФ
-                        </h3>
-                    </li>
-                    <li class="advantages-group__item advantages-item">
-                        <div class="thumb">
-                            <img src="{% static 'img/icon-checked.png' %}" alt="галочка">
-                        </div>
-                        <h3 class="advantages-item__title">
-                            Все товары
-                            <strong>в наличии</strong>
-                        </h3>
-                    </li>
-                </ol>
+    <section class="advantages">
+        <div class="container">
+            <div class="section-header section-header_screenreader">
+                <h2 class="section-header__title">Преимущества</h2>
             </div>
-        </section>
-        <!-- /.advantages -->
+            <ol class="advantages-group">
+                <li class="advantages-group__item advantages-item">
+                    <div class="thumb">
+                        <img src="{% static 'img/icon-guarantee.png' %}" alt="медаль">
+                    </div>
+                    <h3 class="advantages-item__title">
+                        Гарантия <strong>3 года</strong>
+                        на все серверы
+                    </h3>
+                </li>
+                <li class="advantages-group__item advantages-item">
+                    <div class="thumb">
+                        <img src="{% static 'img/icon-delivery.png' %}" alt="грузовик">
+                    </div>
+                    <h3 class="advantages-item__title">
+                        <strong>Бесплатная</strong>
+                        доставка по РФ
+                    </h3>
+                </li>
+                <li class="advantages-group__item advantages-item">
+                    <div class="thumb">
+                        <img src="{% static 'img/icon-checked.png' %}" alt="галочка">
+                    </div>
+                    <h3 class="advantages-item__title">
+                        Все товары
+                        <strong>в наличии</strong>
+                    </h3>
+                </li>
+            </ol>
+        </div>
+    </section>
 {% endblock %}

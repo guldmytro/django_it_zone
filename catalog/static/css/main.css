@@ -3168,7 +3168,7 @@ main.catalog.loading .catalog__aside:hover {
 .delivery-item__time {
     margin-top: 1em;
 }
-.delivery-item .radio__custom {
+.radio__custom {
     position: absolute;
     top: 2rem;
     right: 2rem;
@@ -3177,7 +3177,7 @@ main.catalog.loading .catalog__aside:hover {
     border: 2px solid #85a4d4;
     border-radius: 50%;
 }
-.delivery-item .radio__custom::before {
+.radio__custom::before {
     position: absolute;
     content: "";
     display: block;
@@ -3190,7 +3190,7 @@ main.catalog.loading .catalog__aside:hover {
     transform: translate(-50%, -50%);
     opacity: 0;
 }
-.delivery-item :checked + .radio__custom::before {
+:checked + .radio__custom::before {
     opacity: 1;
 }
 .checkout-payment {
@@ -3200,6 +3200,9 @@ main.catalog.loading .catalog__aside:hover {
 }
 .checkout-payment .checkout__title {
     grid-column: 1/-1;
+}
+.payment-item {
+    position: relative;
 }
 .checkout-payment__label {
     border-radius: 1rem;

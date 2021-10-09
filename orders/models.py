@@ -11,6 +11,11 @@ SHIPPING_CHOICES = (
     ('Бесплатная доставка', 'Бесплатная доставка'),
 )
 
+PAYMENT_CHOICES = (
+    ('online', 'Оплата онлайн'),
+    ('payment_upon', 'Оплата при получении')
+)
+
 
 class Order(models.Model):
     full_name = models.CharField(max_length=200, verbose_name='ФИО')
@@ -23,6 +28,7 @@ class Order(models.Model):
     paid = models.BooleanField(default=False, verbose_name='Оплачено')
     comment = models.TextField(verbose_name='Комментарий к заказу', blank=True, null=True)
     shipping = models.CharField(verbose_name='Доставка', choices=SHIPPING_CHOICES, max_length=200)
+    payment = models.CharField(verbose_name='Способ оплаты', choices=PAYMENT_CHOICES, max_length=100)
 
     class Meta:
         ordering = ('-created',)

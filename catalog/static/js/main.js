@@ -358,3 +358,9 @@ $('.feadback-form').on('submit', function(e) {
     });
 });
 
+$('.main-banner__link').on('click', function(e) {
+    e.preventDefault();
+    $('.header-menu_btn').click();
+});
+
+
