@@ -22,6 +22,7 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
     path('checkout/', include('orders.urls', namespace='orders')),
     path('wishlist/', include('wishlist.urls', namespace='wishlist')),
+    path('blog/', include('blog.urls', namespace='blog')),
     path('admin/', admin.site.urls),
     path('', include('catalog.urls', namespace='catalog')),
 

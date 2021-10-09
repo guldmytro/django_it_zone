@@ -106,7 +106,7 @@
 
             <div class="product__tabs product-tabs">
                 <div class="product-tabs__group tabs-header">
-                    {% if product.content %}
+                    {% if product.content.html %}
                         <button type="button" class="tabs-header__item" data-id="tab-1">Описание</button>
                     {% endif %}
                     {% if product_attributes %}
@@ -177,168 +177,18 @@
     </section>
     {% endif %}
 
+    {% if accessories|length %}
     <section class="latest-products">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-header__title">Аксесуары</h2>
             </div>
             <ul class="latest-products__slider products-slider">
-                <li class="archive-product">
-                    <div class="archive-product__inner">
-                        <a href="#" class="thumb">
-                            <img src="./img/product-thumb.png" alt="продукт">
-                        </a>
-                        <h3 class="archive-product__title">
-                            <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                        </h3>
-                        <p class="archive-product__price">
-                            <span class="current">
-                                <strong>4 397 </strong> <span class="currency">руб.</span>
-                            </span>
-                        </p>
-                        <div class="archive-product__controls">
-                            <button class="btn_add-to-wishlist">
-                                <img src="./img/icon-heart.png" alt="сердце">
-                            </button>
-                            <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- /.archive-product -->
-                <li class="archive-product">
-                    <div class="archive-product__inner">
-                        <a href="#" class="thumb">
-                            <img src="./img/product-thumb.png" alt="продукт">
-                        </a>
-                        <h3 class="archive-product__title">
-                            <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                        </h3>
-                        <p class="archive-product__price">
-                            <span class="current">
-                                <strong>4 397 </strong> <span class="currency">руб.</span>
-                            </span>
-                        </p>
-                        <div class="archive-product__controls">
-                            <button class="btn_add-to-wishlist">
-                                <img src="./img/icon-heart.png" alt="сердце">
-                            </button>
-                            <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- /.archive-product -->
-                <li class="archive-product">
-                    <div class="archive-product__inner">
-                        <a href="#" class="thumb">
-                            <img src="./img/product-thumb.png" alt="продукт">
-                        </a>
-                        <h3 class="archive-product__title">
-                            <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                        </h3>
-                        <p class="archive-product__price">
-                            <span class="current">
-                                <strong>4 397 </strong> <span class="currency">руб.</span>
-                            </span>
-                        </p>
-                        <div class="archive-product__controls">
-                            <button class="btn_add-to-wishlist">
-                                <img src="./img/icon-heart.png" alt="сердце">
-                            </button>
-                            <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- /.archive-product -->
-                <li class="archive-product">
-                    <div class="archive-product__inner">
-                        <a href="#" class="thumb">
-                            <img src="./img/product-thumb.png" alt="продукт">
-                        </a>
-                        <h3 class="archive-product__title">
-                            <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                        </h3>
-                        <p class="archive-product__price">
-                            <span class="current">
-                                <strong>4 397 </strong> <span class="currency">руб.</span>
-                            </span>
-                        </p>
-                        <div class="archive-product__controls">
-                            <button class="btn_add-to-wishlist">
-                                <img src="./img/icon-heart.png" alt="сердце">
-                            </button>
-                            <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- /.archive-product -->
-                <li class="archive-product">
-                    <div class="archive-product__inner">
-                        <a href="#" class="thumb">
-                            <img src="./img/product-thumb.png" alt="продукт">
-                        </a>
-                        <h3 class="archive-product__title">
-                            <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                        </h3>
-                        <p class="archive-product__price">
-                            <span class="current">
-                                <strong>4 397 </strong> <span class="currency">руб.</span>
-                            </span>
-                        </p>
-                        <div class="archive-product__controls">
-                            <button class="btn_add-to-wishlist">
-                                <img src="./img/icon-heart.png" alt="сердце">
-                            </button>
-                            <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- /.archive-product -->
-                <li class="archive-product">
-                    <div class="archive-product__inner">
-                        <a href="#" class="thumb">
-                            <img src="./img/product-thumb.png" alt="продукт">
-                        </a>
-                        <h3 class="archive-product__title">
-                            <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                        </h3>
-                        <p class="archive-product__price">
-                            <span class="current">
-                                <strong>4 397 </strong> <span class="currency">руб.</span>
-                            </span>
-                        </p>
-                        <div class="archive-product__controls">
-                            <button class="btn_add-to-wishlist">
-                                <img src="./img/icon-heart.png" alt="сердце">
-                            </button>
-                            <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- /.archive-product -->
-                <li class="archive-product">
-                    <div class="archive-product__inner">
-                        <a href="#" class="thumb">
-                            <img src="./img/product-thumb.png" alt="продукт">
-                        </a>
-                        <h3 class="archive-product__title">
-                            <a href="#">Microsoft Windows 10 Home 32/64b Многоязычная ESD</a>
-                        </h3>
-                        <p class="archive-product__price">
-                            <span class="current">
-                                <strong>4 397 </strong> <span class="currency">руб.</span>
-                            </span>
-                        </p>
-                        <div class="archive-product__controls">
-                            <button class="btn_add-to-wishlist">
-                                <img src="./img/icon-heart.png" alt="сердце">
-                            </button>
-                            <a href="#" class="btn btn__add-to-cart">В корзину</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- /.archive-product -->
+                {% for product in accessories %}
+                    {% include 'catalog/archive-product.html' %}
+                {% endfor %}
             </ul>
         </div>
     </section>
-    <!-- /.latest-products -->
+    {% endif %}
 {% endblock %}

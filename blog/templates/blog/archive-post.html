@@ -1,0 +1,24 @@
+{% load thumbnail %}
+
+<li class="news-slider__item new-item">
+      <div class="new-item__inner">
+          <a href="{{ post.get_absolute_url }}" class="thumb">
+          {% if post.thumbnail_1 %}
+              <img src="{{ post.thumbnail_1 | thumbnail_url:'medium' }}">
+          {% elif post.thumbnail_2 %}
+              <img src="{{ post.thumbnail_2 | thumbnail_url:'medium' }}">
+          {% endif %}
+          </a>
+          <div class="new-item__group">
+              <time class="new-item__date">
+                  {{ post.publish|date:"d.m.Y" }}
+              </time>
+              <h3 class="new-item__title">
+                  <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+              </h3>
+              <p class="new-item__excerpt">
+                  {{ post.excerpt }}
+              </p>
+          </div>
+      </div>
+</li>

@@ -1,0 +1,50 @@
+{% extends 'layout/base.html' %}
+{% load thumbnail %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<section class="article">
+    <div class="container">
+        <div class="section-header">
+            <time class="section-header__date">{{ post.publish|date:"d.m.Y" }}</time>
+            <h1 class="section-header__title">{{ post.title }}</h1>
+        </div>
+        <div class="article-row">
+            <div class="article-content page-content">
+                {{ post.content.html | safe }}
+            </div>
+            <div class="article__thumbs">
+                {% if post.thumbnail_1 %}
+                    <img src="{{ post.thumbnail_1 | thumbnail_url:'medium' }}">
+                {% endif %}
+
+                {% if post.thumbnail_2 %}
+                    <img src="{{ post.thumbnail_2 | thumbnail_url:'medium' }}">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% if related_posts|length %}
+<section class="news">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-header__title">Новости</h2>
+        </div>
+        <ul class="news-slider">
+            {% for post in related_posts %}
+                {% include 'blog/archive-post.html' %}
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

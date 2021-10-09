@@ -85,13 +85,27 @@
                             </button>
                         </form>
                         <div class="header-controls__links control-links">
-                            <a class="control-links__item btn_add-to-wishlist" href="{% url 'wishlist:wishlist_detail' %}" aria-label="избранное">
+                            <a class="control-links__item btn_add-to-wishlist" href="{% url 'wishlist:wishlist_detail' %}"
+                               aria-label="избранное">
                                 <img src="{% static 'img/icon-heart.png' %}" alt="сердце">
-                                <span class="cnt" data-cnt="{{ wishlist|length }}">{{ wishlist|length }}</span>
+                                <span class="cnt" data-cnt="{{ wishlist|length }}">
+                                    {% if wishlist|length < 10 %}
+                                    {{ wishlist|length }}
+                                    {% else %}
+                                    9+
+                                    {% endif %}
+                                </span>
                             </a>
-                            <a class="control-links__item btn_cart-link" href="{% url 'cart:cart_detail' %}" aria-label="корзина">
+                            <a class="control-links__item btn_cart-link" href="{% url 'cart:cart_detail' %}"
+                               aria-label="корзина">
                                 <img src="{% static 'img/icon-cart.png' %}" alt="корзина">
-                                <span class="cnt" data-cnt="{{ cart_len }}">{{ cart_len }}</span>
+                                <span class="cnt" data-cnt="{{ cart_len }}">
+                                    {% if cart_len < 10 %}
+                                    {{ cart_len }}
+                                    {% else %}
+                                    9+
+                                    {% endif %}
+                                </span>
                             </a>
                         </div>
                     </div>

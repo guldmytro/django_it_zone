@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<section class="news-archive">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-header__title">Новости
+                {% if page > 1 %}
+                - <em>{{ page }} страница</em>
+                {% endif %}
+            </h2>
+        </div>
+        <ul class="news-group">
+            {% for post in posts %}
+                {% include 'blog/archive-post.html' %}
+            {% endfor %}
+
+        </ul>
+        {% if posts.paginator.num_pages > 1 %}
+            {% include 'blog/pagination.html' with page=posts %}
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

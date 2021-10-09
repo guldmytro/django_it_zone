@@ -1,6 +1,6 @@
 from .models import Kit, Attribute
 from django.db.models import Count, Q, Min, Max
-from django.template.defaultfilters import slugify
+from django.utils.text import slugify
 
 
 def get_filters(request, category, children_categories):
@@ -17,7 +17,7 @@ def get_filters(request, category, children_categories):
         }
         for kit in Kit.objects.filter(attribute=attribute).annotate(cnt=Count('product',
                                                                               filter=q)):
-            slug = slugify(kit.value)
+            slug = slugify(kit.value, allow_unicode=True)
             found = False
             for filter in attribute_dict['values']:
                 if filter['slug'] == slug:

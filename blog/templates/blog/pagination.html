@@ -1,0 +1,21 @@
+<div class="pagination">
+    <ul class="page-links">
+        {% if page.has_previous %}
+        <li class="page-links__item">
+            <a class="pagi-prev" href="?page={{ page.previous_page_number }}" aria-label="Предыдущая страница">
+                ←
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-links__item">
+            <span class="current">{{ page.number }} из {{ page.paginator.num_pages }}</span>
+        </li>
+        {% if page.has_next %}
+        <li class="page-links__item">
+            <a class="pagi-next" href="?page={{ page.next_page_number }}" aria-label="Следующая страница">
+                →
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</div>

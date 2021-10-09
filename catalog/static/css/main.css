@@ -1007,6 +1007,11 @@ section {
     margin-top: 0;
     margin-bottom: 1.2em;
 }
+.section-header__title em {
+    font-style: normal;
+    font-weight: 400;
+    opacity: 0.5;
+}
 .section-header_flex {
     display: flex;
     flex-wrap: nowrap;
@@ -3570,6 +3575,13 @@ main.catalog.loading .catalog__aside:hover {
 }
 .empty-wishlist {
     margin-top: 3rem;
+}
+.new-item__excerpt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 @media screen and (max-width: 1399px) {
     html {

@@ -32,11 +32,8 @@ class Wishlist:
     def __iter__(self):
         product_ids = self.wishlist.keys()
         products = Product.objects.filter(id__in=product_ids)
-        wishlist = self.wishlist.copy()
         for product in products:
-            wishlist[str(product.id)]['product'] = product
-        for item in wishlist.values():
-            yield item
+            yield product
 
     def __len__(self):
         return len(self.wishlist)

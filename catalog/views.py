@@ -55,12 +55,16 @@ def product_detail(request, slug):
         })
     similar_products = list(Product.objects.filter(category=category).exclude(id=product.id))
     shuffle(similar_products)
+    accessories_cats = product.accessories.all()
+    accessories = list(Product.objects.filter(category__in=accessories_cats))
+    shuffle(accessories)
     context = {
         'product': product,
         'product_attributes': product_attributes,
         'breadcrumbs': breadcrumbs,
         'review_form': review_form,
-        'similar_products': similar_products[:24]
+        'similar_products': similar_products[:24],
+        'accessories': accessories
     }
     return render(request, 'catalog/single.html', context)
 

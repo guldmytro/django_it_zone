@@ -14,7 +14,7 @@
                 {% if wishlist|length %}
                 <ul class="wishlist-group">
                     {% for item in wishlist %}
-                    {% include 'catalog/archive-product.html' with product=item.product %}
+                    {% include 'catalog/archive-product.html' with product=item %}
                     {% endfor %}
                 </ul>
                 {% else %}
