@@ -311,3 +311,29 @@ $('body').on('submit', '.add-to-wishlist-form', function(e) {
         }
     });
 });
+
+$('.form-product-review p').each(function() {
+    if ($(this).find('#id_product').length) {
+        $(this).hide();
+    }
+});
+
+$('.form-product-review').on('submit', function(e) {
+    e.preventDefault();
+    const $this = $(this);
+    const action = $this.attr('action');
+    const data = $this.serialize();
+    const btn = $this.find('[type="submit"]');
+    btn.prop('disabled', true).addClass('loading').text('Отправка...');
+    $.ajax({
+        url: action,
+        method: 'post',
+        data: data,
+        success: function(response) {
+            btn.removeClass('loading').text('Отправлено!');
+            $this.find('textarea').val('');
+            $('.reviews-cnt').text(Number($('.reviews-cnt').text() + 1));
+            $('.reviews-list').prepend(response);
+        }
+    });
+});

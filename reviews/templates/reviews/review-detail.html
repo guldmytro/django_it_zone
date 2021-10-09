@@ -1,0 +1,9 @@
+<li class="review-list__item">
+    <div class="review-header">
+        <p class="review__name">{{ review.name }} <time>{{ review.created }}</time></p>
+        <p class="review__rating">Оценка: <span class="current-rate" data-rate="{{ review.rating }}">{{ review.rating }}</span><span class="max-rate"> из 5</span></p>
+    </div>
+    <div class="review__content">
+        {{ review.text|linebreaks }}
+    </div>
+</li>

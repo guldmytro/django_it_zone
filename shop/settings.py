@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'reviews.apps.ReviewsConfig',
     'wishlist.apps.WishlistConfig',
     'easy_thumbnails',
     'django_quill'

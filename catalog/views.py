@@ -7,6 +7,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SearchForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Q
+from reviews.forms import ReviewForm
+from random import shuffle
 
 
 def index(request):
@@ -15,6 +17,15 @@ def index(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    review_form = ReviewForm(initial={'product': product,
+                                      'rating': 5})
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save()
+            if request.is_ajax:
+                return render(request, 'reviews/review-detail.html', {'review': review})
+
     category = product.category
     parent_category = category.parent_category
     product_attributes = []
@@ -42,10 +53,14 @@ def product_detail(request, slug):
             'name': attribute.name,
             'value': kit.value
         })
+    similar_products = list(Product.objects.filter(category=category).exclude(id=product.id))
+    shuffle(similar_products)
     context = {
         'product': product,
         'product_attributes': product_attributes,
         'breadcrumbs': breadcrumbs,
+        'review_form': review_form,
+        'similar_products': similar_products[:24]
     }
     return render(request, 'catalog/single.html', context)
 

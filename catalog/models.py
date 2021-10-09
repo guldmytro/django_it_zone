@@ -57,7 +57,9 @@ class Product(models.Model):
     available = models.BooleanField(default=True, verbose_name='в наличии')
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')
-    accessories = models.ManyToManyField('self', blank=True, verbose_name='аксесуары')
+    accessories = models.ManyToManyField(Category, blank=True, verbose_name='аксесуары',
+                                         help_text='Выберете категорию или несколько категорий товаров, \
+                                         в которой находятся аксесуары для товара')
 
     class Meta:
         ordering = ('-created',)

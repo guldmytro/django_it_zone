@@ -11,11 +11,15 @@
 
         <div class="catalog-group_wishlist">
             <div class="catalog__products">
+                {% if wishlist|length %}
                 <ul class="wishlist-group">
                     {% for item in wishlist %}
                     {% include 'catalog/archive-product.html' with product=item.product %}
                     {% endfor %}
                 </ul>
+                {% else %}
+                <p class="empty-wishlist">Ваш список избранного пуст.</p>
+                {% endif %}
             </div>
         </div>
     </div>
