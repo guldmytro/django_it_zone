@@ -26,11 +26,13 @@ def index(request):
     config = Config.objects.first()
     banner_products = list(config.main_product.all())
     shuffle(banner_products)
+    brands = config.brands.all()
     context = {
         'top_products': top_products,
         'articles': articles,
         'new_products': new_products_r,
-        'banner_product': banner_products[0]
+        'banner_product': banner_products[0],
+        'brands': brands
     }
     return render(request, 'catalog/index.html', context)
 

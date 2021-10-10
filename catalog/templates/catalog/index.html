@@ -29,43 +29,17 @@
         </a>
         {% endwith %}
         {% endif %}
+        {% if brands|length %}
         <ul class="main-banner__brands main-brands">
+            {% for image in brands %}
             <li class="main-brands__item brands-item">
-                <a href="#" class="brands-item__link">
-                    <img src="{% static 'img/product-logo.png' %}" alt="майкрософт">
-                </a>
+                <div class="brands-item__link">
+                    <img src="{{ image.file | thumbnail_url:'small' }}" alt="{{ image.alt }}">
+                </div>
             </li>
-            <li class="main-brands__item brands-item">
-                <a href="#" class="brands-item__link">
-                    <img src="{% static 'img/product-logo.png' %}" alt="майкрософт">
-                </a>
-            </li>
-            <li class="main-brands__item brands-item">
-                <a href="#" class="brands-item__link">
-                    <img src="{% static 'img/product-logo.png' %}" alt="майкрософт">
-                </a>
-            </li>
-            <li class="main-brands__item brands-item">
-                <a href="#" class="brands-item__link">
-                    <img src="{% static 'img/product-logo.png' %}" alt="майкрософт">
-                </a>
-            </li>
-            <li class="main-brands__item brands-item">
-                <a href="#" class="brands-item__link">
-                    <img src="{% static 'img/product-logo.png' %}" alt="майкрософт">
-                </a>
-            </li>
-            <li class="main-brands__item brands-item">
-                <a href="#" class="brands-item__link">
-                    <img src="{% static 'img/product-logo.png' %}" alt="майкрософт">
-                </a>
-            </li>
-            <li class="main-brands__item brands-item">
-                <a href="#" class="brands-item__link">
-                    <img src="{% static 'img/product-logo.png' %}" alt="майкрософт">
-                </a>
-            </li>
+            {% endfor %}
         </ul>
+        {% endif %}
     </div>
 </main>
 <!-- /.main-banner -->

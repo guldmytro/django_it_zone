@@ -55,7 +55,7 @@
             <li>{{ item.product.name }} - <strong>{{ item.price | floatformat:"0" }} руб. ({{ item.quantity }} шт.)</strong></li>
             {% endfor %}
         </ul>
-        <p>Всего к оплате: {{ total_amount }} руб.</p>
+        <p class="payment-total">Всего к оплате: {{ total_amount }} руб.</p>
         <a onclick="ipayCheckout({
             amount:{{ total_amount }},
             currency:'RUB',

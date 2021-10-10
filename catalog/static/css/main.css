@@ -1203,6 +1203,7 @@ button.btn_add-to-wishlist:hover img {
     background-color: var(--color-text-invert);
     color: var(--color-accent);
 }
+.payment-details a,
 .btn_submit-review,
 .btn_submit-cart {
     display: inline-flex;
@@ -1220,12 +1221,27 @@ button.btn_add-to-wishlist:hover img {
     font-weight: 800;
     transition: color 0.2s, background 0.2s;
 }
+.payment-details a,
 .btn_submit-review {
     border: 2px solid var(--color-accent-secondary);
     line-height: 4.6rem;
 }
+.payment-details ul {
+    list-style-position: inside;
+    margin-top: 2em;
+}
+.payment-details li + li {
+    margin-top: 1em;
+}
+.payment-details .payment-total {
+    font-weight: 700;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+.payment-details a:hover,
 .btn_submit-review:hover,
 .btn_submit-cart:hover {
+    cursor: pointer;
     background-color: #fff;
     color: var(--color-accent-secondary);
 }

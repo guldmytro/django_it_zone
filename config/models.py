@@ -12,3 +12,18 @@ class Config(models.Model):
     class Meta:
         verbose_name = 'Настройки'
         verbose_name_plural = 'Настройки'
+
+
+class Brand(models.Model):
+    config = models.ForeignKey(Config, on_delete=models.CASCADE, related_name='brands')
+    file = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение')
+    alt = models.CharField(max_length=200, blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
+
+    class Meta:
+        ordering = ('created',)
+        verbose_name = 'Бренд'
+        verbose_name_plural = 'Бренды'
+
+    def __str__(self):
+        return self.file.url

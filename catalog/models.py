@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core import validators
 from django.urls import reverse
 from django_quill.fields import QuillField
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -58,6 +59,7 @@ class Product(models.Model):
     sales = models.PositiveIntegerField(verbose_name='количество продаж', editable=False)
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')
+    changed = models.DateTimeField(verbose_name='Изменено', default=timezone.now)
     accessories = models.ManyToManyField(Category, blank=True, verbose_name='аксесуары',
                                          help_text='Выберете категорию или несколько категорий товаров, \
                                          в которой находятся аксесуары для товара')
