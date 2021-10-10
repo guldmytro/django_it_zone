@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Kit, Attribute, GalleryImage
+from .models import Category, Product, Kit, Attribute, GalleryImage, Delivery
 
 
 @admin.register(Category)
@@ -36,3 +36,9 @@ class ProductAdmin(admin.ModelAdmin):
 class AttributeAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(Delivery)
+class DeliverAdmin(admin.ModelAdmin):
+    list_display = ['title']
+

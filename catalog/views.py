@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Product, Category
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from .models import Product, Category, Delivery
 from .utils import get_filters, get_prices, get_filtered_products, get_filtered_products_p, get_page_from_query, \
     get_full_path_from_query
 import json
@@ -11,6 +12,8 @@ from reviews.forms import ReviewForm
 from random import shuffle
 from blog.models import Article
 from config.models import Config
+from django.core.mail import EmailMessage
+from contacts.models import Contact
 
 
 def index(request):
@@ -33,6 +36,7 @@ def index(request):
 
 
 def product_detail(request, slug):
+    delivery = Delivery.objects.first()
     product = get_object_or_404(Product, slug=slug)
     review_form = ReviewForm(initial={'product': product,
                                       'rating': 5})
@@ -81,7 +85,8 @@ def product_detail(request, slug):
         'breadcrumbs': breadcrumbs,
         'review_form': review_form,
         'similar_products': similar_products[:24],
-        'accessories': accessories
+        'accessories': accessories,
+        'delivery': delivery
     }
     return render(request, 'catalog/single.html', context)
 
@@ -209,5 +214,43 @@ def products_by_cat(request, slug):
             'full_path': full_path
         }
         return render(request, 'catalog/products-list.html', context)
+
+
+def search(request):
+    if 'query' in request.GET:
+        products_list = Product.objects.all()
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            products_list = products_list.annotate(similarity=TrigramSimilarity('name', query))\
+                .filter(similarity__gt=0.045).order_by('-similarity')
+            breadcrumbs = []
+            context = {
+                'products': products_list,
+                'query_string': query,
+                'breadcrumbs': breadcrumbs
+            }
+            return render(request, 'catalog/search.html', context)
+    return redirect('catalog:home')
+
+
+def question(request):
+    page = Contact.objects.first()
+    name = request.POST.get('name')
+    tel = request.POST.get('tel')
+    msg = request.POST.get('msg')
+    product = request.POST.get('product')
+    message = f'Имя: {name} \nНомер телефона: {tel} \nТовар: {product} \n\nВопрос:\n{msg}'
+    em = EmailMessage(subject='Новое сообщение с сайта',
+                      body=message,
+                      to=[page.email],
+                      headers={'content-type': 'text/html'}
+                      )
+    print(message)
+    try:
+        em.send()
+        return JsonResponse({'status': 'ok', 'text': 'Мы получили Ваше сообщение! Вскоре наш менеджер свяжется с Вами.'})
+    except:
+        return JsonResponse({'status': 'bad', 'text': 'Ошибка отправки сообщения'})
 
 

@@ -108,3 +108,17 @@ class GalleryImage(models.Model):
 
     def __str__(self):
         return self.file.url
+
+
+class Delivery(models.Model):
+    content = QuillField(verbose_name='Оплата и доставка', blank=True)
+    title = models.CharField(verbose_name='Заголовок', blank=True, default='Оплата и доставка', editable=False,
+                             max_length=40)
+
+    class Meta:
+        verbose_name = 'Оплата и доставка'
+        verbose_name_plural = 'Оплата и доставка'
+
+    def __str__(self):
+        return 'Оплата и доставка'
+

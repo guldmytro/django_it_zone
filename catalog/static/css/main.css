@@ -1463,7 +1463,7 @@ a.header-cart-link img {
     flex-grow: 1;
     margin-right: 1rem;
 }
-.header-controls__search .search-query {
+.header-controls__search #id_query {
     display: block;
     width: 100%;
     background-color: #f2f5f8;
@@ -2988,6 +2988,9 @@ main.catalog.loading .catalog__aside:hover {
 .page-menu__link:hover img {
     filter: invert(41%) sepia(75%) saturate(7486%) hue-rotate(209deg) brightness(94%) contrast(97%);
 }
+.product-tabs .page-content {
+    font-size: 1.4rem;
+}
 .page-content {
     font-size: 1.8rem;
     line-height: 1.5;
@@ -3073,6 +3076,7 @@ main.catalog.loading .catalog__aside:hover {
 .checkout-fields__comfirm {
     grid-column: 1/-1;
 }
+.form-question input,
 .form-product-review input,
 .checkout input[type="email"],
 .checkout input[type="tel"],
@@ -3227,6 +3231,7 @@ main.catalog.loading .catalog__aside:hover {
     color: var(--color-text);
     font-weight: 600;
 }
+.form-question textarea,
 .form-product-review textarea,
 .checkout-section textarea {
     border-radius: 1rem;
@@ -3507,6 +3512,7 @@ main.catalog.loading .catalog__aside:hover {
 .add-to-cart-form_acrhive p {
     display: none;
 }
+.form-question,
 .form-product-review {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -3515,6 +3521,20 @@ main.catalog.loading .catalog__aside:hover {
     row-gap: 1.5rem;
     column-gap: 1.5rem;
     margin-bottom: 3rem;
+}
+.form-question .notice {
+    grid-column: 1 / span 2;
+    border: 2px solid green;
+    padding: 1rem 1.5rem;
+}
+.form-question .notice.bad {
+    border-color: red;
+}
+.form-question .notice {
+    display: none;
+}
+.form-question textarea {
+    grid-column: 1 / span 2;
 }
 .form-product-review #id_product,
 .form-product-review [for="id_product"] {

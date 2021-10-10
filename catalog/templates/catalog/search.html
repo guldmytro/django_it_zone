@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Результаты поиска{% endblock %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+
+{% block content %}
+<main class="catalog">
+    <div class="container">
+        <div class="section-header section-header_flex">
+            <h1 class="section-header__title">Результаты поиска: <i>"{{ request.GET.query }}"</i></h1>
+        </div>
+
+        <div class="catalog-group_wishlist">
+            <div class="catalog__products">
+                {% if products|length %}
+                <ul class="wishlist-group">
+                    {% for item in products %}
+                    {% include 'catalog/archive-product.html' with product=item %}
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="empty-wishlist">К сожалению по Вашему запросу ничего не найдено.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

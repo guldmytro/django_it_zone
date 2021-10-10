@@ -111,16 +111,22 @@
                     {% if product_attributes %}
                         <button type="button" class="tabs-header__item" data-id="tab-2">Характеристики</button>
                     {% endif %}
-                    <button type="button" class="tabs-header__item">Оплата и доставка</button>
+                    {% if delivery %}
+                        {% if delivery.content.html %}
+                        <button type="button" class="tabs-header__item" data-id="tab-3">Оплата и доставка</button>
+                        {% endif %}
+                    {% endif %}
                     <button type="button" class="tabs-header__item" data-id="tab-4">Отзывы
                         (<span class="reviews-cnt">{{ product.reviews.all|length }}</span>)
                     </button>
-                    <button type="button" class="tabs-header__item">Задать вопрос</button>
+                    <button type="button" class="tabs-header__item" data-id="tab-5">Задать вопрос</button>
                 </div>
                 <div class="tabs-content">
                     {% if product.content %}
                         <div class="tabs-content__item" id="tab-1">
+                            <div class="page-content">
                             {{ product.content.html | safe }}
+                            </div>
                         </div>
                     {% endif %}
                     {% if product_attributes  %}
@@ -139,6 +145,13 @@
                             </ul>
                         </div>
                     {% endif %}
+                    {% if delivery %}
+                    <div class="tabs-content__item" id="tab-3">
+                        <div class="page-content">
+                            {{ delivery.content.html | safe }}
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="tabs-content__item" id="tab-4">
                         <form class="form-product-review" action="." method="post">
                             {% csrf_token %}
@@ -150,6 +163,19 @@
                                 {% include 'reviews/review-detail.html' %}
                             {% endfor %}
                         </ul>
+
+                    </div>
+
+                    <div class="tabs-content__item" id="tab-5">
+                        <form class="form-question" action="{% url 'catalog:question' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="product" value="{{ product.name }}">
+                            <input type="text" name="name" placeholder="Имя" required>
+                            <input type="tel" name="tel" placeholder="Телефон" required>
+                            <textarea name="msg" cols="30" rows="10" placeholder="Вопрос" required></textarea>
+                            <button type="submit" class="btn_submit-review">Отправить</button>
+                            <div class="notice"></div>
+                        </form>
 
                     </div>
 

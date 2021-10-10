@@ -78,8 +78,8 @@
                     </button>
 
                     <div class="header-controls">
-                        <form class="header-controls__search">
-                            <input type="text" class="search-query" name="s" placeholder="Поиск">
+                        <form class="header-controls__search" method="get" action="{% url 'catalog:search' %}">
+                            {{ global_form }}
                             <button type="submit" aria-label="Поиск">
                                 <img src="{% static 'img/icon-search.png' %}" width="32" height="32" alt="поиск">
                             </button>

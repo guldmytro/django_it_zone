@@ -1,5 +1,5 @@
 from .models import Category
-
+from .forms import SearchForm
 
 def menu_catalog_processor(request):
     categories = []
@@ -13,3 +13,11 @@ def menu_catalog_processor(request):
         category_dict['childrens'] = list(child_categories)
         categories.append(category_dict)
     return {'categories': categories}
+
+
+def search_form(request):
+    if request.GET.get('query'):
+        global_form = SearchForm(initial={'query': request.GET.get('query')})
+    else:
+        global_form = SearchForm()
+    return {'global_form': global_form}

@@ -334,7 +334,7 @@ $('.form-product-review').on('submit', function(e) {
         success: function(response) {
             btn.removeClass('loading').text('Отправлено!');
             $this.find('textarea').val('');
-            $('.reviews-cnt').text(Number($('.reviews-cnt').text() + 1));
+            $('.reviews-cnt').text(Number($('.reviews-cnt').text()) + 1);
             $('.reviews-list').prepend(response);
         }
     });
@@ -363,4 +363,26 @@ $('.main-banner__link').on('click', function(e) {
     $('.header-menu_btn').click();
 });
 
+// question form
+$('.form-question').on('submit', function(e) {
+    e.preventDefault();
+    const $this = $(this);
+    const action = $this.attr('action');
+    const data = $this.serialize();
+    const btn = $this.find('[type="submit"]');
+    btn.prop('disabled', true).addClass('loading').text('Отправка...');
+    $.ajax({
+        url: action,
+        method: 'post',
+        data: data,
+        success: function(response) {
+            if (response.status === 'ok') {
+                btn.removeClass('loading').text('Отправлено!');
+            } else {
+                btn.removeClass('loading').text('Ошибка...');
+            }
+            $this.find('.notice').addClass(response.status).text(response.text).slideDown(100);
 
+        }
+    });
+});
