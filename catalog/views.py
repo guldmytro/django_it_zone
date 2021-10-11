@@ -24,10 +24,13 @@ def index(request):
     new_products_r = list(new_products)
     shuffle(new_products_r)
     config = Config.objects.first()
-    banner_products = list(config.main_product.all())
     banner_product = False
-    if banner_products:
-        banner_product = banner_products[0]
+    try:
+        banner_products = list(config.main_product.all())
+        if banner_products:
+            banner_product = banner_products[0]
+    except:
+        pass
     shuffle(banner_products)
     brands = config.brands.all()
     context = {
