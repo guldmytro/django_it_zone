@@ -11,17 +11,17 @@ from catalog.models import GalleryImage
 def get_csv_header():
     header = [
         'Идентификатор',
-        'Заголовок',
+        'Заголовок *',
         'Артикул',
-        'Цена',
+        'Цена *',
         'Цена со скидкой',
         'В наличии',
-        'Количество продаж',
-        'Категории',
+        'Количество продаж *',
+        'Категория *',
         'Аксесуары',
         'Краткое описание',
         'Длинное описание',
-        'Картинки',
+        'Картинки *',
     ]
     return header
 
@@ -37,8 +37,11 @@ def get_product_row(product, attributes, request):
     accessories = ', '.join(accessories)
     site = Site.objects.get_current()
     prefix = f'{request.scheme}://{site.domain}'
-    images = list(f'{prefix}{item.file.url}' for item in product.images.all())
-    images = ', '.join(images)
+    try:
+        images = list(f'{prefix}{item.file.url}' for item in product.images.all())
+        images = ', '.join(images)
+    except:
+        images = ''
     attributes_values = []
     for attribute in attributes:
         try:

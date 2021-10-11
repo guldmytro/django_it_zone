@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'config.apps.ConfigConfig',
     'uploads.apps.UploadsConfig',
     'easy_thumbnails',
-    'django_quill'
+    'django_quill',
+
 ]
 
 MIDDLEWARE = [
