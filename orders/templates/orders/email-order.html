@@ -42,7 +42,7 @@
     </tr>
     <tr>
         <th>Способ оплаты</th>
-        {% order.payment == 'online' %}
+        {% if order.payment == 'online' %}
             <td>Онлайн</td>
         {% else %}
             <td>При получении</td>
