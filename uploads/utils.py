@@ -161,9 +161,13 @@ def add_category(category_str):
 def update_images(images_array, product):
     GalleryImage.objects.filter(product=product).update(product=None)
     for url in images_array:
-        image = GalleryImage()
-        image.product = product
-        image.image_url = url
-        image.save()
+        try:
+            image = GalleryImage()
+            image.product = product
+            image.image_url = url
+            image.save()
+        except:
+            pass
+
 
 
