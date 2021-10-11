@@ -53,16 +53,18 @@ def product_detail(request, slug):
     parent_category = category.parent_category
     product_attributes = []
     breadcrumbs = []
-    breadcrumbs.append({
-        'label': parent_category.name,
-        'url': parent_category.get_absolute_url,
-        'type': 'link'
-    })
-    breadcrumbs.append({
-        'label': category.name,
-        'url': category.get_absolute_url,
-        'type': 'link'
-    })
+    if parent_category:
+        breadcrumbs.append({
+            'label': parent_category.name,
+            'url': parent_category.get_absolute_url,
+            'type': 'link'
+        })
+    if category:
+        breadcrumbs.append({
+            'label': category.name,
+            'url': category.get_absolute_url,
+            'type': 'link'
+        })
 
     breadcrumbs.append({
         'label': product.name,

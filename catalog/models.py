@@ -4,10 +4,6 @@ from django.core import validators
 from django.urls import reverse
 from django_quill.fields import QuillField
 from django.utils import timezone
-# from django.core.files import File
-# from urllib.request import urlopen
-# from tempfile import NamedTemporaryFile
-
 from urllib import request
 from django.core.files.base import ContentFile
 
@@ -55,7 +51,8 @@ class Product(models.Model):
     content = models.TextField(verbose_name='Описание', blank=True, null=True)
     excerpt = models.TextField(blank=True, null=True, verbose_name='краткое описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
-                                validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')])
+                                validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')], blank=True,
+                                null=True)
     price_sale = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена со скидкой', blank=True,
                                      null=True,
                                      validators=[validators.MinValueValidator(0, message='Цена со скидкой не может \
@@ -63,7 +60,7 @@ class Product(models.Model):
     price_current = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Текущая цена', editable=False,
                                         blank=True, null=True)
     available = models.BooleanField(default=True, verbose_name='в наличии')
-    sales = models.PositiveIntegerField(verbose_name='количество продаж', editable=False)
+    sales = models.PositiveIntegerField(verbose_name='количество продаж', editable=False, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     updated = models.DateTimeField(auto_now=True, verbose_name='изменено')
     changed = models.DateTimeField(verbose_name='Изменено', default=timezone.now)
@@ -110,14 +107,6 @@ class GalleryImage(models.Model):
     alt = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     image_url = models.URLField()
-
-    # def save(self, *args, **kwargs):
-    #     if self.image_url and not self.file:
-    #         img_temp = NamedTemporaryFile(delete=True)
-    #         img_temp.write(urlopen(self.image_url).read())
-    #         img_temp.flush()
-    #         self.file.save(f"image_{self.pk}", File(img_temp))
-    #     super(GalleryImage, self).save(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         if self.image_url and not self.file:

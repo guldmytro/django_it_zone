@@ -1,13 +1,11 @@
 from catalog.models import Attribute
 from django.contrib.sites.models import Site
-from catalog.models import Product, Category
+from catalog.models import Product, Category, Kit
 import csv
 from unidecode import unidecode
 from django.utils.text import slugify
 from decimal import Decimal
-from .forms import ImageForm
-from urllib import request
-from django.core.files.base import ContentFile
+from catalog.models import GalleryImage
 
 
 def get_csv_header():
@@ -71,7 +69,7 @@ def push_products(csv_file, request):
     file = open(csv_file)
     csvreader = csv.reader(file)
     header = next(csvreader)
-    # print(header)
+    attributes_list = header[12:]
     rows = []
     for row in csvreader:
         rows.append(row)
@@ -79,18 +77,26 @@ def push_products(csv_file, request):
         product_name = row[1]
         try:
             product = Product.objects.get(name=product_name)
-            update_product(product, row)
         except:
-            add_product()
-
+            product = Product()
+            product.slug = slugify(unidecode(row[1]))
+            product.save()
+        update_product(product, row, attributes_list)
     file.close()
 
 
-def update_product(product, row):
+def update_product(product, row, attributes_list):
+    product.name = row[1]
     product.sku = row[2]
     product.price = Decimal(row[3])
     if row[4]:
         product.price_sale = Decimal(row[4])
+
+    if product.price_sale:
+        product.price_current = product.price_sale
+    else:
+        product.price_current = product.price
+
     if row[5] == 'True':
         product.available = True
     else:
@@ -120,6 +126,24 @@ def update_product(product, row):
                         product.accessories.add(cat)
     product.excerpt = row[9]
     product.content = row[10]
+    images_array = str(row[11]).split(', ')
+    if images_array:
+        update_images(images_array, product)
+
+    product.attributes.clear()
+    if attributes_list:
+        for index, attribute_key in enumerate(attributes_list):
+            attribute_value = str(row[12 + index])
+            if attribute_value:
+                try:
+                    attribute = Attribute.objects.get(name=attribute_key)
+                except:
+                    attribute = Attribute()
+                    attribute.name = attribute_key
+                    attribute.slug = slugify(unidecode(attribute_key))
+                    attribute.save()
+                Kit.objects.create(attribute=attribute, product=product, value=attribute_value)
+
     product.save()
 
 
@@ -133,5 +157,14 @@ def add_category(category_str):
     cat.slug = slugify(unidecode(category_str))
     cat.save()
     return cat
+
+
+def update_images(images_array, product):
+    GalleryImage.objects.filter(product=product).update(product=None)
+    for url in images_array:
+        image = GalleryImage()
+        image.product = product
+        image.image_url = url
+        image.save()
 
 
