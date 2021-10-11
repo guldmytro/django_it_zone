@@ -170,3 +170,8 @@ WISHLIST_SESSION_ID = 'wishlist'
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
 
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
