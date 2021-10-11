@@ -4,6 +4,12 @@ from django.core import validators
 from django.urls import reverse
 from django_quill.fields import QuillField
 from django.utils import timezone
+# from django.core.files import File
+# from urllib.request import urlopen
+# from tempfile import NamedTemporaryFile
+
+from urllib import request
+from django.core.files.base import ContentFile
 
 
 class Category(models.Model):
@@ -40,12 +46,13 @@ class Attribute(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, verbose_name='категория')
-    name = models.CharField(max_length=200, db_index=True, verbose_name='название')
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, blank=True, null=True,
+                                 verbose_name='категория')
+    name = models.CharField(max_length=200, db_index=True, verbose_name='название', unique=True)
     sku = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг', unique=True)
     attributes = models.ManyToManyField(Attribute, through='Kit', through_fields=('product', 'attribute'))
-    content = QuillField(verbose_name='Описание', blank=True, null=True)
+    content = models.TextField(verbose_name='Описание', blank=True, null=True)
     excerpt = models.TextField(blank=True, null=True, verbose_name='краткое описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
                                 validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')])
@@ -98,10 +105,27 @@ class Kit(models.Model):
 
 
 class GalleryImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='images', null=True, blank=True)
     file = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение')
     alt = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
+    image_url = models.URLField()
+
+    # def save(self, *args, **kwargs):
+    #     if self.image_url and not self.file:
+    #         img_temp = NamedTemporaryFile(delete=True)
+    #         img_temp.write(urlopen(self.image_url).read())
+    #         img_temp.flush()
+    #         self.file.save(f"image_{self.pk}", File(img_temp))
+    #     super(GalleryImage, self).save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        if self.image_url and not self.file:
+            res = request.urlopen(self.image_url)
+            name = str(self.image_url).rsplit('/', 1)[1]
+            image_name = f'{name}'
+            self.file.save(image_name, ContentFile(res.read()))
+        super(GalleryImage, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ('created',)

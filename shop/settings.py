@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'contacts.apps.ContactsConfig',
     'config.apps.ConfigConfig',
+    'uploads.apps.UploadsConfig',
     'easy_thumbnails',
     'django_quill'
 ]
@@ -162,4 +163,7 @@ CART_SESSION_ID = 'cart'
 
 # Wishlist Session
 WISHLIST_SESSION_ID = 'wishlist'
+
+# Max file upload memory size
+FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 

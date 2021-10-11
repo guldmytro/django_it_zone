@@ -6,7 +6,7 @@ from django.urls import reverse
 class Page(models.Model):
     title = models.CharField(verbose_name='Заголовок', max_length=100)
     slug = models.SlugField(verbose_name='Слаг', max_length=100)
-    thumbnail = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='Иконка')
+    thumbnail = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='Иконка (черного цвета)')
     content = QuillField(verbose_name='Контент')
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
 

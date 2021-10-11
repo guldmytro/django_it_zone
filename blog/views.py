@@ -21,7 +21,7 @@ def archive_blog(request):
     breadcrumbs = [{
         'label': 'Новости',
         'url': reverse('blog:archive_blog'),
-        'type': 'link'
+        'type': 'text'
     }]
     context = {
         'page': page,

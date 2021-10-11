@@ -3622,6 +3622,12 @@ main.catalog.loading .catalog__aside:hover {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
+.uploads-controls {
+    margin-top: 3rem;
+}
+.uploads-controls button {
+    padding: 1rem 1.5rem;
+}
 @media screen and (max-width: 1399px) {
     html {
         font-size: 60%;

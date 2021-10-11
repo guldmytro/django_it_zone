@@ -1,0 +1,137 @@
+from catalog.models import Attribute
+from django.contrib.sites.models import Site
+from catalog.models import Product, Category
+import csv
+from unidecode import unidecode
+from django.utils.text import slugify
+from decimal import Decimal
+from .forms import ImageForm
+from urllib import request
+from django.core.files.base import ContentFile
+
+
+def get_csv_header():
+    header = [
+        'Идентификатор',
+        'Заголовок',
+        'Артикул',
+        'Цена',
+        'Цена со скидкой',
+        'В наличии',
+        'Количество продаж',
+        'Категории',
+        'Аксесуары',
+        'Краткое описание',
+        'Длинное описание',
+        'Картинки',
+    ]
+    return header
+
+
+def get_attributes_header():
+    attributes = Attribute.objects.all()
+    attr_header = list(item.name for item in attributes)
+    return attr_header
+
+
+def get_product_row(product, attributes, request):
+    accessories = list(item.name for item in product.accessories.all())
+    accessories = ', '.join(accessories)
+    site = Site.objects.get_current()
+    prefix = f'{request.scheme}://{site.domain}'
+    images = list(f'{prefix}{item.file.url}' for item in product.images.all())
+    images = ', '.join(images)
+    attributes_values = []
+    for attribute in attributes:
+        try:
+            kit = attribute.kit_set.get(product=product)
+            attributes_values.append(kit.value)
+        except:
+            attributes_values.append('')
+
+    row = [
+        product.pk,
+        product.name,
+        product.sku,
+        product.price,
+        product.price_sale,
+        product.available,
+        product.sales,
+        product.category.name,
+        accessories,
+        product.excerpt,
+        product.content,
+        images
+    ]
+    row = row + attributes_values
+    return row
+
+
+def push_products(csv_file, request):
+    file = open(csv_file)
+    csvreader = csv.reader(file)
+    header = next(csvreader)
+    # print(header)
+    rows = []
+    for row in csvreader:
+        rows.append(row)
+    for row in rows:
+        product_name = row[1]
+        try:
+            product = Product.objects.get(name=product_name)
+            update_product(product, row)
+        except:
+            add_product()
+
+    file.close()
+
+
+def update_product(product, row):
+    product.sku = row[2]
+    product.price = Decimal(row[3])
+    if row[4]:
+        product.price_sale = Decimal(row[4])
+    if row[5] == 'True':
+        product.available = True
+    else:
+        product.available = False
+    product.sales = row[6]
+    category_str = row[7]
+    try:
+        category = Category.objects.get(name=category_str)
+        product.category = category
+    except:
+        if category_str:
+            cat = add_category(category_str)
+            if cat:
+                product.category = cat
+
+    related_cats = str(row[8]).split(', ')
+    product.accessories.clear()
+    if related_cats:
+        for category_str in related_cats:
+            try:
+                category = Category.objects.get(name=category_str)
+                product.accessories.add(category)
+            except:
+                if category_str:
+                    cat = add_category(category_str)
+                    if cat:
+                        product.accessories.add(cat)
+    product.excerpt = row[9]
+    product.content = row[10]
+    product.save()
+
+
+def add_product():
+    pass
+
+
+def add_category(category_str):
+    cat = Category()
+    cat.name = category_str
+    cat.slug = slugify(unidecode(category_str))
+    cat.save()
+    return cat
+
+

@@ -226,7 +226,11 @@ def search(request):
             query = form.cleaned_data['query']
             products_list = products_list.annotate(similarity=TrigramSimilarity('name', query))\
                 .filter(similarity__gt=0.045).order_by('-similarity')
-            breadcrumbs = []
+            breadcrumbs = [{
+                'label': f'Результаты поиска "{query}"',
+                'url': '',
+                'type': 'text'
+            }]
             context = {
                 'products': products_list,
                 'query_string': query,
@@ -248,7 +252,6 @@ def question(request):
                       to=[page.email],
                       headers={'content-type': 'text/html'}
                       )
-    print(message)
     try:
         em.send()
         return JsonResponse({'status': 'ok', 'text': 'Мы получили Ваше сообщение! Вскоре наш менеджер свяжется с Вами.'})

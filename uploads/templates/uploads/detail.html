@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Управление товарами{% endblock %}
+
+{% block content %}
+<section class="uploads">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-header__title">Управление товарами</h2>
+            {% if result %}
+            Выполнено!
+            {% else %}
+            <p>На данной странице Вы можете скачать все товары в формате .csv или закачать базу товаров из файла .csv</p>
+            <div class="uploads-controls">
+                <a href="{% url 'uploads:fetch' %}" id="fetch-products" class="btn" style="color:blue;">Получить товары</a>
+                <p style="margin:3rem 0;">или</p>
+                <form class="upload-products" action="{% url 'uploads:add' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    <br><br>
+                    <button type="submit">Загрузить товары</button>
+                </form>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

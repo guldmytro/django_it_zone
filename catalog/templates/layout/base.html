@@ -21,6 +21,9 @@
                 <div class="toper-row">
                     {% if pages or contacts %}
                     <ul class="toper-menu">
+                        <li class="toper-menu__item">
+                            <a href="{% url 'blog:archive_blog' %}">Новости</a>
+                        </li>
                         {% for page in pages %}
                         <li class="toper-menu__item">
                             <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
@@ -171,6 +174,9 @@
                     <ul class="mobile-menu">
                         {% for page in pages %}
                         <li class="mobile-menu__item">
+                            <a href="{% url 'blog:archive_blog' %}">Новости</a>
+                        </li>
+                        <li class="mobile-menu__item">
                             <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
                         </li>
                         {% endfor %}
@@ -224,6 +230,9 @@
                 <div class="footer-middle">
                     {% if pages or contacts %}
                     <ul class="footer-menu">
+                        <li class="footer-menu__item">
+                            <a href="{% url 'blog:archive_blog' %}">Новости</a>
+                        </li>
                         {% for page in pages %}
                         <li class="footer-menu__item">
                             <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
