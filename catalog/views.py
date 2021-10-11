@@ -33,7 +33,11 @@ def index(request):
     except:
         pass
 
-    brands = config.brands.all()
+    brands = False
+    try:
+        brands = config.brands.all()
+    except:
+        pass
     context = {
         'top_products': top_products,
         'articles': articles,
