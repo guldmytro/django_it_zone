@@ -5,8 +5,10 @@ from django.utils.text import slugify
 
 def get_filters(request, category, children_categories):
     result = []
+    cats = [category.name]
     q = Q(product__category=category)
     for children_category in children_categories:
+        cats.append(children_category.name)
         q |= Q(product__category=children_category)
 
     for attribute in Attribute.objects.filter(q).distinct():
@@ -19,9 +21,12 @@ def get_filters(request, category, children_categories):
                                                                               filter=q)):
             slug = slugify(kit.value, allow_unicode=True)
             found = False
+
+
             for filter in attribute_dict['values']:
-                if filter['slug'] == slug:
+                if filter['slug'] == slug and kit.product.category.name in cats:
                     filter['cnt'] += 1
+                    print(filter['slug'], filter['cnt'], sep=' - ')
                     found = True
                     break
 
@@ -31,7 +36,8 @@ def get_filters(request, category, children_categories):
                     checked = True
                 else:
                     checked = False
-                if kit.cnt > 0:
+                if kit.cnt > 0 and kit.product.category.name in cats:
+                    print(kit.cnt)
                     attribute_dict['values'].append({
                         'value': kit.value,
                         'slug': slug,
