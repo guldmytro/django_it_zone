@@ -28,10 +28,11 @@ def index(request):
     try:
         banner_products = list(config.main_product.all())
         if banner_products:
+            shuffle(banner_products)
             banner_product = banner_products[0]
     except:
         pass
-    shuffle(banner_products)
+
     brands = config.brands.all()
     context = {
         'top_products': top_products,
