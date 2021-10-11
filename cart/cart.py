@@ -25,8 +25,12 @@ class Cart:
         # it will save session in database
         self.session.modified = True
 
-    def remove(self, product):
-        product_id = str(product.id)
+    def remove(self, product, pk=False):
+        product_id = ''
+        if product:
+            product_id = str(product.id)
+        else:
+            product_id = pk
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
@@ -43,6 +47,19 @@ class Cart:
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
+
+    def update(self):
+        product_ids = self.cart.keys()
+        pk_to_remove = []
+        for pk in product_ids:
+            try:
+                product = Product.objects.get(pk=pk)
+                self.cart[pk]['price'] = str(product.price_current)
+                self.save()
+            except:
+                pk_to_remove.append(pk)
+        for pk in pk_to_remove:
+            self.remove(False, pk)
 
     def get_total_price(self):
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())

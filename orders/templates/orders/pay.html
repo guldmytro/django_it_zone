@@ -4,7 +4,7 @@
 {% block payment %}
     <script src="https://3dsec.sberbank.ru/payment/docsite/assets/js/ipay.js"></script>
     <script>
-    var ipay = new IPAY({api_token: 'YRF3C5RFICWISEWFR6GJ'});
+    var ipay = new IPAY({api_token: '{{ token }}'});
     </script>
     <script>
         function getCookie(name) {

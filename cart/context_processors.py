@@ -4,6 +4,7 @@ from .forms import CartAddProductForm
 
 def cart_processor(request):
     cart = Cart(request)
+    cart.update()
     return {'cart_len': len(cart)}
 
 

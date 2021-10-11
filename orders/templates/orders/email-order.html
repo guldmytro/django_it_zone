@@ -1,0 +1,79 @@
+<h1>Заказ {{ order.pk }} успешно оформлен</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <td>{{ order.pk }}</td>
+    </tr>
+    <tr>
+        <th>Тип Клиента</th>
+        <td>{{ order.client_type }}</td>
+    </tr>
+    <tr>
+        <th>E-mail</th>
+        <td>{{ order.email }}</td>
+    </tr>
+    <tr>
+        <th>Телефон</th>
+        <td>{{ order.phone }}</td>
+    </tr>
+    <tr>
+        <th>Адрес</th>
+        <td>{{ order.address }}</td>
+    </tr>
+    <tr>
+        <th>Оплачено</th>
+        {% if order.payment != 'online' %}
+            {% if order.paid %}
+                <td>Да</td>
+            {% else %}
+                <td>Нет</td>
+            {% endif %}
+        {% else %}
+            <td>В процессе</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Комментарий</th>
+        <td>{{ order.comment }}</td>
+    </tr>
+    <tr>
+        <th>Доставка</th>
+        <td>{{ order.shipping }}</td>
+    </tr>
+    <tr>
+        <th>Способ оплаты</th>
+        {% order.payment == 'online' %}
+            <td>Онлайн</td>
+        {% else %}
+            <td>При получении</td>
+        {% endif %}
+
+    </tr>
+</table>
+
+<br>
+<h2>Заказ:</h2>
+<table>
+    <tr>
+        <th>Товар</th>
+        <th>Количество</th>
+        <th>Цена</th>
+    </tr>
+    {% for product in products %}
+    <tr>
+        <td>
+            {{ product.product.name }}
+        </td>
+        <td>
+            {{ product.quantity }}
+        </td>
+        <td>
+            {{ product.price }}
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th colspan="2">Итого:</th>
+        <th>{{ total_amount }} руб.</th>
+    </tr>
+</table>

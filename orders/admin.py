@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, OrderItem
+from .models import Order, OrderItem, ApiToken
 
 
 class OrderItemInline(admin.TabularInline):
@@ -13,4 +13,9 @@ class OrderAdmin(admin.ModelAdmin):
     list_display_links = ['id', 'full_name']
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline]
+
+
+@admin.register(ApiToken)
+class ApiTokenAdmin(admin.ModelAdmin):
+    list_display = ['token']
 

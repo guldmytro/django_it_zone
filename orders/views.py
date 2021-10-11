@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from .forms import OrderCreateForm
-from .models import OrderItem, Order
+from .models import OrderItem, Order, ApiToken
 from cart.cart import Cart
 from django.urls import reverse
 from catalog.models import Product
 from django.db.models import F
 import json
+from django.core.mail import EmailMessage
+from django.template.loader import get_template
+from django.template.loader import render_to_string
+
 
 def order_create(request):
     cart = Cart(request)
@@ -35,6 +39,15 @@ def order_create(request):
                 OrderItem.objects.create(order=order, product=product, price=cart.cart[str(item)]['price'],
                                          quantity=cart.cart[str(item)]['quantity'])
             cart.clear()
+
+            items = OrderItem.objects.filter(order=order)
+            total_amount = int(sum(item.price * item.quantity for item in items))
+            c = {'order': order, 'products': items, 'total_amount': total_amount}
+            message = render_to_string('orders/email-order.html', c)
+            msg = EmailMessage(f'Заказ {order.pk} оформлен', message)
+            msg.content_subtype = 'html'
+            msg.send()
+
             if order.payment == 'online':
                 return redirect('orders:pay', id=order.pk)
             else:
@@ -64,12 +77,19 @@ def order_pay(request, id):
     order = get_object_or_404(Order, pk=id)
     order_items = OrderItem.objects.filter(order=order)
     total_amount = int(sum(item.price * item.quantity for item in order_items))
+    token = ''
+    try:
+        api_post = ApiToken.objects.first()
+        token = api_post.token
+    except:
+        pass
     if order.payment != 'online' or order.paid:
         raise Http404
     context = {
         'order': order,
         'order_items': order_items,
-        'total_amount': total_amount
+        'total_amount': total_amount,
+        'token': token
     }
     return render(request, 'orders/pay.html', context)
 
@@ -80,3 +100,6 @@ def order_complete(request):
         order = Order.objects.get(pk=body['order_id'])
         order.paid = True
         order.save()
+        msg = EmailMessage(f'Заказ {order.pk} оплачен', f'Заказ {order.pk} оплачен. Не забудьте удостовериться в \
+        наличии оплаты на счету')
+        msg.send()

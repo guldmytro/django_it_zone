@@ -1,8 +1,5 @@
-import json
-
 from catalog.models import Product
 from django.conf import settings
-from django.core import serializers
 
 
 class Wishlist:
@@ -16,15 +13,21 @@ class Wishlist:
     def add(self, product):
         product_id = str(product.id)
         if product_id not in self.wishlist:
-            self.wishlist[product_id] = {}
+            self.wishlist[product_id] = {
+                'name': product.name
+            }
         self.save()
 
     def save(self):
         # it will save session in database
         self.session.modified = True
 
-    def remove(self, product):
-        product_id = str(product.id)
+    def remove(self, product, pk=False):
+        product_id = ''
+        if product:
+            product_id = str(product.id)
+        else:
+            product_id = pk
         if product_id in self.wishlist:
             del self.wishlist[product_id]
             self.save()
@@ -34,6 +37,17 @@ class Wishlist:
         products = Product.objects.filter(id__in=product_ids)
         for product in products:
             yield product
+
+    def update(self):
+        product_ids = self.wishlist.keys()
+        pk_to_remove = []
+        for pk in product_ids:
+            try:
+                Product.objects.get(pk=pk)
+            except:
+                pk_to_remove.append(pk)
+        for pk in pk_to_remove:
+            self.remove(False, pk)
 
     def __len__(self):
         return len(self.wishlist)

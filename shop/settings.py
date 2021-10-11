@@ -141,6 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -166,4 +167,7 @@ WISHLIST_SESSION_ID = 'wishlist'
 
 # Max file upload memory size
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

@@ -18,20 +18,23 @@ from contacts.models import Contact
 
 def index(request):
     articles = Article.published.all()[:12]
-    top_products = Product.objects.all().order_by('-sales')[:4]
+    top_products = Product.objects.all().order_by('-sales')[:30]
     exclude_list = list(item.id for item in top_products)
-    new_products = Product.objects.exclude(pk__in=exclude_list)[:4]
+    new_products = Product.objects.exclude(pk__in=exclude_list)[:30]
     new_products_r = list(new_products)
     shuffle(new_products_r)
     config = Config.objects.first()
     banner_products = list(config.main_product.all())
+    banner_product = False
+    if banner_products:
+        banner_product = banner_products[0]
     shuffle(banner_products)
     brands = config.brands.all()
     context = {
         'top_products': top_products,
         'articles': articles,
         'new_products': new_products_r,
-        'banner_product': banner_products[0],
+        'banner_product': banner_product,
         'brands': brands
     }
     return render(request, 'catalog/index.html', context)

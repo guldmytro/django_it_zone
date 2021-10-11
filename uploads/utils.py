@@ -96,11 +96,7 @@ def update_product(product, row, attributes_list):
         product.price_current = product.price_sale
     else:
         product.price_current = product.price
-
-    if row[5] == 'True':
-        product.available = True
-    else:
-        product.available = False
+    product.available = True
     product.sales = row[6]
     category_str = row[7]
     try:

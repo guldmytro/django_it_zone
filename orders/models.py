@@ -53,3 +53,24 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+
+
+class ApiToken(models.Model):
+    token = models.CharField(max_length=500, verbose_name='API-token сбербанка', help_text='Для теста можете \
+    использовать токен: YRF3C5RFICWISEWFR6GJ', default='YRF3C5RFICWISEWFR6GJ', blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.token}'
+
+    class Meta:
+        verbose_name = 'Токен оплаты'
+        verbose_name_plural = 'Токены оплаты'
+
+
+
+
+
+
+
+
+
