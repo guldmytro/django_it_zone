@@ -8,7 +8,7 @@ from catalog.models import Product
 from django.db.models import F
 import json
 from django.core.mail import EmailMessage
-from django.template.loader import get_template
+from shop.settings import SEND_MAIL_TO
 from django.template.loader import render_to_string
 
 
@@ -44,9 +44,13 @@ def order_create(request):
             total_amount = int(sum(item.price * item.quantity for item in items))
             c = {'order': order, 'products': items, 'total_amount': total_amount}
             message = render_to_string('orders/email-order.html', c)
-            msg = EmailMessage(f'Заказ {order.pk} оформлен', message)
+            msg = EmailMessage(subject=f'Заказ {order.pk} оформлен', body=message, to=[SEND_MAIL_TO])
             msg.content_subtype = 'html'
-            msg.send()
+            try:
+                msg.send()
+            except:
+                print('Error')
+                pass
 
             if order.payment == 'online':
                 return redirect('orders:pay', id=order.pk)
@@ -100,6 +104,12 @@ def order_complete(request):
         order = Order.objects.get(pk=body['order_id'])
         order.paid = True
         order.save()
-        msg = EmailMessage(f'Заказ {order.pk} оплачен', f'Заказ {order.pk} оплачен. Не забудьте удостовериться в \
-        наличии оплаты на счету')
-        msg.send()
+        msg = EmailMessage(subject=f'Заказ {order.pk} оплачен',
+                           body=f'Заказ {order.pk} оплачен. Не забудьте удостовериться в \
+        наличии оплаты на счету',
+                           to=[SEND_MAIL_TO])
+        try:
+            msg.send()
+        except:
+            print('Error')
+            pass

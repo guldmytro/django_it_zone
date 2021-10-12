@@ -13,6 +13,7 @@ from random import shuffle
 from blog.models import Article
 from config.models import Config
 from django.core.mail import EmailMessage
+from shop.settings import SEND_MAIL_TO
 from contacts.models import Contact
 
 
@@ -262,7 +263,7 @@ def question(request):
     message = f'Имя: {name} \nНомер телефона: {tel} \nТовар: {product} \n\nВопрос:\n{msg}'
     em = EmailMessage(subject='Новое сообщение с сайта',
                       body=message,
-                      to=[page.email],
+                      to=[SEND_MAIL_TO],
                       headers={'content-type': 'text/html'}
                       )
     try:

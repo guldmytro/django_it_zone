@@ -5,6 +5,7 @@ import re
 from .forms import FeadbackForm
 from django.views.decorators.http import require_POST
 from django.core.mail import EmailMessage
+from shop.settings import SEND_MAIL_TO
 
 
 def page_detail(request):
@@ -31,7 +32,6 @@ def page_detail(request):
 
 @require_POST
 def send_message(request):
-    page = Contact.objects.first()
     form = FeadbackForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
@@ -40,7 +40,7 @@ def send_message(request):
         message = f'Имя: {name} \nНомер телефона: {tel}'
         em = EmailMessage(subject='Новое сообщение с сайта',
                           body=message,
-                          to=[page.email],
+                          to=[SEND_MAIL_TO],
                           headers={'content-type': 'text/html'}
                           )
         try:

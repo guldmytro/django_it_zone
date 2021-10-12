@@ -169,9 +169,11 @@ WISHLIST_SESSION_ID = 'wishlist'
 # Max file upload memory size
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
+SEND_MAIL_TO = 'guldmytro@gmail.com'
 
 try:
     from .local_settings import *
 except ImportError:
     pass
 
+EMAIL_BACKEND = 'django.core.mail.backends.EmailBackend'

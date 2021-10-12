@@ -22,11 +22,9 @@ def get_filters(request, category, children_categories):
             slug = slugify(kit.value, allow_unicode=True)
             found = False
 
-
             for filter in attribute_dict['values']:
                 if filter['slug'] == slug and kit.product.category.name in cats:
                     filter['cnt'] += 1
-                    print(filter['slug'], filter['cnt'], sep=' - ')
                     found = True
                     break
 
