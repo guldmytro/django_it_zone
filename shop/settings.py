@@ -169,7 +169,7 @@ WISHLIST_SESSION_ID = 'wishlist'
 # Max file upload memory size
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
-SEND_MAIL_TO = 'guldmytro@gmail.com'
+SEND_MAIL_TO = 'sales@itzone.ru'
 
 try:
     from .local_settings import *
