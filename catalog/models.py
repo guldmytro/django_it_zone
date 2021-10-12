@@ -106,7 +106,7 @@ class GalleryImage(models.Model):
     file = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение')
     alt = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
-    image_url = models.URLField()
+    image_url = models.URLField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.image_url and not self.file:
