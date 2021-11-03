@@ -35,7 +35,6 @@ def get_filters(request, category, children_categories):
                 else:
                     checked = False
                 if kit.cnt > 0 and kit.product.category.name in cats:
-                    print(kit.cnt)
                     attribute_dict['values'].append({
                         'value': kit.value,
                         'slug': slug,
@@ -70,7 +69,7 @@ def get_prices(products, request):
 def get_filtered_products(request, products, query_filters):
     for query_filter in query_filters:
         if query_filter['key'] == 'price':
-            prices = parse_price(request.GET.get('price'))
+            prices = parse_price(query_filter['values'])
             products = products.filter(price_current__gte=prices['min'], price_current__lte=prices['max'])
         else:
             key = query_filter['key']
@@ -107,8 +106,7 @@ def get_filtered_products_p(request, products, query_filters):
     return products
 
 
-def parse_price(price):
-    prices = price.split(';')
+def parse_price(prices):
     prices = [int(i) for i in prices]
     result = {
         'min': min(prices),

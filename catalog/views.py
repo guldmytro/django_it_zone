@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import Product, Category, Delivery
 from .utils import get_filters, get_prices, get_filtered_products, get_filtered_products_p, get_page_from_query, \
     get_full_path_from_query
@@ -148,7 +148,8 @@ def products_by_cat(request, slug):
                 'filters': filters,
                 'search_form': form,
                 'query_string': query,
-                'breadcrumbs': breadcrumbs
+                'breadcrumbs': breadcrumbs,
+                'slug': slug
             }
 
             return render(request, 'catalog/catalog.html', context)
@@ -203,7 +204,8 @@ def products_by_cat(request, slug):
             'prices': prices,
             'full_path': full_path,
             'search_form': form,
-            'breadcrumbs': breadcrumbs
+            'breadcrumbs': breadcrumbs,
+            'slug': slug
         }
         return render(request, 'catalog/catalog.html', context)
 
@@ -271,5 +273,119 @@ def question(request):
         return JsonResponse({'status': 'ok', 'text': 'Мы получили Ваше сообщение! Вскоре наш менеджер свяжется с Вами.'})
     except:
         return JsonResponse({'status': 'bad', 'text': 'Ошибка отправки сообщения'})
+
+
+def products_by_attr(request, slug, params):
+    category = get_object_or_404(Category, slug=slug)
+    children_categories = category.category_set.all()
+    q = Q(category=category)
+    for children_category in children_categories:
+        q |= Q(category=children_category)
+
+    products_list = Product.objects.filter(q).order_by('-sales')
+
+    form = SearchForm()
+    query = None
+    if 'query' in request.GET:
+        prices = get_prices(products_list, request)
+        filters = get_filters(request, category, children_categories)
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            products_list = products_list.annotate(similarity=TrigramSimilarity('name', query)) \
+                .filter(similarity__gt=0.045).order_by('-similarity')
+
+            breadcrumbs = []
+            parent_category = category.parent_category
+            if parent_category:
+                breadcrumbs.append({
+                    'label': parent_category.name,
+                    'url': parent_category.get_absolute_url,
+                    'type': 'link'
+                })
+            breadcrumbs.append({
+                'label': category.name,
+                'url': category.get_absolute_url,
+                'type': 'text'
+            })
+
+            context = {
+                'category': category,
+                'products': products_list,
+                'prices': prices,
+                'filters': filters,
+                'search_form': form,
+                'query_string': query,
+                'breadcrumbs': breadcrumbs,
+                'slug': slug
+            }
+
+            return render(request, 'catalog/catalog.html', context)
+
+    query_filters = []
+
+    if request.method == 'GET':
+        filters = get_filters(request, category, children_categories)
+        prices = get_prices(products_list, request)
+        params_list = params.split(';')
+        page = 1
+        for p in params_list:
+            p_list = p.split(':')
+            key = p_list[0]
+            vals = p_list[1].split(',')
+            query_filters.append({
+                'key': key,
+                'values': vals
+            })
+            if key == 'page':
+                page = int(vals[0])
+        if len(query_filters):
+            try:
+                products_list = get_filtered_products(request, products_list, query_filters)
+            except:
+                products_list = []
+
+        paginator = Paginator(products_list, 12)
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+        full_path = ''
+        try:
+            full_path = request.get_full_path().split('?')[1]
+            full_path = full_path.replace('page', 'non-page')
+        except:
+            pass
+
+        breadcrumbs = []
+        parent_category = category.parent_category
+        if parent_category:
+            breadcrumbs.append({
+                'label': parent_category.name,
+                'url': parent_category.get_absolute_url,
+                'type': 'link'
+            })
+        breadcrumbs.append({
+            'label': category.name,
+            'url': category.get_absolute_url,
+            'type': 'text'
+        })
+        context = {
+            'category': category,
+            'products': products,
+            'filters': filters,
+            'prices': prices,
+            'full_path': full_path,
+            'search_form': form,
+            'breadcrumbs': breadcrumbs,
+            'slug': slug
+        }
+        if request.is_ajax():
+            return render(request, 'catalog/products-list.html', context)
+        return render(request, 'catalog/catalog.html', context)
+
+
 
 

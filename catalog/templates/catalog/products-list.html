@@ -12,9 +12,8 @@
     <ul class="page-links">
         {% if products.has_previous %}
             <li class="page-links__item">
-                <a {% if pagination == 'manual' %}class="manual"{% endif %}
-                href="?page={{ products.previous_page_number }}{% if full_path %}&{{ full_path }}{% endif %}"
-                   aria-label="Предыдущие" data-page="{{ products.previous_page_number }}">←</a>
+                <button {% if pagination == 'manual' %}class="manual"{% endif %}
+                   aria-label="Предыдущие" data-page="{{ products.previous_page_number }}">←</button>
             </li>
         {% endif %}
          <li class="page-links__item">
@@ -22,9 +21,8 @@
         </li>
         {% if products.has_next %}
         <li class="page-links__item">
-            <a {% if pagination == 'manual' %}class="manual"{% endif %}
-            href="?page={{ products.next_page_number }}{% if full_path %}&{{ full_path }}{% endif %}"
-               aria-label="Следующие" data-page="{{ products.next_page_number }}">→</a>
+            <button {% if pagination == 'manual' %}class="manual"{% endif %}
+               aria-label="Следующие" data-page="{{ products.next_page_number }}">→</button>
         </li>
         {% endif %}
     </ul>

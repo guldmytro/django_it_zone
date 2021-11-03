@@ -3465,7 +3465,8 @@ main.catalog.loading .catalog__aside:hover {
 .page-links__item {
     margin: 0 0.5rem;
 }
-.page-links a {
+.page-links a,
+.page-links button {
     display: flex;
     padding: 0.3em 0.6em;
     background-color: #f1fbfa;
@@ -3474,7 +3475,8 @@ main.catalog.loading .catalog__aside:hover {
     border-radius: 4px;
     transition: 200ms color, 200ms background;
 }
-.page-links a:hover {
+.page-links a:hover,
+.page-links button:hover {
     color: var(--color-text-invert);
     background-color: var(--color-accent-third);
 }

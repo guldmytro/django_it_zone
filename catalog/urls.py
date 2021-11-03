@@ -8,5 +8,6 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('question/', views.question, name='question'),
     path('product/<slug:slug>/', views.product_detail, name='product_detail'),
-    path('product_cat/<slug:slug>/', views.products_by_cat, name='products_by_cat')
+    path('product_cat/<slug:slug>/', views.products_by_cat, name='products_by_cat'),
+    path('product_cat/<slug:slug>/<str:params>/', views.products_by_attr, name='products_by_attribute')
 ]
