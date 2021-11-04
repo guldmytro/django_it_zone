@@ -1,7 +1,10 @@
+import json
+
 from .models import Kit, Attribute
 from django.db.models import Count, Q, Min, Max
 from django.utils.text import slugify
-
+from django_quill.quill import Quill
+from django.utils.html import strip_tags
 
 def get_filters(request, category, children_categories):
     result = []
@@ -125,3 +128,20 @@ def get_full_path_from_query(query):
     for query_filter in query:
         if query_filter['key'] == 'full_path':
             return query_filter['values'][0]
+
+
+def html_to_quill(html):
+    text = strip_tags(html)
+    # quill = Quill('{"delta":"{\\"ops\\":[{\\"insert\\":\\"this is a test!\\"},{\\"insert\\":\\"\\\\n\\"}]}","html":"<p>this is a test!</p>"}')
+    quill = Quill('{"delta":"{\\"ops\\":[{\\"insert\\":\\"' + text + '\\"},{\\"insert\\":\\"\\\\n\\"}]}","html":"' + html + '"}')
+    return quill
+
+
+from .models import Product
+
+
+def test():
+    p = Product.objects.get(pk=45)
+    q = html_to_quill('Some Test without tags')
+    p.description = q
+    p.save()

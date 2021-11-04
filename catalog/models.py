@@ -48,7 +48,7 @@ class Product(models.Model):
     sku = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг', unique=True)
     attributes = models.ManyToManyField(Attribute, through='Kit', through_fields=('product', 'attribute'))
-    content = models.TextField(verbose_name='Описание', blank=True, null=True)
+    description = QuillField(verbose_name='длинное описание', null=True, blank=True)
     excerpt = models.TextField(blank=True, null=True, verbose_name='краткое описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
                                 validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')], blank=True,
@@ -136,4 +136,20 @@ class Delivery(models.Model):
 
     def __str__(self):
         return 'Оплата и доставка'
+
+
+html = {
+    "delta": {
+        "ops": [
+            {
+                "insert": 'First line. Second line'
+            }
+        ]
+    },
+    "html": '<p>First line</p><p>Second line</p>'
+}
+
+# django_quill.quill.Quill(
+#     '{"delta": "{\\"ops\\":[{\\"insert\\":\\"this is a test!\\"},{\\"insert\\":\\"\\\\n\\"}]}","html":"<p>this is a test!</p>"}')
+
 

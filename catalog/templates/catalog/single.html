@@ -105,7 +105,7 @@
 
             <div class="product__tabs product-tabs">
                 <div class="product-tabs__group tabs-header">
-                    {% if product.content %}
+                    {% if product.description %}
                         <button type="button" class="tabs-header__item" data-id="tab-1">Описание</button>
                     {% endif %}
                     {% if product_attributes %}
@@ -122,10 +122,10 @@
                     <button type="button" class="tabs-header__item" data-id="tab-5">Задать вопрос</button>
                 </div>
                 <div class="tabs-content">
-                    {% if product.content %}
+                    {% if product.description %}
                         <div class="tabs-content__item" id="tab-1">
                             <div class="page-content">
-                            {{ product.content | linebreaks }}
+                            {{ product.description.html | safe }}
                             </div>
                         </div>
                     {% endif %}

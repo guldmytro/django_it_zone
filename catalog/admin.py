@@ -32,6 +32,11 @@ class ProductAdmin(admin.ModelAdmin):
             obj.price_current = obj.price
         super().save_model(request, obj, form, change)
 
+    class Media:
+        css = {
+            'all': ('/static/css/admin-fix.css ',)
+        }
+
 
 @admin.register(Attribute)
 class AttributeAdmin(admin.ModelAdmin):

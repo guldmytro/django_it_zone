@@ -6,6 +6,7 @@ from unidecode import unidecode
 from django.utils.text import slugify
 from decimal import Decimal
 from catalog.models import GalleryImage
+from catalog.utils import html_to_quill
 
 
 def get_csv_header():
@@ -61,7 +62,7 @@ def get_product_row(product, attributes, request):
         product.category.name,
         accessories,
         product.excerpt,
-        product.content,
+        product.description.html,
         images
     ]
     row = row + attributes_values
@@ -124,7 +125,10 @@ def update_product(product, row, attributes_list):
                     if cat:
                         product.accessories.add(cat)
     product.excerpt = row[9]
-    product.content = row[10]
+    try:
+        product.description = html_to_quill(row[10])
+    except:
+        pass
     images_array = str(row[11]).split(', ')
     if images_array:
         update_images(images_array, product)
