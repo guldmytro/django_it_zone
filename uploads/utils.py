@@ -29,7 +29,13 @@ def get_csv_header():
 
 def get_attributes_header():
     attributes = Attribute.objects.all()
-    attr_header = list(item.name for item in attributes)
+    attr_header = []
+    for item in attributes:
+        if item.public:
+            name = item.name
+        else:
+            name = f'{item.name}*'
+        attr_header.append(name)
     return attr_header
 
 
@@ -137,13 +143,21 @@ def update_product(product, row, attributes_list):
     if attributes_list:
         for index, attribute_key in enumerate(attributes_list):
             attribute_value = str(row[12 + index])
+            is_public = True
+            if '*' in attribute_key:
+                is_public = False
+
+            cd_attribute_key = attribute_key.strip().replace('*', '')
             if attribute_value:
                 try:
-                    attribute = Attribute.objects.get(name=attribute_key)
+                    attribute = Attribute.objects.get(name=cd_attribute_key)
+                    attribute.public = is_public
+                    attribute.save()
                 except:
                     attribute = Attribute()
-                    attribute.name = attribute_key
+                    attribute.name = cd_attribute_key
                     attribute.slug = slugify(unidecode(attribute_key))
+                    attribute.public = is_public
                     attribute.save()
                 Kit.objects.create(attribute=attribute, product=product, value=attribute_value)
 

@@ -31,6 +31,7 @@ class Category(models.Model):
 class Attribute(models.Model):
     name = models.CharField(max_length=100, verbose_name='название')
     slug = models.SlugField(max_length=100, unique=True, verbose_name='слаг')
+    public = models.BooleanField(verbose_name='публичный?', default=True)
 
     class Meta:
         ordering = ('name',)

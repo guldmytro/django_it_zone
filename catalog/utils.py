@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django_quill.quill import Quill
 from django.utils.html import strip_tags
 
+
 def get_filters(request, category, children_categories):
     result = []
     cats = [category.name]
@@ -14,7 +15,7 @@ def get_filters(request, category, children_categories):
         cats.append(children_category.name)
         q |= Q(product__category=children_category)
 
-    for attribute in Attribute.objects.filter(q).distinct():
+    for attribute in Attribute.objects.filter(public=True).filter(q).distinct():
         attribute_dict = {
             'name': attribute.name,
             'slug': attribute.slug,
