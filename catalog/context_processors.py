@@ -1,5 +1,7 @@
 from .models import Category
 from .forms import SearchForm
+from config.models import Config
+
 
 def menu_catalog_processor(request):
     categories = []
@@ -21,3 +23,15 @@ def search_form(request):
     else:
         global_form = SearchForm()
     return {'global_form': global_form}
+
+
+def logos(request):
+    try:
+        config = Config.objects.first()
+        context = {
+            'header_logo': config.header_logo,
+            'footer_logo': config.footer_logo
+        }
+        return context
+    except:
+        return {}

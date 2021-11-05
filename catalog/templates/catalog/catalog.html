@@ -11,7 +11,9 @@
 <main class="catalog">
     <div class="container">
         <div class="section-header section-header_flex">
-            <h1 class="section-header__title">{{ category.name }}</h1>
+            <h1 class="section-header__title">
+                {% firstof extra_header category.name %}
+            </h1>
             <div class="section-header__controls header-controls_s">
                 <button type="button" data-class="list" class="header-controls__btn list" aria-label="в виде списка">
                     <span></span><span></span><span></span><span></span><span></span><span></span>

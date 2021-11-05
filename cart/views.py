@@ -5,6 +5,7 @@ from .cart import Cart
 from .forms import CartAddProductForm
 from django.urls import reverse
 from django.http import JsonResponse
+from shop.settings import TITLE_SUFFIX
 
 
 @require_POST
@@ -39,10 +40,12 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     cart = Cart(request)
     breadcrumbs = []
+    title = f'Корзина{TITLE_SUFFIX}'
     breadcrumbs.append({
         'label': 'Корзина',
         'url': reverse('cart:cart_detail'),
-        'type': 'text'
+        'type': 'text',
+
     })
-    return render(request, 'cart/detail.html', {'cart': cart, 'breadcrumbs': breadcrumbs})
+    return render(request, 'cart/detail.html', {'cart': cart, 'breadcrumbs': breadcrumbs, 'title': title})
 

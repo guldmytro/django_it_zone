@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'uploads.apps.UploadsConfig',
     'easy_thumbnails',
     'django_quill',
+    'metatags',
 
 ]
 
@@ -84,6 +85,7 @@ TEMPLATES = [
                 'wishlist.context_processors.wishlist_processor',
                 'catalog.context_processors.menu_catalog_processor',
                 'catalog.context_processors.search_form',
+                'catalog.context_processors.logos',
                 'config.context_processors.main_processor'
             ],
         },
@@ -176,3 +178,4 @@ try:
 except ImportError:
     pass
 
+TITLE_SUFFIX = ' - IT.zone'

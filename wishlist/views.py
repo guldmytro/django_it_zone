@@ -3,6 +3,7 @@ from catalog.models import Product
 from django.http import JsonResponse
 from .wishlist import Wishlist
 from django.views.decorators.http import require_POST
+from shop.settings import TITLE_SUFFIX
 
 
 def wishlist_detail(request):
@@ -12,7 +13,9 @@ def wishlist_detail(request):
         'url': '',
         'type': 'text'
     })
-    return render(request, 'wishlist/wishlist-page.html', {'breadcrumbs': breadcrumbs})
+    title = f'Список избранного{TITLE_SUFFIX}'
+    return render(request, 'wishlist/wishlist-page.html', {'breadcrumbs': breadcrumbs,
+                                                           'title': title})
 
 
 @require_POST

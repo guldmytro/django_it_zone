@@ -5,6 +5,8 @@ from catalog.models import Product
 class Config(models.Model):
     main_product = models.ManyToManyField(Product, verbose_name='продукт на главном экране')
     title = models.CharField(max_length=30, default='Настройки сайта', editable=False)
+    header_logo = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, null=True, verbose_name='Логотип в шапке')
+    footer_logo = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, null=True, verbose_name='Логотип в футере')
 
     def __str__(self):
         return self.title

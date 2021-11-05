@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Article
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
+from shop.settings import TITLE_SUFFIX
 
 
 def archive_blog(request):
@@ -23,12 +24,14 @@ def archive_blog(request):
         'url': reverse('blog:archive_blog'),
         'type': 'text'
     }]
+    title = f'Статьи{TITLE_SUFFIX}'
     context = {
         'page': page,
         'posts': posts,
         'page_name': 'Статьи',
         'post_type': 'archive',
-        'breadcrumbs': breadcrumbs
+        'breadcrumbs': breadcrumbs,
+        'title': title
     }
     return render(request, 'blog/archive.html', context)
 
@@ -36,6 +39,7 @@ def archive_blog(request):
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Article, slug=post, status='published', publish__year=year, publish__month=month,
                              publish__day=day)
+    title = f'{post.title}{TITLE_SUFFIX}'
     related_posts = False
     try:
         related_posts = Article.published.all().exclude(pk=post.pk).order_by('-publish')[:10]
@@ -58,6 +62,7 @@ def post_detail(request, year, month, day, post):
         'post': post,
         'post_type': 'single',
         'related_posts': related_posts,
-        'breadcrumbs': breadcrumbs
+        'breadcrumbs': breadcrumbs,
+        'title': title
     }
     return render(request, 'blog/single.html', context)

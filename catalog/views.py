@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from .models import Product, Category, Delivery
 from .utils import get_filters, get_prices, get_filtered_products, get_filtered_products_p, get_page_from_query, \
     get_full_path_from_query
@@ -15,6 +15,7 @@ from config.models import Config
 from django.core.mail import EmailMessage
 from shop.settings import SEND_MAIL_TO
 from contacts.models import Contact
+from shop.settings import TITLE_SUFFIX
 
 
 def index(request):
@@ -26,6 +27,7 @@ def index(request):
     shuffle(new_products_r)
     config = Config.objects.first()
     banner_product = False
+    title = f'Главная{TITLE_SUFFIX}'
     try:
         banner_products = list(config.main_product.all())
         if banner_products:
@@ -44,7 +46,8 @@ def index(request):
         'articles': articles,
         'new_products': new_products_r,
         'banner_product': banner_product,
-        'brands': brands
+        'brands': brands,
+        'title': title
     }
     return render(request, 'catalog/index.html', context)
 
@@ -52,6 +55,7 @@ def index(request):
 def product_detail(request, slug):
     delivery = Delivery.objects.first()
     product = get_object_or_404(Product, slug=slug)
+    title = f'{product.name}{TITLE_SUFFIX}'
     review_form = ReviewForm(initial={'product': product,
                                       'rating': 5})
     if request.method == 'POST':
@@ -102,13 +106,15 @@ def product_detail(request, slug):
         'review_form': review_form,
         'similar_products': similar_products[:24],
         'accessories': accessories,
-        'delivery': delivery
+        'delivery': delivery,
+        'title': title
     }
     return render(request, 'catalog/single.html', context)
 
 
 def products_by_cat(request, slug):
     category = get_object_or_404(Category, slug=slug)
+    title = f'{category.name}{TITLE_SUFFIX}'
     children_categories = category.category_set.all()
     q = Q(category=category)
     for children_category in children_categories:
@@ -140,7 +146,7 @@ def products_by_cat(request, slug):
                 'url': category.get_absolute_url,
                 'type': 'text'
             })
-
+            title = f'Результаты поиска: "{query}"{TITLE_SUFFIX}'
             context = {
                 'category': category,
                 'products': products_list,
@@ -149,7 +155,8 @@ def products_by_cat(request, slug):
                 'search_form': form,
                 'query_string': query,
                 'breadcrumbs': breadcrumbs,
-                'slug': slug
+                'slug': slug,
+                'title': title
             }
 
             return render(request, 'catalog/catalog.html', context)
@@ -205,33 +212,10 @@ def products_by_cat(request, slug):
             'full_path': full_path,
             'search_form': form,
             'breadcrumbs': breadcrumbs,
-            'slug': slug
+            'slug': slug,
+            'title': title
         }
         return render(request, 'catalog/catalog.html', context)
-
-    if request.method == 'POST':
-        query_filters = json.loads(request.body)
-        if len(query_filters):
-            try:
-                products_list = get_filtered_products_p(request, products_list, query_filters)
-            except:
-                products_list = []
-
-        paginator = Paginator(products_list, 12)
-        page = get_page_from_query(query_filters)
-        full_path = get_full_path_from_query(query_filters)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-
-        context = {
-            'products': products,
-            'full_path': full_path
-        }
-        return render(request, 'catalog/products-list.html', context)
 
 
 def search(request):
@@ -247,10 +231,12 @@ def search(request):
                 'url': '',
                 'type': 'text'
             }]
+            title = f'Результаты поиска: "{query}"{TITLE_SUFFIX}'
             context = {
                 'products': products_list,
                 'query_string': query,
-                'breadcrumbs': breadcrumbs
+                'breadcrumbs': breadcrumbs,
+                'title': title
             }
             return render(request, 'catalog/search.html', context)
     return redirect('catalog:home')
@@ -308,7 +294,7 @@ def products_by_attr(request, slug, params):
                 'url': category.get_absolute_url,
                 'type': 'text'
             })
-
+            title = f'Результаты поиска: "{query}"{TITLE_SUFFIX}'
             context = {
                 'category': category,
                 'products': products_list,
@@ -317,7 +303,8 @@ def products_by_attr(request, slug, params):
                 'search_form': form,
                 'query_string': query,
                 'breadcrumbs': breadcrumbs,
-                'slug': slug
+                'slug': slug,
+                'title': title
             }
 
             return render(request, 'catalog/catalog.html', context)
@@ -372,6 +359,15 @@ def products_by_attr(request, slug, params):
             'url': category.get_absolute_url,
             'type': 'text'
         })
+        attr_list = []
+        for atts in query_filters:
+            if atts['key'] != 'price' and atts['key'] != 'page':
+                attr_list += atts['values']
+        attr_str = ' + '.join(attr_list[:4])
+        if attr_str:
+            attr_str = ' ' + attr_str
+        title = f'{category.name}{attr_str}{TITLE_SUFFIX}'
+        extra_header = f'{category.name}{attr_str}'
         context = {
             'category': category,
             'products': products,
@@ -380,7 +376,9 @@ def products_by_attr(request, slug, params):
             'full_path': full_path,
             'search_form': form,
             'breadcrumbs': breadcrumbs,
-            'slug': slug
+            'slug': slug,
+            'title': title,
+            'extra_header': extra_header
         }
         if request.is_ajax():
             return render(request, 'catalog/products-list.html', context)

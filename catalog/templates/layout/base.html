@@ -1,12 +1,13 @@
 {% load static %}
 {% load thumbnail %}
+{% load metatags %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    {% include_metatags object default_title=title default_description='✓ Компъютерная техника для офиса и дома, It-услуги по выгодным ценам' default_keywords='Компътеры, ноутбуки, it-услуги' %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <title>{% block title %}Главная {% endblock %}- IT.zone</title>
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% block payment %}{% endblock %}
@@ -63,7 +64,11 @@
             <div class="container">
                 <div class="header-row">
                     <a href="{% url 'catalog:home' %}" class="header-logo">
-                        <img src="{% static 'img/logo.png' %}" width="150" height="30" alt="логотип" class="header-logo__img">
+                        {% if header_logo %}
+                            <img src="{{ header_logo.url }}" width="{{ header_logo.width }}" height="{{ header_logo.height }}" alt="логотип" class="header-logo__img">
+                        {% else %}
+                            <img src="{% static 'img/logo.png' %}" width="150" height="30" alt="логотип" class="header-logo__img">
+                        {% endif %}
                     </a>
                     <ul class="header-services">
                         <li class="header-services__item">
@@ -223,7 +228,11 @@
             <div class="footer-row">
                 <div class="footer-logo">
                     <a href="{% url 'catalog:home' %}">
-                        <img src="{% static 'img/logo-footer.png' %}" width="150" height="31" alt="логотип">
+                        {% if header_logo %}
+                            <img src="{{ footer_logo.url }}" width="{{ header_logo.width }}" height="{{ header_logo.height }}" alt="логотип" class="header-logo__img">
+                        {% else %}
+                            <img src="{% static 'img/logo-footer.png' %}" width="150" height="31" alt="логотип">
+                        {% endif %}
                     </a>
                     <p>© Все права защищены</p>
                 </div>

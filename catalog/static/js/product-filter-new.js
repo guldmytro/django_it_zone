@@ -8,7 +8,6 @@
             const vals = pArray[1].split(',');
             if (key === 'price') {
                 $(`[name='price']`).attr('data-to', vals[1]).attr('data-from', vals[0]);
-                console.log($(`[name='price']`));
             } else {
                 for (let val of vals) {
                     $(`[name='${key}'][value='${decodeURI(val)}']`).prop('checked', true);
@@ -75,9 +74,17 @@ filterForm.submit(function(e) {
                 });
             }
             smooth = false;
+            updateTitles();
         }
     });
 });
+
+function updateTitles(response) {
+    const title = $(document).find('.hidden-titles .title').text();
+    const mainTitle = $(document).find('.hidden-titles .main-title').text();
+    $('head title').text(title);
+    $('.section-header__title').text(mainTitle);
+}
 
 function getFilteredUrl(form) {
     const queryData = getQueryData();

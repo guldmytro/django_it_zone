@@ -8,7 +8,7 @@ from catalog.models import Product
 from django.db.models import F
 import json
 from django.core.mail import EmailMessage
-from shop.settings import SEND_MAIL_TO
+from shop.settings import SEND_MAIL_TO, TITLE_SUFFIX
 from django.template.loader import render_to_string
 
 
@@ -55,24 +55,28 @@ def order_create(request):
             if order.payment == 'online':
                 return redirect('orders:pay', id=order.pk)
             else:
-                return render(request, 'orders/created.html', {'order': order})
+                return render(request, 'orders/created.html', {'order': order, 'title': f'Заказ успешно оформлен{TITLE_SUFFIX}'})
         else:
             checkout_form = OrderCreateForm(request.POST)
+            title = f'Оформление заказа{TITLE_SUFFIX}'
             context = {
                 'checkout_form': checkout_form,
                 'cart': cart,
                 'breadcrumbs': breadcrumbs,
-                'submit_text': 'Заказ подтверждаю'
+                'submit_text': 'Заказ подтверждаю',
+                'title': title
             }
             return render(request, 'orders/checkout.html', context)
 
     else:
         checkout_form = OrderCreateForm()
+        title = f'Оформление заказа{TITLE_SUFFIX}'
         context = {
             'checkout_form': checkout_form,
             'cart': cart,
             'breadcrumbs': breadcrumbs,
-            'submit_text': 'Заказ подтверждаю'
+            'submit_text': 'Заказ подтверждаю',
+            'title': title
         }
         return render(request, 'orders/checkout.html', context)
 
@@ -89,11 +93,13 @@ def order_pay(request, id):
         pass
     if order.payment != 'online' or order.paid:
         raise Http404
+    title = f'Оплата заказа{TITLE_SUFFIX}'
     context = {
         'order': order,
         'order_items': order_items,
         'total_amount': total_amount,
-        'token': token
+        'token': token,
+        'title': title
     }
     return render(request, 'orders/pay.html', context)
 

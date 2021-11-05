@@ -5,12 +5,13 @@ import csv
 from .utils import get_csv_header, get_attributes_header, get_product_row, push_products
 from catalog.models import Product, Attribute
 from .forms import CsvForm
+from shop.settings import TITLE_SUFFIX
 
 
 @login_required(login_url='/admin/')
 def products_upload(request):
     form = CsvForm()
-    return render(request, 'uploads/detail.html', {'form': form})
+    return render(request, 'uploads/detail.html', {'form': form, 'title': f'Управление товарами{TITLE_SUFFIX}'})
 
 
 @login_required(login_url='/admin/')
@@ -36,7 +37,7 @@ def products_add(request):
             csv_file = form.save()
             form = CsvForm()
             push_products(csv_file.file.path, request)
-            return render(request, 'uploads/detail.html', {'form': form, 'result': 'Отработано'})
+            return render(request, 'uploads/detail.html', {'form': form, 'result': 'Отработано', 'title': f'Управление товарами{TITLE_SUFFIX}'})
     form = CsvForm()
     return render(request, 'uploads/detail.html', {'form': form})
 
