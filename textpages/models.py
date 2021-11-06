@@ -12,6 +12,7 @@ class Page(models.Model):
     class Meta:
         verbose_name = 'Страница ИБ'
         verbose_name_plural = 'Страница ИБ'
+        ordering = ['id']
 
 
 class Section(models.Model):
@@ -22,3 +23,6 @@ class Section(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['pk']
