@@ -5,7 +5,7 @@
         for (const p of params) {
             const pArray = p.split(':');
             const key = pArray[0];
-            const vals = pArray[1].split(',');
+            const vals = pArray[1].split('=');
             if (key === 'price') {
                 $(`[name='price']`).attr('data-to', vals[1]).attr('data-from', vals[0]);
             } else {
@@ -103,7 +103,7 @@ function getQueryData() {
     const filters = {};
     let strArr = [];
     if ($('.form-filters [name="price"]').length) {
-        filters.price = [String($('.form-filters [name="price"]').val()).replace(';', ',')];
+        filters.price = [String($('.form-filters [name="price"]').val()).replace(';', '=')];
     }
     filters.page = [String($('.form-filters [name="page"]').val())];
     $('.form-filters input:checked').each(function() {
@@ -116,7 +116,7 @@ function getQueryData() {
         filters[key].push(value);
     });
     for (const filter in filters) {
-        const params = filters[filter].join(',');
+        const params = filters[filter].join('=');
         strArr.push(`${filter}:${params}`);
     }
     let result = strArr.join(';');
@@ -130,7 +130,7 @@ function parseFilteredFields(form) {
         if ($this.attr('name') === 'price') {
             result["price"] = {
                 "key": "price",
-                "values": [String($this.val()).replace(';', ',')]
+                "values": [String($this.val()).replace(';', '=')]
             }
         }
         if ($this.attr('name') === 'page') {

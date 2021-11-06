@@ -29,10 +29,10 @@
             <ul class="sidebar-filters__items">
                 {% for key in filter.values %}
                 <li>
-                    <input type="checkbox" id="{{ key.slug }}" name="{{ filter.slug }}"
+                    <input type="checkbox" id="{{ key.slug }}-{{ forloop.parentloop.counter }}" name="{{ filter.slug }}"
                            value="{{ key.value }}"{% if key.checked %}checked{% endif %}>
                     <span class="custom-checkbox"></span>
-                    <label for="{{ key.slug }}">{{ key.value }} ({{ key.cnt }})</label>
+                    <label for="{{ key.slug }}-{{ forloop.parentloop.counter }}">{{ key.value }} ({{ key.cnt }})</label>
                 </li>
                 {% endfor %}
             </ul>

@@ -319,7 +319,7 @@ def products_by_attr(request, slug, params):
         for p in params_list:
             p_list = p.split(':')
             key = p_list[0]
-            vals = p_list[1].split(',')
+            vals = p_list[1].split('=')
             query_filters.append({
                 'key': key,
                 'values': vals

@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'contacts.apps.ContactsConfig',
     'config.apps.ConfigConfig',
+    'textpages.apps.TextpagesConfig',
+    'textpages2.apps.Textpages2Config',
     'uploads.apps.UploadsConfig',
     'easy_thumbnails',
     'django_quill',

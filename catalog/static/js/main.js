@@ -386,3 +386,16 @@ $('.form-question').on('submit', function(e) {
         }
     });
 });
+
+$('.bullets a').click(function(e) {
+    e.preventDefault();
+    if ($(this).hasClass('active')) {
+        return false;
+    }
+    $('.bullets a').removeClass('active');
+    $(this).addClass('active');
+    const href = $(this).attr('href');
+    $('.ch-content').hide();
+    $(`${href}`).show();
+});
+$('.bullets a:first-child').click();
