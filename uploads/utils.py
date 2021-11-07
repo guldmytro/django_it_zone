@@ -84,14 +84,17 @@ def push_products(csv_file, request):
     for row in csvreader:
         rows.append(row)
     for row in rows:
-        product_name = row[1]
+        slug = slugify(unidecode(row[1]))
         try:
-            product = Product.objects.get(name=product_name)
+            product = Product.objects.get(slug=slug)
         except:
             product = Product()
-            product.slug = slugify(unidecode(row[1]))
+            product.slug = slug
             product.save()
-        update_product(product, row, attributes_list)
+        try:
+            update_product(product, row, attributes_list)
+        except:
+            pass
     file.close()
 
 
