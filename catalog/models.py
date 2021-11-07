@@ -104,7 +104,7 @@ class Kit(models.Model):
 
 class GalleryImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='images', null=True, blank=True)
-    file = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение')
+    file = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение', blank=True, null=True)
     alt = models.CharField(max_length=200, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='создано')
     image_url = models.URLField(blank=True, null=True)
