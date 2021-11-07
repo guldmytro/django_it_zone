@@ -123,7 +123,7 @@ class GalleryImage(models.Model):
         verbose_name_plural = 'изображения'
 
     def __str__(self):
-        return self.file.url
+        return 'Картинка'
 
 
 class Delivery(models.Model):
