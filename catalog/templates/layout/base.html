@@ -241,6 +241,12 @@
                     {% if pages or contacts %}
                     <ul class="footer-menu">
                         <li class="footer-menu__item">
+                            <a href="{% url 'it-services:page' %}">ИТ-Услуги</a>
+                        </li>
+                        <li class="footer-menu__item">
+                            <a href="{% url 'information-security:page' %}">ИБ-Услуги</a>
+                        </li>
+                        <li class="footer-menu__item">
                             <a href="{% url 'blog:archive_blog' %}">Новости</a>
                         </li>
                         {% for page in pages %}

@@ -310,6 +310,48 @@ def products_by_attr(request, slug, params):
             return render(request, 'catalog/catalog.html', context)
 
     query_filters = []
+    attr_list = []
+    for atts in query_filters:
+        if atts['key'] != 'price' and atts['key'] != 'page':
+            attr_list += atts['values']
+    attr_str = ' + '.join(attr_list[:4])
+    if attr_str:
+        attr_str = ' ' + attr_str
+    title = f'{category.name}{attr_str}{TITLE_SUFFIX}'
+    extra_header = f'{category.name}{attr_str}'
+    if request.is_ajax():
+        params_list = params.split(';')
+        page = 1
+        for p in params_list:
+            p_list = p.split(':')
+            key = p_list[0]
+            vals = p_list[1].split('=')
+            query_filters.append({
+                'key': key,
+                'values': vals
+            })
+            if key == 'page':
+                page = int(vals[0])
+        if len(query_filters):
+            try:
+                products_list = get_filtered_products(request, products_list, query_filters)
+            except:
+                products_list = []
+
+        paginator = Paginator(products_list, 12)
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+
+        context = {
+            'products': products,
+            'title': title,
+            'extra_header': extra_header
+        }
+        return render(request, 'catalog/products-list.html', context)
 
     if request.method == 'GET':
         filters = get_filters(request, category, children_categories)
@@ -359,15 +401,8 @@ def products_by_attr(request, slug, params):
             'url': category.get_absolute_url,
             'type': 'text'
         })
-        attr_list = []
-        for atts in query_filters:
-            if atts['key'] != 'price' and atts['key'] != 'page':
-                attr_list += atts['values']
-        attr_str = ' + '.join(attr_list[:4])
-        if attr_str:
-            attr_str = ' ' + attr_str
-        title = f'{category.name}{attr_str}{TITLE_SUFFIX}'
-        extra_header = f'{category.name}{attr_str}'
+
+
         context = {
             'category': category,
             'products': products,
@@ -380,8 +415,6 @@ def products_by_attr(request, slug, params):
             'title': title,
             'extra_header': extra_header
         }
-        if request.is_ajax():
-            return render(request, 'catalog/products-list.html', context)
         return render(request, 'catalog/catalog.html', context)
 
 
