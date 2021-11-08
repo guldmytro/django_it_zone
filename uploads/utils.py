@@ -94,27 +94,31 @@ def push_products(csv_file, request):
             product = Product()
             product.slug = slug
             product.save()
+
         try:
             update_product(product, row, attributes_list)
         except:
-            pass
+            product.delete()
     file.close()
 
 
 def update_product(product, row, attributes_list):
     product.name = row[1]
+    product.save()
     product.sku = row[2]
     product.price = Decimal(row[3])
     if row[4]:
         product.price_sale = Decimal(row[4])
-
+    product.save()
     if product.price_sale:
         product.price_current = product.price_sale
     else:
         product.price_current = product.price
+    product.save()
     product.available = True
     product.sales = row[6]
     category_str = row[7]
+    product.save()
     try:
         category = Category.objects.get(name=category_str)
         product.category = category
@@ -154,15 +158,16 @@ def update_product(product, row, attributes_list):
                 is_public = False
 
             cd_attribute_key = attribute_key.strip().replace('*', '')
+            cd_attribute_slug = slugify(unidecode(cd_attribute_key))
             if attribute_value:
                 try:
-                    attribute = Attribute.objects.get(name=cd_attribute_key)
+                    attribute = Attribute.objects.get(slug=cd_attribute_slug)
                     attribute.public = is_public
                     attribute.save()
                 except:
                     attribute = Attribute()
                     attribute.name = cd_attribute_key
-                    attribute.slug = slugify(unidecode(attribute_key))
+                    attribute.slug = cd_attribute_slug
                     attribute.public = is_public
                     attribute.save()
                 Kit.objects.create(attribute=attribute, product=product, value=attribute_value)
