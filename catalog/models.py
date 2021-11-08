@@ -45,7 +45,7 @@ class Attribute(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, blank=True, null=True,
                                  verbose_name='категория')
-    name = models.CharField(max_length=200, db_index=True, verbose_name='название', unique=True)
+    name = models.CharField(max_length=200, db_index=True, verbose_name='название')
     sku = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг', unique=True)
     attributes = models.ManyToManyField(Attribute, through='Kit', through_fields=('product', 'attribute'))
