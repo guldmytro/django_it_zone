@@ -118,12 +118,14 @@ def update_product(product, row, attributes_list):
     product.sales = row[6]
     category_str = row[7]
     product.save()
+
+    cat_slug = slugify(unidecode(category_str))
     try:
-        category = Category.objects.get(name=category_str)
+        category = Category.objects.get(slug=cat_slug)
         product.category = category
     except:
         if category_str:
-            cat = add_category(category_str)
+            cat = add_category(category_str, cat_slug)
             if cat:
                 product.category = cat
 
@@ -131,12 +133,13 @@ def update_product(product, row, attributes_list):
     product.accessories.clear()
     if related_cats:
         for category_str in related_cats:
+            cat_slug = slugify(unidecode(category_str))
             try:
-                category = Category.objects.get(name=category_str)
+                category = Category.objects.get(slug=cat_slug)
                 product.accessories.add(category)
             except:
                 if category_str:
-                    cat = add_category(category_str)
+                    cat = add_category(category_str, cat_slug)
                     if cat:
                         product.accessories.add(cat)
     product.excerpt = row[9]
@@ -178,10 +181,10 @@ def add_product():
     pass
 
 
-def add_category(category_str):
+def add_category(category_str, cat_slug):
     cat = Category()
     cat.name = category_str
-    cat.slug = slugify(unidecode(category_str))
+    cat.slug = cat_slug
     cat.save()
     return cat
 
