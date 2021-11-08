@@ -95,9 +95,11 @@ def push_products(csv_file, request):
             product.slug = slug
             product.save()
 
-
-        update_product(product, row, attributes_list)
-        # product.delete()
+        try:
+            update_product(product, row, attributes_list)
+        except:
+            product.delete()
+            
     file.close()
 
 
