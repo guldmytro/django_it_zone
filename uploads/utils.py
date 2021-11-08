@@ -56,7 +56,10 @@ def get_product_row(product, attributes, request):
             attributes_values.append(kit.value)
         except:
             attributes_values.append('')
-
+    try:
+        cat_name = product.category.name
+    except:
+        cat_name = ''
     row = [
         product.pk,
         product.name,
@@ -65,7 +68,7 @@ def get_product_row(product, attributes, request):
         product.price_sale,
         product.available,
         product.sales,
-        product.category.name,
+        cat_name,
         accessories,
         product.excerpt,
         product.description.html,
