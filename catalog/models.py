@@ -111,10 +111,13 @@ class GalleryImage(models.Model):
 
     def save(self, *args, **kwargs):
         if self.image_url and not self.file:
-            res = request.urlopen(self.image_url)
-            name = str(self.image_url).rsplit('/', 1)[1]
-            image_name = f'{name}'
-            self.file.save(image_name, ContentFile(res.read()))
+            try:
+                res = request.urlopen(self.image_url)
+                name = str(self.image_url).rsplit('/', 1)[1]
+                image_name = f'{name}'
+                self.file.save(image_name, ContentFile(res.read()))
+            except:
+                pass
         super(GalleryImage, self).save(*args, **kwargs)
 
     class Meta:

@@ -95,6 +95,7 @@ def push_products(csv_file, request):
             product.slug = slug
             product.save()
 
+        # update_product(product, row, attributes_list)
         try:
             update_product(product, row, attributes_list)
         except:
@@ -193,6 +194,7 @@ def add_category(category_str, cat_slug):
 
 def update_images(images_array, product):
     GalleryImage.objects.filter(product=product).update(product=None)
+
     for url in images_array:
         try:
             image = GalleryImage()

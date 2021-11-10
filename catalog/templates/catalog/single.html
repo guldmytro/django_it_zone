@@ -26,8 +26,13 @@
                     <div class="aside-gallery {% if product.images.count > 3 %}gallery{% else %}static{% endif %}">
                         {% for image in product.images.all %}
                             <div class="aside-gallery__item" data-slick-index="{{ forloop.counter0 }}">
+                                {% if image.file %}
                                 <img src="{{ image.file | thumbnail_url:'small' }}"
                                      alt="{{ image.alt }}" loading="lazy">
+                                {% elif image.image_url %}
+                                <img src="{{ image.image_url }}"
+                                     alt="{{ image.alt }}" loading="lazy">
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
@@ -35,8 +40,13 @@
                         {% for image in product.images.all %}
                             <div class="main-product-gallery__item">
                                 <div class="thumb">
+                                    {% if image.file %}
                                     <img src="{{ image.file | thumbnail_url:'medium' }}"
                                          alt="{{ image.alt }}" loading="lazy">
+                                    {% elif image.image_url %}
+                                    <img src="{{ image.image_url }}"
+                                         alt="{{ image.alt }}" loading="lazy">
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
