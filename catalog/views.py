@@ -314,6 +314,19 @@ def products_by_attr(request, slug, params):
 
     query_filters = []
     attr_list = []
+    params_list = params.split(';')
+    page = 1
+    for p in params_list:
+        p_list = p.split(':')
+        key = p_list[0]
+        vals = p_list[1].split('=')
+        query_filters.append({
+            'key': key,
+            'values': vals
+        })
+        if key == 'page':
+            page = int(vals[0])
+
     for atts in query_filters:
         if atts['key'] != 'price' and atts['key'] != 'page':
             attr_list += atts['values']
@@ -323,18 +336,7 @@ def products_by_attr(request, slug, params):
     title = f'{category.name}{attr_str}{TITLE_SUFFIX}'
     extra_header = f'{category.name}{attr_str}'
     if request.is_ajax():
-        params_list = params.split(';')
-        page = 1
-        for p in params_list:
-            p_list = p.split(':')
-            key = p_list[0]
-            vals = p_list[1].split('=')
-            query_filters.append({
-                'key': key,
-                'values': vals
-            })
-            if key == 'page':
-                page = int(vals[0])
+
         if len(query_filters):
             try:
                 products_list = get_filtered_products(request, products_list, query_filters)
@@ -404,7 +406,6 @@ def products_by_attr(request, slug, params):
             'url': category.get_absolute_url,
             'type': 'text'
         })
-
 
         context = {
             'category': category,
