@@ -89,11 +89,14 @@ def product_detail(request, slug):
     })
 
     for attribute in product.attributes.all():
-        kit = attribute.kit_set.get(product=product)
-        product_attributes.append({
-            'name': attribute.name,
-            'value': kit.value
-        })
+        try:
+            kit = attribute.kit_set.get(product=product)
+            product_attributes.append({
+                'name': attribute.name,
+                'value': kit.value
+            })
+        except:
+            pass
     similar_products = list(Product.objects.filter(category=category).exclude(id=product.id))
     shuffle(similar_products)
     accessories_cats = product.accessories.all()
