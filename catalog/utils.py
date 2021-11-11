@@ -27,10 +27,13 @@ def get_filters(request, category, children_categories):
             found = False
 
             for filter in attribute_dict['values']:
-                if filter['slug'] == slug and kit.product.category.name in cats:
-                    filter['cnt'] += 1
-                    found = True
-                    break
+                try:
+                    if filter['slug'] == slug and kit.product.category.name in cats:
+                        filter['cnt'] += 1
+                        found = True
+                        break
+                except:
+                    pass
 
             if not found:
                 get_parameters = request.GET.getlist(attribute.slug)
