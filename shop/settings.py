@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'django_quill',
     'metatags',
-
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
