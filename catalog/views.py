@@ -266,7 +266,6 @@ def question(request):
         return JsonResponse({'status': 'bad', 'text': 'Ошибка отправки сообщения'})
 
 
-@cache_page(60 * 1440)
 def products_by_attr(request, slug, params):
     category = get_object_or_404(Category, slug=slug)
     children_categories = category.category_set.all()
