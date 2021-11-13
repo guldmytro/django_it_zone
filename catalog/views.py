@@ -16,6 +16,7 @@ from django.core.mail import EmailMessage
 from shop.settings import SEND_MAIL_TO
 from contacts.models import Contact
 from shop.settings import TITLE_SUFFIX
+from django.views.decorators.cache import cache_page
 
 
 def index(request):
@@ -115,6 +116,7 @@ def product_detail(request, slug):
     return render(request, 'catalog/single.html', context)
 
 
+@cache_page(60 * 1440)
 def products_by_cat(request, slug):
     category = get_object_or_404(Category, slug=slug)
     title = f'{category.name}{TITLE_SUFFIX}'
@@ -264,6 +266,7 @@ def question(request):
         return JsonResponse({'status': 'bad', 'text': 'Ошибка отправки сообщения'})
 
 
+@cache_page(60 * 1440)
 def products_by_attr(request, slug, params):
     category = get_object_or_404(Category, slug=slug)
     children_categories = category.category_set.all()
