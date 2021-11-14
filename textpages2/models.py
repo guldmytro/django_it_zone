@@ -10,8 +10,8 @@ class Page2(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Страница СКУД'
-        verbose_name_plural = 'Страница СКУД'
+        verbose_name = 'Страница ИТ-Услуг'
+        verbose_name_plural = 'Страница ИТ-услуг'
         ordering = ['id']
 
 
