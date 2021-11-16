@@ -16,7 +16,7 @@ def page(request):
     title = f'ИБ-Услуги{TITLE_SUFFIX}'
     breadcrumbs = []
     breadcrumbs.append({
-        'label': 'ИБ-Услуги',
+        'label': 'СКУД',
         'url': '',
         'type': 'text'
     })
