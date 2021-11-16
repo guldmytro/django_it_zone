@@ -58,18 +58,22 @@
 
                 <div class="product__info">
                     <div class="product__price">
-                        {% if product.price_sale %}
-                        <del>
-                            {{ product.price | floatformat:"0" }} руб.
-                        </del>
-                        &nbsp;
-                        <ins>
-                            {{ product.price_sale | floatformat:"0" }} руб.
-                        </ins>
+                        {% if product.price == 1.00 %}
+                            <p>Цена по запросу</p>
                         {% else %}
-                            <span>
+                            {% if product.price_sale %}
+                            <del>
                                 {{ product.price | floatformat:"0" }} руб.
-                            </span>
+                            </del>
+                            &nbsp;
+                            <ins>
+                                {{ product.price_sale | floatformat:"0" }} руб.
+                            </ins>
+                            {% else %}
+                                <span>
+                                    {{ product.price | floatformat:"0" }} руб.
+                                </span>
+                            {% endif %}
                         {% endif %}
                     </div>
                     <form action="{% url 'cart:cart_add' product.id %}" method="post" class="add-to-cart-form">

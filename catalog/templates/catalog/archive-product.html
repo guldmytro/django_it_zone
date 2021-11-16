@@ -23,19 +23,24 @@
         {% endif %}
         <p class="archive-product__price">
             <span class="current">
-                {% if product.price_sale %}
-                <del>
-                    {{ product.price | floatformat:"0" }} руб.
-                </del>
-                &nbsp;
-                <ins>
-                    {{ product.price_sale | floatformat:"0" }} руб.
-                </ins>
+                {% if product.price == 1.00 %}
+                    <p>Цена по запросу</p>
                 {% else %}
-                    <span>
+                    {% if product.price_sale %}
+                    <del>
                         {{ product.price | floatformat:"0" }} руб.
-                    </span>
+                    </del>
+                    &nbsp;
+                    <ins>
+                        {{ product.price_sale | floatformat:"0" }} руб.
+                    </ins>
+                    {% else %}
+                        <span>
+                            {{ product.price | floatformat:"0" }} руб.
+                        </span>
+                    {% endif %}
                 {% endif %}
+
             </span>
         </p>
         <div class="archive-product__controls">
