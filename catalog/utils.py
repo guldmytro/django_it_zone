@@ -18,7 +18,7 @@ def get_filters(request, category, children_categories):
     for attribute in Attribute.objects.filter(public=True).filter(q).distinct():
         attribute_dict = {
             'name': attribute.name,
-            # 'slug': attribute.slug,
+            'slug': attribute.slug,
             'values': []
         }
         appended_values = []
