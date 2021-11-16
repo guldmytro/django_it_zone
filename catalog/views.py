@@ -166,20 +166,9 @@ def products_by_cat(request, slug):
 
             return render(request, 'catalog/catalog.html', context)
 
-    query_filters = []
     if request.method == 'GET':
         filters = get_filters(request, category, children_categories)
         prices = get_prices(products_list, request)
-        for key in request.GET:
-            query_filters.append({
-                'key': key,
-                'values': request.GET.getlist(key)
-            })
-        if len(query_filters):
-            try:
-                products_list = get_filtered_products(request, products_list, query_filters)
-            except:
-                products_list = []
 
         paginator = Paginator(products_list, 12)
         page = request.GET.get('page')
@@ -189,12 +178,6 @@ def products_by_cat(request, slug):
             products = paginator.page(1)
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
-        full_path = ''
-        try:
-            full_path = request.get_full_path().split('?')[1]
-            full_path = full_path.replace('page', 'non-page')
-        except:
-            pass
 
         breadcrumbs = []
         parent_category = category.parent_category
@@ -214,7 +197,6 @@ def products_by_cat(request, slug):
             'products': products,
             'filters': filters,
             'prices': prices,
-            'full_path': full_path,
             'search_form': form,
             'breadcrumbs': breadcrumbs,
             'slug': slug,

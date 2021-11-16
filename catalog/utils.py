@@ -1,8 +1,8 @@
-import json
+# import json
 
 from .models import Kit, Attribute
 from django.db.models import Count, Q, Min, Max
-from django.utils.text import slugify
+# from django.utils.text import slugify
 from django_quill.quill import Quill
 from django.utils.html import strip_tags
 
@@ -18,36 +18,37 @@ def get_filters(request, category, children_categories):
     for attribute in Attribute.objects.filter(public=True).filter(q).distinct():
         attribute_dict = {
             'name': attribute.name,
-            'slug': attribute.slug,
+            # 'slug': attribute.slug,
             'values': []
         }
+        appended_values = []
         for kit in Kit.objects.filter(attribute=attribute).annotate(cnt=Count('product',
-                                                                              filter=q)):
-            slug = slugify(kit.value, allow_unicode=True)
-            found = False
+                                                                              filter=q)).distinct():
+            # slug = slugify(kit.value, allow_unicode=True)
+            # found = False
 
-            for filter in attribute_dict['values']:
-                try:
-                    if filter['slug'] == slug and kit.product.category.name in cats:
-                        filter['cnt'] += 1
-                        found = True
-                        break
-                except:
-                    pass
-
-            if not found:
-                get_parameters = request.GET.getlist(attribute.slug)
-                if kit.value in get_parameters:
-                    checked = True
-                else:
-                    checked = False
-                if kit.cnt > 0 and kit.product.category.name in cats:
-                    attribute_dict['values'].append({
-                        'value': kit.value,
-                        'slug': slug,
-                        'cnt': kit.cnt,
-                        'checked': checked
-                    })
+            if kit.cnt > 0 and kit.product.category.name in cats and kit.value not in appended_values:
+                attribute_dict['values'].append({
+                    'value': kit.value,
+                })
+                appended_values.append(kit.value)
+            #
+            # for filter in attribute_dict['values']:
+            #     try:
+            #         if filter['slug'] == slug and kit.product.category.name in cats:
+            #             filter['cnt'] += 1
+            #             found = True
+            #             break
+            #     except:
+            #         pass
+            #
+            # if not found:
+            #     if kit.cnt > 0 and kit.product.category.name in cats:
+            #         attribute_dict['values'].append({
+            #             'value': kit.value,
+            #             'slug': slug,
+            #             'cnt': kit.cnt
+            #         })
         result.append(attribute_dict)
     return result
 
