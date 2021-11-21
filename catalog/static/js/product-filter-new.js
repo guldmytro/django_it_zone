@@ -8,6 +8,8 @@
             const vals = pArray[1].split('=');
             if (key === 'price') {
                 $(`[name='price']`).attr('data-to', vals[1]).attr('data-from', vals[0]);
+            } else if (key === 'order') {
+                $('#product-order').val(vals[0]);
             } else {
                 for (let val of vals) {
                     $(`[name='${key}'][value='${decodeURI(val)}']`).prop('checked', true);
@@ -54,7 +56,6 @@ filterForm.submit(function(e) {
     e.preventDefault();
     const $this = $(this);
     filterFormSubmit.prop('disabled', true).text('Загрузка...');
-    const queryData = parseFilteredFields($this);
     const newUrl = getFilteredUrl($this);
     $('.catalog-results').slideUp(100);
     $('.sidebar_search input').val('');
@@ -115,49 +116,13 @@ function getQueryData() {
         }
         filters[key].push(value);
     });
+    filters.order = [$('#product-order').val()];
     for (const filter in filters) {
         const params = filters[filter].join('=');
         strArr.push(`${filter}:${params}`);
     }
     let result = strArr.join(';');
     return result;
-}
-
-function parseFilteredFields(form) {
-    result = {}
-    form.find('input').each(function() {
-        const $this = $(this);
-        if ($this.attr('name') === 'price') {
-            result["price"] = {
-                "key": "price",
-                "values": [String($this.val()).replace(';', '=')]
-            }
-        }
-        if ($this.attr('name') === 'page') {
-            result["page"] = {
-                "key": "page",
-                "values": [$this.val()]
-            }
-        }
-        if (!$this.is(':checked') && $this.attr('name') != 'page') {
-            return;
-        }
-        const key = $this.attr('name');
-        const val = $this.val();
-        if (!result[key]) {
-            result[key] = {
-                "key": key,
-                "values": [val]
-            }
-        } else {
-            result[key]['values'].push(val);
-        }
-    });
-    const finalResult = [];
-    for (let key in result) {
-        finalResult.push(result[key]);
-    }
-    return finalResult;
 }
 
 function setPage(page=1) {
@@ -170,11 +135,12 @@ $('main.catalog').on('click', '.page-links__item button:not(.manual)', function(
     const page = $(this).attr('data-page');
     $(this).closest('.pagination').addClass('loading');
     setPage(page);
-
     filterForm.submit();
     smooth = true;
 });
 
-
-
-
+// ordering
+$('#product-order').on('change', function() {
+    setPage();
+    filterForm.submit();
+});

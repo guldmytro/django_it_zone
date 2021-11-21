@@ -10,10 +10,23 @@
 {% block content %}
 <main class="catalog">
     <div class="container">
+        <h1 class="section-header__title">
+            {% firstof extra_header category.name %}
+        </h1>
         <div class="section-header section-header_flex">
-            <h1 class="section-header__title">
-                {% firstof extra_header category.name %}
-            </h1>
+
+            <div class="headers-controls__ordering">
+                <label for="product-order">Сортировать:</label>
+                <div class="select-wrapper">
+                    <select name="product-order" id="product-order">
+                        <option value="rating">По рейтингу</option>
+                        <option value="new">По новизне</option>
+                        <option value="price_asc">От дешевых к дорогим</option>
+                        <option value="price_desc">От дорогих к дешевым</option>
+                        <option value="discount">Сначала товары со скидкой</option>
+                    </select>
+                </div>
+            </div>
             <div class="section-header__controls header-controls_s">
                 <button type="button" data-class="list" class="header-controls__btn list" aria-label="в виде списка">
                     <span></span><span></span><span></span><span></span><span></span><span></span>

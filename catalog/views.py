@@ -300,6 +300,7 @@ def products_by_attr(request, slug, params):
     attr_list = []
     params_list = params.split(';')
     page = 1
+    order = False
     for p in params_list:
         p_list = p.split(':')
         key = p_list[0]
@@ -310,24 +311,35 @@ def products_by_attr(request, slug, params):
         })
         if key == 'page':
             page = int(vals[0])
-
+        if key == 'order':
+            order = vals[0]
+    exclude_attrs = ['price', 'page', 'order']
     for atts in query_filters:
-        if atts['key'] != 'price' and atts['key'] != 'page':
+        if atts['key'] not in exclude_attrs:
             attr_list += atts['values']
     attr_str = ' + '.join(attr_list[:4])
     if attr_str:
         attr_str = ' ' + attr_str
     title = f'{category.name}{attr_str}{TITLE_SUFFIX}'
     extra_header = f'{category.name}{attr_str}'
-    if request.is_ajax():
 
+    if request.is_ajax():
         if len(query_filters):
             try:
                 products_list = get_filtered_products(request, products_list, query_filters)
             except:
                 products_list = []
+        if order == 'new':
+            products_list = products_list.order_by('-created')
+        elif order == 'price_asc':
+            products_list = products_list.order_by('price_current')
+        elif order == 'price_desc':
+            products_list = products_list.order_by('-price_current')
+        elif order == 'discount':
+            products_list = products_list.order_by('price_sale', 'price_current')
 
         paginator = Paginator(products_list, 12)
+
         try:
             products = paginator.page(page)
         except PageNotAnInteger:
