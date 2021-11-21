@@ -375,6 +375,15 @@ def products_by_attr(request, slug, params):
             except:
                 products_list = []
 
+        if order == 'new':
+            products_list = products_list.order_by('-created')
+        elif order == 'price_asc':
+            products_list = products_list.order_by('price_current')
+        elif order == 'price_desc':
+            products_list = products_list.order_by('-price_current')
+        elif order == 'discount':
+            products_list = products_list.order_by('price_sale', 'price_current')
+
         paginator = Paginator(products_list, 12)
         try:
             products = paginator.page(page)
