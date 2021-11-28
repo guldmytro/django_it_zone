@@ -8,7 +8,7 @@ from shop.settings import TITLE_SUFFIX
 
 
 def index(request):
-    # parse_brands()
+    parse_brands()
     letters = parse_letters()
     breadcrumbs = [{
                 'label': 'Поставщики',
