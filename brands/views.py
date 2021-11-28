@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from .utils import parse_brands, parse_letters, parse_url
+from .utils import parse_letters, parse_url
 from .models import Brand
 from catalog.models import Product
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -8,7 +8,6 @@ from shop.settings import TITLE_SUFFIX
 
 
 def index(request):
-    parse_brands()
     letters = parse_letters()
     breadcrumbs = [{
                 'label': 'Поставщики',
