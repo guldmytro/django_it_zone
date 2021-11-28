@@ -1,0 +1,52 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<section class="brands">
+    <div class="container">
+        <h1 class="section-header__title">Поставщики</h1>
+        <div class="brands-filters">
+            <div class="brands-filters__item filter-item">
+                <span class="filter-item__label">Фильтр: </span>
+                <div class="filter-item-wrapper">
+                    <fieldset>
+                        <label>
+                            <input type="radio" name="brand-type" value="all" checked>
+                            <span>Все</span>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <label>
+                            <input type="radio" name="brand-type" value="top">
+                            <span>Топ</span>
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+            {% if letters %}
+            <div class="brands-filters__item filter-item">
+                {% for letter in letters %}
+                <fieldset>
+                    <label>
+                        <input type="radio" name="brand-start" value="{{ letter }}">
+                        <span>{{ letter }}</span>
+                    </label>
+                </fieldset>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="brands-group">
+            {% include 'brands/archive-items.html' %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/brands-filter.js' %}"></script>
+{% endblock %}

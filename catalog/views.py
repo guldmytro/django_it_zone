@@ -1,9 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from .models import Product, Category, Delivery
-from .utils import get_filters, get_prices, get_filtered_products, get_filtered_products_p, get_page_from_query, \
-    get_full_path_from_query
-import json
+from .utils import get_filters, get_prices, get_filtered_products
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SearchForm
 from django.contrib.postgres.search import TrigramSimilarity

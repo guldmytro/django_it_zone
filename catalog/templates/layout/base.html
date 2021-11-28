@@ -77,6 +77,9 @@
                         <li class="header-services__item">
                             <a href="{% url 'information-security:page' %}">СКУД</a>
                         </li>
+                        <li class="header-services__item">
+                            <a href="{% url 'brands:home' %}">Поставщики</a>
+                        </li>
                     </ul>
                     <button class="header-menu_btn">
                         <div class="header-menu__controls">
@@ -180,9 +183,6 @@
                     <ul class="mobile-menu">
                         {% for page in pages %}
                         <li class="mobile-menu__item">
-                            <a href="{% url 'blog:archive_blog' %}">Новости</a>
-                        </li>
-                        <li class="mobile-menu__item">
                             <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
                         </li>
                         {% endfor %}
@@ -191,6 +191,15 @@
                             <a href="{{ contacts.get_absolute_url }}">Контакты</a>
                         </li>
                         {% endif %}
+                        <li class="mobile-menu__item">
+                            <a href="{% url 'it-services:page' %}">ИТ-Услуги</a>
+                        </li>
+                        <li class="mobile-menu__item">
+                            <a href="{% url 'information-security:page' %}">СКУД</a>
+                        </li>
+                        <li class="mobile-menu__item">
+                            <a href="{% url 'brands:home' %}">Поставщики</a>
+                        </li>
                     </ul>
                     {% endif %}
                     {% if contacts %}
@@ -259,6 +268,9 @@
                             <a href="{{ contacts.get_absolute_url }}">Контакты</a>
                         </li>
                         {% endif %}
+                        <li class="footer-menu__item">
+                            <a href="{{ brands.home }}">Поставщики</a>
+                        </li>
                     </ul>
                     {% endif %}
                     {% if contacts %}
@@ -290,5 +302,6 @@
 <script src="{% static 'js/ion.range-slider.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/product-filter-new.js' %}"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

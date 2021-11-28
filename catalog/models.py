@@ -6,6 +6,7 @@ from django_quill.fields import QuillField
 from django.utils import timezone
 from urllib import request
 from django.core.files.base import ContentFile
+from brands.models import Brand
 
 
 class Category(models.Model):
@@ -45,6 +46,7 @@ class Attribute(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, blank=True, null=True,
                                  verbose_name='категория')
+    brand = models.ForeignKey(Brand, related_name='products', on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=200, db_index=True, verbose_name='название')
     sku = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг', unique=True)

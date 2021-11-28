@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'textpages.apps.TextpagesConfig',
     'textpages2.apps.Textpages2Config',
     'uploads.apps.UploadsConfig',
+    'brands.apps.BrandsConfig',
     'easy_thumbnails',
     'django_quill',
     'metatags',
@@ -160,6 +161,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 THUMBNAIL_ALIASES = {
     '': {
         'small': {'size': (150, 150), 'crop': False},
+        'small-x2': {'size': (300, 300), 'crop': False},
         'medium': {'size': (900, 900), 'crop': False},
     },
 }

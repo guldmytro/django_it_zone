@@ -1,0 +1,33 @@
+{% load static %}
+{% load thumbnail %}
+{% for brand in brands %}
+<a href="{{ brand.get_absolute_url }}" class="brands-group__item brand">
+    <div class="thumb">
+        {% if brand.image %}
+        <img src="{{ brand.image | thumbnail_url:'small-x2' }}" alt="1c">
+        {% endif %}
+    </div>
+    <h2 class="brand-title">{{ brand.title }}</h2>
+</a>
+{% empty %}
+<p>По Вашему запросу брендов не найдено.</p>
+{% endfor %}
+{% if brands.paginator.num_pages > 1 %}
+<div class="pagination">
+    <ul class="page-links">
+        {% if brands.has_previous %}
+            <li class="page-links__item">
+                <button aria-label="Предыдущие" data-page="{{ brands.previous_page_number }}">←</button>
+            </li>
+        {% endif %}
+         <li class="page-links__item">
+            <span class="current">{{ brands.number }} из {{ brands.paginator.num_pages }}</span>
+        </li>
+        {% if brands.has_next %}
+        <li class="page-links__item">
+            <button aria-label="Следующие" data-page="{{ brands.next_page_number }}">→</button>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}

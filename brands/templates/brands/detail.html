@@ -1,0 +1,63 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block breadcrumbs %}
+{% include 'breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<section class="brand">
+    <div class="container">
+        <div class="brand-row">
+            <div class="brand-content">
+                <div class="section-header">
+                    <h1 class="section-header__title">{{ brand.title }}</h1>
+                    {% if brand.image %}
+                    <div class="section-header__image">
+                        <img src="{{ brand.image | thumbnail_url:'small' }}" alt="логотип {{ brand.title }}">
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="brand-content__inner page-content">
+                    {{ brand.content.html | safe }}
+                </div>
+            </div>
+            {% if brand.certificate %}
+            <div class="brand-certificate">
+                <img src="{{ brand.certificate | thumbnail_url:'medium' }}" alt="сертификат">
+            </div>
+            {% endif %}
+        </div>
+        <ul class="wishlist-group">
+            {% for product in products %}
+            {% include 'catalog/archive-product.html' %}
+            {% endfor %}
+            {% if products.paginator.num_pages > 1 %}
+            <div class="pagination">
+                <ul class="page-links">
+                    {% if products.has_previous %}
+                        <li class="page-links__item">
+                            <a href="{% url 'brands:detail_paged' brand.slug products.previous_page_number %}" aria-label="Предыдущие" data-page="{{ products.previous_page_number }}">←</a>
+                        </li>
+                    {% endif %}
+                     <li class="page-links__item">
+                        <span class="current">{{ products.number }} из {{ products.paginator.num_pages }}</span>
+                    </li>
+                    {% if products.has_next %}
+                    <li class="page-links__item">
+                        <a href="{% url 'brands:detail_paged' brand.slug products.next_page_number %}" aria-label="Следующие" data-page="{{ products.next_page_number }}">→</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
+        </ul>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/brand-single.js' %}"></script>
+{% endblock %}

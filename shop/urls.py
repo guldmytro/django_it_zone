@@ -19,8 +19,9 @@ urlpatterns = [
     path('contacts/', include('contacts.urls', namespace='contacts')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('uploads/', include('uploads.urls', namespace='uploads')),
-    path('information_security/', include('textpages.urls', namespace='information-security')),
-    path('it_services/', include('textpages2.urls', namespace='it-services')),
+    path('information-security/', include('textpages.urls', namespace='information-security')),
+    path('it-services/', include('textpages2.urls', namespace='it-services')),
+    path('producers/', include('brands.urls', namespace='brands')),
     path('admin/', admin.site.urls),
     path('', include('catalog.urls', namespace='catalog')),
 ]
