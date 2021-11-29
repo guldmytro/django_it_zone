@@ -21,7 +21,15 @@
     }
 })();
 let page = 1;
-$('[name="brand-start"], [name="brand-type"]').change(sendBrandQuery);
+$('[name="brand-start"], [name="brand-type"]').change(function() {
+    
+    if ($(this).attr('name') === 'brand-start') {
+        $('[name="brand-type"]:checked').prop('checked', false);
+    } else {
+        $('[name="brand-start"]:checked').prop('checked', false);
+    }
+    sendBrandQuery();
+});
 $('.brands').on('click', '.pagination button', function() {
     page = $(this).attr('data-page');
     sendBrandQuery();
