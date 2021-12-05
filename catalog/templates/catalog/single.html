@@ -21,7 +21,6 @@
             </p>
             <div class="product__content">
 
-                <!-- class gallery or static -->
                 <div class="product__gallery gallery">
                     <div class="aside-gallery {% if product.images.count > 3 %}gallery{% else %}static{% endif %}">
                         {% for image in product.images.all %}
@@ -116,6 +115,8 @@
 
             </div>
             <!-- /.product__content -->
+
+            {% include 'catalog/variable-tabs.html' %}
 
             <div class="product__tabs product-tabs">
                 <div class="product-tabs__group tabs-header">

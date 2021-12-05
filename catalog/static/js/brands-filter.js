@@ -28,6 +28,7 @@ $('[name="brand-start"], [name="brand-type"]').change(function() {
     } else {
         $('[name="brand-start"]:checked').prop('checked', false);
     }
+    page = 1;
     sendBrandQuery();
 });
 $('.brands').on('click', '.pagination button', function() {
@@ -43,9 +44,6 @@ function parseQueryString() {
         result += `letter:${letter.toLowerCase()}`;
     }
     if (filter) {
-        if (result.length) {
-            result += ';';
-        }
         result += `filter:${filter.toLowerCase()}`;
     }
     return result;
