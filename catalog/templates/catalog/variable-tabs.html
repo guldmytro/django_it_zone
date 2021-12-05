@@ -7,14 +7,14 @@
                 <div class="variation-filter__fields variation-fields">
                     <fieldset class="variation-fields__fieldset">
                         <label>
-                            <input type="radio" class="variation-fields__input" id="v-1" name="v-1" value="1">
+                            <input type="radio" class="variation-fields__input" name="v-1" value="1">
                             <span class="variation-fields__pseudo-input"></span>
                             <span class="variation-fields__value">Электронная лицензия</span>
                         </label>
                     </fieldset>
                     <fieldset class="variation-fields__fieldset">
                         <label>
-                            <input type="radio" class="variation-fields__input" id="v-2" name="v-2" value="2">
+                            <input type="radio" class="variation-fields__input" name="v-1" value="2">
                             <span class="variation-fields__pseudo-input"></span>
                             <span class="variation-fields__value">ОЕМ</span>
                         </label>
@@ -27,14 +27,14 @@
                 <div class="variation-filter__fields variation-fields">
                     <fieldset class="variation-fields__fieldset">
                         <label>
-                            <input type="radio" class="variation-fields__input" id="v-1" name="v-1" value="1">
+                            <input type="radio" class="variation-fields__input" name="v-2" value="1">
                             <span class="variation-fields__pseudo-input"></span>
                             <span class="variation-fields__value">Электронная лицензия</span>
                         </label>
                     </fieldset>
                     <fieldset class="variation-fields__fieldset">
                         <label>
-                            <input type="radio" class="variation-fields__input" id="v-2" name="v-2" value="2">
+                            <input type="radio" class="variation-fields__input" name="v-2" value="2">
                             <span class="variation-fields__pseudo-input"></span>
                             <span class="variation-fields__value">ОЕМ</span>
                         </label>
@@ -48,13 +48,14 @@
             </div>
         </form>
     </aside>
-    <div class="variation-tabs">
-        <button type="button" data-id="v-1">Лицензии продукта</button>
+    <div class="variation-content">
+        <div class="variation-tabs">
+        <button type="button" class="active" data-id="v-1">Лицензии продукта</button>
         <button type="button" data-id="v-2">Описание продукта</button>
         <button type="button" data-id="v-3">Схемы лицензии</button>
     </div>
-    <div class="variation-content-group">
-        <div id="v-1" class="variation-content-group__item">
+        <div class="variation-content-group">
+        <div id="v-1" class="variation-content-group__item active">
             <div class="variation-term">
                 <h3 class="variation-term__header">Windows 10 Pro. Бессрочная лицензия (мультиязычная)</h3>
                 <p class="variation-term__description">Электронные лицензии для организаций и частных пользователей.</p>
@@ -66,16 +67,18 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
                     </li>
                     <li class="related-product">
@@ -85,18 +88,20 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
-                    </li>    
+                    </li>
                     <li class="related-product">
                         <span class="related-product__counter">1</span>
                         <div class="related-product__header">
@@ -104,18 +109,20 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
-                    </li>        
+                    </li>
                 </ul>
             </div>
             <div class="variation-term">
@@ -129,16 +136,18 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
                     </li>
                     <li class="related-product">
@@ -148,18 +157,20 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
-                    </li>    
+                    </li>
                     <li class="related-product">
                         <span class="related-product__counter">1</span>
                         <div class="related-product__header">
@@ -167,18 +178,20 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
-                    </li>        
+                    </li>
                 </ul>
             </div>
             <div class="variation-term">
@@ -192,16 +205,18 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
                     </li>
                     <li class="related-product">
@@ -211,18 +226,20 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
-                    </li>    
+                    </li>
                     <li class="related-product">
                         <span class="related-product__counter">1</span>
                         <div class="related-product__header">
@@ -230,22 +247,25 @@
                             <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
                         </div>
                         <div class="related-product__quantity">
-                            <button class="decr">-</button>
-                            <input type="number">
-                            <button class="inc">+</button>
+                            <div class="quantity__group">
+                                <button type="button" class="decr">-</button>
+                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
+                                <button type="button" class="inc">+</button>
+                            </div>
                         </div>
                         <div class="related-product__price">
                             <del>6530 руб.</del>
                             <ins>4500 руб.</ins>
                         </div>
                         <div class="related-product__buy">
-                            <button type="button" class="related-product__btn">Купить</button>
+                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
                         </div>
-                    </li>        
+                    </li>
                 </ul>
             </div>
         </div>
-        <div id="v-2" class="variation-content-group__item"></div>
-        <div id="v-3" class="variation-content-group__item"></div>
+        <div id="v-2" class="variation-content-group__item page-content">tab 2</div>
+        <div id="v-3" class="variation-content-group__item page-content">tab 3</div>
+    </div>
     </div>
 </div>
