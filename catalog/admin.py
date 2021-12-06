@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Kit, Attribute, GalleryImage, Delivery
+from .models import Category, Product, Kit, Attribute, GalleryImage, Delivery, Tag
 
 
 @admin.register(Category)
@@ -47,4 +47,9 @@ class AttributeAdmin(admin.ModelAdmin):
 @admin.register(Delivery)
 class DeliverAdmin(admin.ModelAdmin):
     list_display = ['title']
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['name']
 

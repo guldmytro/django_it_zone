@@ -53,6 +53,29 @@ def get_filters(request, category, children_categories):
     return result
 
 
+def get_variation_filters(product):
+    result = []
+
+    q = Q(product__parent=product)
+
+    for attribute in Attribute.objects.filter(public=True).filter(q).distinct():
+        attribute_dict = {
+            'name': attribute.name,
+            'slug': attribute.slug,
+            'values': []
+        }
+        appended_values = []
+        for kit in Kit.objects.filter(attribute=attribute).annotate(cnt=Count('product',
+                                                                              filter=q)).distinct():
+            if kit.cnt > 0 and kit.product.parent.id == product.id and kit.value not in appended_values:
+                attribute_dict['values'].append({
+                    'value': kit.value,
+                })
+                appended_values.append(kit.value)
+        result.append(attribute_dict)
+    return result
+
+
 def get_prices(products, request):
     result = products.aggregate(min_price=Min('price_current'), max_price=Max('price_current'))
     try:
@@ -91,6 +114,22 @@ def get_filtered_products(request, products, query_filters):
                 # q |= Q(**{param__key: param_value})
                 q |= (Q(kit__value=value) & Q(kit__attribute=attribute))
             products = products.filter(q)
+    return products
+
+
+def get_filtered_var_products(products, query_filters):
+    for query_filter in query_filters:
+        key = query_filter['key']
+        try:
+            attribute = Attribute.objects.get(slug=key)
+        except:
+            continue
+        values = query_filter['values']
+        q = Q()
+        for value in values:
+            # q |= Q(**{param__key: param_value})
+            q |= (Q(kit__value=value) & Q(kit__attribute=attribute))
+        products = products.filter(q)
     return products
 
 
@@ -142,11 +181,8 @@ def html_to_quill(html):
     return quill
 
 
-from .models import Product
+def get_min_price(products):
+    result = products.aggregate(min_price=Min('price_current'))
+    return result['min_price']
 
 
-def test():
-    p = Product.objects.get(pk=45)
-    q = html_to_quill('Some Test without tags')
-    p.description = q
-    p.save()

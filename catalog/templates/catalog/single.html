@@ -57,38 +57,43 @@
 
                 <div class="product__info">
                     <div class="product__price">
-                        {% if product.price == 1.00 %}
-                            <p>Цена по запросу</p>
+                        {% if product_type == 'variable' %}
+                            от {{ min_price | floatformat:"0" }} руб.
                         {% else %}
-                            {% if product.price_sale %}
-                            <del>
-                                {{ product.price | floatformat:"0" }} руб.
-                            </del>
-                            &nbsp;
-                            <ins>
-                                {{ product.price_sale | floatformat:"0" }} руб.
-                            </ins>
+                            {% if product.price == 1.00 %}
+                                <p>Цена по запросу</p>
                             {% else %}
-                                <span>
+                                {% if product.price_sale %}
+                                <del>
                                     {{ product.price | floatformat:"0" }} руб.
-                                </span>
+                                </del>
+                                &nbsp;
+                                <ins>
+                                    {{ product.price_sale | floatformat:"0" }} руб.
+                                </ins>
+                                {% else %}
+                                    <span>
+                                        {{ product.price | floatformat:"0" }} руб.
+                                    </span>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
-                    </div>
-                    <form action="{% url 'cart:cart_add' product.id %}" method="post" class="add-to-cart-form">
-                        {% csrf_token %}
-                        <div class="product__quantity quantity">
-                            <span>Выберите количество:</span>
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                {% for field in cart_product_form %}
-                                    {{ field }}
-                                {% endfor %}
-                                <button type="button" class="inc">+</button>
-                            </div>
-                        </div>
 
-                        {% if product.excerpt %}
+                    </div>
+                    {% if product_type != 'variable' %}
+                        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="add-to-cart-form">
+                            {% csrf_token %}
+                            <div class="product__quantity quantity">
+                                <span>Выберите количество:</span>
+                                <div class="quantity__group">
+                                    <button type="button" class="decr">-</button>
+                                    {% for field in cart_product_form %}
+                                        {{ field }}
+                                    {% endfor %}
+                                    <button type="button" class="inc">+</button>
+                                </div>
+                            </div>
+                            {% if product.excerpt %}
                             <div class="product__excerpt">
                                 {{ product.excerpt }}
                             </div>
@@ -109,15 +114,36 @@
                                 <span>Корзина</span>
                             </a>
                         </div>
-                    </form>
+
+                        </form>
+                    {% else %}
+                        {% if product.excerpt %}
+                            <div class="product__excerpt">
+                                {{ product.excerpt }}
+                            </div>
+                        {% endif %}
+                        <ul class="product__features product-features">
+                            <li class="product-features__item">
+                                <div class="thumb">
+                                    <img src="{% static 'img/icon-delivery-secondary.png' %}" alt="доставка">
+                                </div>
+                                Доставка по Москве за 2-3 дня <br>
+                                Доставка по всей России
+                            </li>
+                        </ul>
+                        <div class="variation-goto-wrapper">
+                            <button type="button" class="btn btn_goto-vars"><span>Выбрать товар</span></button>
+                        </div>
+                    {% endif %}
+
                 </div>
                 <!-- /.product__info -->
 
             </div>
             <!-- /.product__content -->
-
-            {% include 'catalog/variable-tabs.html' %}
-
+            {% if product_type == 'variable' %}
+                {% include 'catalog/variable-tabs.html' %}
+            {% endif %}
             <div class="product__tabs product-tabs">
                 <div class="product-tabs__group tabs-header">
                     {% if product.description %}

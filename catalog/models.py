@@ -29,6 +29,18 @@ class Category(models.Model):
         return reverse('catalog:products_by_cat', args=[self.slug])
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=500, verbose_name='название')
+    description = models.TextField(verbose_name='описание', blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы (для вариаций)'
+
+    def __str__(self):
+        return self.name
+
+
 class Attribute(models.Model):
     name = models.CharField(max_length=400, verbose_name='название')
     slug = models.SlugField(max_length=400, unique=True, verbose_name='слаг')
@@ -43,6 +55,11 @@ class Attribute(models.Model):
         return self.name
 
 
+class SimpleManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(variations=None)
+
+
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, blank=True, null=True,
                                  verbose_name='категория')
@@ -50,12 +67,17 @@ class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='название')
     sku = models.CharField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='слаг', unique=True)
+    parent = models.ForeignKey('self', verbose_name='родительский товар', blank=True, null=True,
+                               on_delete=models.CASCADE, related_name='variations')
+    tag = models.ForeignKey(Tag, verbose_name='группа для вариации товара', blank=True, null=True,
+                            on_delete=models.CASCADE, related_name='products')
     attributes = models.ManyToManyField(Attribute, through='Kit', through_fields=('product', 'attribute'))
     description = QuillField(verbose_name='длинное описание', null=True, blank=True)
+    licence_schemes = QuillField(verbose_name='схемы лицензии', null=True, blank=True)
     excerpt = models.TextField(blank=True, null=True, verbose_name='краткое описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена',
-                                validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')], blank=True,
-                                null=True)
+                                validators=[validators.MinValueValidator(0, 'Цена не может быть ниже нуля')],
+                                blank=True, null=True)
     price_sale = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='цена со скидкой', blank=True,
                                      null=True,
                                      validators=[validators.MinValueValidator(0, message='Цена со скидкой не может \
@@ -70,6 +92,8 @@ class Product(models.Model):
     accessories = models.ManyToManyField(Category, blank=True, verbose_name='аксесуары',
                                          help_text='Выберете категорию или несколько категорий товаров, \
                                          в которой находятся аксесуары для товара')
+    objects = models.Manager()
+    simple = SimpleManager()
 
     class Meta:
         ordering = ('-created',)

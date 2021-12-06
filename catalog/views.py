@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from .models import Product, Category, Delivery
-from .utils import get_filters, get_prices, get_filtered_products
+from .models import Product, Category, Delivery, Tag
+from .utils import get_filters, get_prices, get_filtered_products, get_min_price, get_variation_filters, \
+    get_filtered_var_products
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SearchForm
 from django.contrib.postgres.search import TrigramSimilarity
@@ -19,9 +20,9 @@ from django.views.decorators.cache import cache_page
 
 def index(request):
     articles = Article.published.all()[:12]
-    top_products = Product.objects.all().order_by('-sales')[:30]
+    top_products = Product.objects.all().order_by('-sales')[:12]
     exclude_list = list(item.id for item in top_products)
-    new_products = Product.objects.exclude(pk__in=exclude_list)[:30]
+    new_products = Product.objects.exclude(pk__in=exclude_list)[:12]
     new_products_r = list(new_products)
     shuffle(new_products_r)
     config = Config.objects.first()
@@ -51,9 +52,22 @@ def index(request):
     return render(request, 'catalog/index.html', context)
 
 
+# @cache_page(60 * 1440)
 def product_detail(request, slug):
     delivery = Delivery.objects.first()
     product = get_object_or_404(Product, slug=slug)
+    variations = product.variations.all().values('pk')
+    tags = None
+    min_price = None
+    filters = None
+    if variations.count() > 0:
+        product_type = 'variable'
+        tags = Tag.objects.filter(products__id__in=variations).distinct()
+        min_price = get_min_price(variations)
+        filters = get_variation_filters(product)
+    else:
+        product_type = 'simple'
+
     title = f'{product.name}{TITLE_SUFFIX}'
     review_form = ReviewForm(initial={'product': product,
                                       'rating': 5})
@@ -109,7 +123,107 @@ def product_detail(request, slug):
         'similar_products': similar_products[:24],
         'accessories': accessories,
         'delivery': delivery,
-        'title': title
+        'title': title,
+        'product_type': product_type,
+        'variations': variations,
+        'min_price': min_price,
+        'tags': tags,
+        'filters': filters
+    }
+    return render(request, 'catalog/single.html', context)
+
+
+def product_detail_filtered(request, slug, params):
+    delivery = Delivery.objects.first()
+    product = get_object_or_404(Product, slug=slug)
+    var_products = product.variations.all()
+    tags = None
+    min_price = None
+    filters = None
+    if var_products.count() > 0:
+        product_type = 'variable'
+
+        min_price = get_min_price(var_products)
+        filters = get_variation_filters(product)
+        query_filters = []
+        params_list = params.split(';')
+        for p in params_list:
+            p_list = p.split(':')
+            key = p_list[0]
+            vals = p_list[1].split('=')
+            query_filters.append({
+                'key': key,
+                'values': vals
+            })
+        products = get_filtered_var_products(var_products, query_filters)
+        products_for_filter = products.values('pk')
+        var_list_products = list(p.id for p in products)
+        tags = Tag.objects.filter(products__id__in=products_for_filter).distinct()
+    else:
+        product_type = 'simple'
+
+    title = f'{product.name}{TITLE_SUFFIX}'
+    review_form = ReviewForm(initial={'product': product,
+                                      'rating': 5})
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save()
+            if request.is_ajax:
+                return render(request, 'reviews/review-detail.html', {'review': review})
+
+    category = product.category
+    parent_category = category.parent_category
+    product_attributes = []
+    breadcrumbs = []
+    if parent_category:
+        breadcrumbs.append({
+            'label': parent_category.name,
+            'url': parent_category.get_absolute_url,
+            'type': 'link'
+        })
+    if category:
+        breadcrumbs.append({
+            'label': category.name,
+            'url': category.get_absolute_url,
+            'type': 'link'
+        })
+
+    breadcrumbs.append({
+        'label': product.name,
+        'url': product.get_absolute_url,
+        'type': 'text'
+    })
+
+    for attribute in product.attributes.all():
+        try:
+            kit = attribute.kit_set.get(product=product)
+            product_attributes.append({
+                'name': attribute.name,
+                'value': kit.value
+            })
+        except:
+            pass
+    similar_products = list(Product.objects.filter(category=category).exclude(id=product.id))
+    shuffle(similar_products)
+    accessories_cats = product.accessories.all()
+    accessories = list(Product.objects.filter(category__in=accessories_cats))
+    shuffle(accessories)
+    context = {
+        'product': product,
+        'product_attributes': product_attributes,
+        'breadcrumbs': breadcrumbs,
+        'review_form': review_form,
+        'similar_products': similar_products[:24],
+        'accessories': accessories,
+        'delivery': delivery,
+        'title': title,
+        'product_type': product_type,
+        'min_price': min_price,
+        'tags': tags,
+        'filters': filters,
+        'var_list_products': var_list_products,
+        'filtered': 'yes'
     }
     return render(request, 'catalog/single.html', context)
 

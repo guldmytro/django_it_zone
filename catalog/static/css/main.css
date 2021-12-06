@@ -1120,6 +1120,7 @@ textarea:focus {
     color: var(--color-accent);
     margin-bottom: 1em;
 }
+.btn_goto-vars,
 .btn__add-to-cart {
     border-radius: 1rem;
     display: flex;
@@ -1153,6 +1154,7 @@ textarea:focus {
     height: 30%;
     background: url(../img/arrow-dark.png) center/contain no-repeat;
 }
+.btn_goto-vars,
 .btn_add-to-cart {
     display: inline-flex;
     justify-content: center;
@@ -1169,6 +1171,7 @@ textarea:focus {
     border: 1px solid var(--color-accent-secondary);
     transition: background 0.2s, color 0.2s;
 }
+.btn_goto-vars:hover,
 .btn_add-to-cart:hover {
     background-color: #fff;
     color: var(--color-accent-secondary);
@@ -4123,6 +4126,7 @@ main.catalog.loading .catalog__aside:hover {
     color: var(--color-accent);
 }
 .variation-term {
+    counter-reset: section;
     position: relative;
     padding: 2rem 0;
 }
@@ -4162,7 +4166,9 @@ main.catalog.loading .catalog__aside:hover {
 .variation-term__related-products .related-product:nth-child(odd) {
     background-color: #f8f8f8;
 }
-.related-product__counter {
+form.related-product::before {
+    counter-increment: section;
+    content: counter(section);
     flex-shrink: 0;
     min-width: 4rem;
     height: 4rem;
@@ -4220,6 +4226,9 @@ main.catalog.loading .catalog__aside:hover {
 }
 .variation-content-group__item.active {
     position: static;
+}
+.btn_goto-vars {
+    min-width: unset;
 }
 @media screen and (max-width: 1399px) {
     html {
@@ -4450,6 +4459,7 @@ main.catalog.loading .catalog__aside:hover {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    form.related-product::before,
     .related-product__counter {
         display: none;
     }

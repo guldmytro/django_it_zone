@@ -2,48 +2,23 @@
     <aside class="variation-filters">
         <button type="button" class="btn btn_filter">Подбор параметров</button>
         <form class="variation-filters">
+            {% for filter in filters %}
             <div class="variation-filters__item variation-filter">
-                <h3 class="variation-filter__header">Тип компьютера</h3>
+                <h3 class="variation-filter__header{% if forloop.counter > 3 %} active{% endif %}">{{ filter.name }}</h3>
                 <div class="variation-filter__fields variation-fields">
-                    <fieldset class="variation-fields__fieldset">
+                    {% for key in filter.values %}
+                    <fieldset class="variation-fields__fieldset" {% if forloop.parentloop.counter > 3 %}style="display:none;"{% endif %}>
                         <label>
-                            <input type="radio" class="variation-fields__input" name="v-1" value="1">
+                            <input type="checkbox" class="variation-fields__input" name="{{ filter.slug }}" value="{{ key.value }}">
                             <span class="variation-fields__pseudo-input"></span>
-                            <span class="variation-fields__value">Электронная лицензия</span>
+                            <span class="variation-fields__value">{{ key.value }}</span>
                         </label>
                     </fieldset>
-                    <fieldset class="variation-fields__fieldset">
-                        <label>
-                            <input type="radio" class="variation-fields__input" name="v-1" value="2">
-                            <span class="variation-fields__pseudo-input"></span>
-                            <span class="variation-fields__value">ОЕМ</span>
-                        </label>
-                    </fieldset>    
+                    {% endfor %}
                 </div>
             </div>
-            <!-- /.variation-filter -->
-            <div class="variation-filters__item variation-filter">
-                <h3 class="variation-filter__header">Я покупаю для</h3>
-                <div class="variation-filter__fields variation-fields">
-                    <fieldset class="variation-fields__fieldset">
-                        <label>
-                            <input type="radio" class="variation-fields__input" name="v-2" value="1">
-                            <span class="variation-fields__pseudo-input"></span>
-                            <span class="variation-fields__value">Электронная лицензия</span>
-                        </label>
-                    </fieldset>
-                    <fieldset class="variation-fields__fieldset">
-                        <label>
-                            <input type="radio" class="variation-fields__input" name="v-2" value="2">
-                            <span class="variation-fields__pseudo-input"></span>
-                            <span class="variation-fields__value">ОЕМ</span>
-                        </label>
-                    </fieldset>    
-                </div>
-            </div>
-            <!-- /.variation-filter -->
+            {% endfor %}
             <div class="variation-filters__control">
-                <button type="submit">Показать</button>
                 <button type="reset">Сбросить</button>
             </div>
         </form>
@@ -51,221 +26,73 @@
     <div class="variation-content">
         <div class="variation-tabs">
         <button type="button" class="active" data-id="v-1">Лицензии продукта</button>
-        <button type="button" data-id="v-2">Описание продукта</button>
-        <button type="button" data-id="v-3">Схемы лицензии</button>
+        {% if product.description %}
+            <button type="button" data-id="v-2">Описание продукта</button>
+        {% endif %}
+        {% if product.licence_schemes %}
+            <button type="button" data-id="v-3">Схемы лицензии</button>
+        {% endif %}
     </div>
         <div class="variation-content-group">
         <div id="v-1" class="variation-content-group__item active">
+            {% for tag in tags %}
             <div class="variation-term">
-                <h3 class="variation-term__header">Windows 10 Pro. Бессрочная лицензия (мультиязычная)</h3>
-                <p class="variation-term__description">Электронные лицензии для организаций и частных пользователей.</p>
-                <ul class="variation-term__related-products">
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
+                <h3 class="variation-term__header">{{ tag.name }}</h3>
+                <p class="variation-term__description">{{ tag.description }}</p>
+                <div class="variation-term__related-products">
+                    {% for product in tag.products.all %}
+                        {% if filtered != 'yes' or product.id in var_list_products %}
+                        <form action="{% url 'cart:cart_add' product.id %}" method="post"
+                              class="related-product add-to-cart-form">
+                            {% csrf_token %}
+                            <div class="related-product__header">
+                                <h4 class="related-product__title">{{ product.name }}</h4>
+                                <a href="{{ product.get_absolute_url }}" class="related-product__article">{% firstof product.sku '#Н/Д' %}</a>
                             </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
+                            <div class="related-product__quantity">
+                                <div class="quantity__group">
+                                    <button type="button" class="decr">-</button>
+                                        {% for field in cart_product_form %}
+                                            {{ field }}
+                                        {% endfor %}
+                                    <button type="button" class="inc">+</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
+                            <div class="related-product__price">
+                                {% if product.price == 1.00 %}
+                                <p>Цена по запросу</p>
+                                {% else %}
+                                    {% if product.price_sale %}
+                                    <del>
+                                        {{ product.price | floatformat:"0" }} руб.
+                                    </del>
+                                    &nbsp;
+                                    <ins>
+                                        {{ product.price_sale | floatformat:"0" }} руб.
+                                    </ins>
+                                    {% else %}
+                                        <span>
+                                            {{ product.price | floatformat:"0" }} руб.
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
                             </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                </ul>
+                            <div class="related-product__buy">
+                                <button type="submit" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
+                            </div>
+                        </form>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
-            <div class="variation-term">
-                <h3 class="variation-term__header">Windows 10 Pro. Бессрочная лицензия (мультиязычная)</h3>
-                <p class="variation-term__description">Электронные лицензии для организаций и частных пользователей.</p>
-                <ul class="variation-term__related-products">
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
-                            </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
-                            </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
-                            </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="variation-term">
-                <h3 class="variation-term__header">Windows 10 Pro. Бессрочная лицензия (мультиязычная)</h3>
-                <p class="variation-term__description">Электронные лицензии для организаций и частных пользователей.</p>
-                <ul class="variation-term__related-products">
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
-                            </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
-                            </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                    <li class="related-product">
-                        <span class="related-product__counter">1</span>
-                        <div class="related-product__header">
-                            <h4 class="related-product__title">Комплект лицензий Windows</h4>
-                            <a href="#" class="related-product__article">лицензия FQC-2i456da</a>
-                        </div>
-                        <div class="related-product__quantity">
-                            <div class="quantity__group">
-                                <button type="button" class="decr">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="99" class="quantity__input">
-                                <button type="button" class="inc">+</button>
-                            </div>
-                        </div>
-                        <div class="related-product__price">
-                            <del>6530 руб.</del>
-                            <ins>4500 руб.</ins>
-                        </div>
-                        <div class="related-product__buy">
-                            <button type="button" class="related-product__btn btn btn_add-to-cart btn_add-to-cart-invert">Купить</button>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            {% endfor %}
         </div>
-        <div id="v-2" class="variation-content-group__item page-content">tab 2</div>
-        <div id="v-3" class="variation-content-group__item page-content">tab 3</div>
+        <div id="v-2" class="variation-content-group__item page-content">
+            {{ product.description.html | safe }}
+        </div>
+        <div id="v-3" class="variation-content-group__item page-content">
+            {{ product.licence_schemes.html | safe }}
+        </div>
     </div>
     </div>
 </div>
