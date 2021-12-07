@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from decimal import Decimal
 from catalog.models import GalleryImage
 from catalog.utils import html_to_quill
+from brands.models import Brand
 
 
 def get_csv_header():
@@ -18,11 +19,13 @@ def get_csv_header():
         'Цена со скидкой',
         'В наличии',
         'Количество продаж *',
+        'Слаг Категории *',
         'Категория *',
         'Аксесуары',
         'Краткое описание',
         'Длинное описание',
         'Картинки *',
+        'Вендор'
     ]
     return header
 
@@ -58,8 +61,10 @@ def get_product_row(product, attributes, request):
             attributes_values.append('')
     try:
         cat_name = product.category.name
+        cat_slug = product.category.slug
     except:
         cat_name = ''
+        cat_slug = ''
     row = [
         product.pk,
         product.name,
@@ -68,11 +73,13 @@ def get_product_row(product, attributes, request):
         product.price_sale,
         product.available,
         product.sales,
+        cat_slug,
         cat_name,
         accessories,
         product.excerpt,
         product.description.html,
-        images
+        images,
+        product.brand.title
     ]
     row = row + attributes_values
     return row
@@ -82,7 +89,7 @@ def push_products(csv_file, request):
     file = open(csv_file)
     csvreader = csv.reader(file)
     header = next(csvreader)
-    attributes_list = header[12:]
+    attributes_list = header[14:]
     rows = []
     for row in csvreader:
         rows.append(row)
@@ -119,20 +126,19 @@ def update_product(product, row, attributes_list):
     product.save()
     product.available = True
     product.sales = row[6]
-    category_str = row[7]
+    category_slug = row[7]
+    category_str = row[8]
     product.save()
-
-    cat_slug = slugify(unidecode(category_str))
     try:
-        category = Category.objects.get(slug=cat_slug)
+        category = Category.objects.get(slug=category_slug)
         product.category = category
     except:
-        if category_str:
-            cat = add_category(category_str, cat_slug)
+        if category_str and category_slug:
+            cat = add_category(category_str, category_slug)
             if cat:
                 product.category = cat
 
-    related_cats = str(row[8]).split(', ')
+    related_cats = str(row[9]).split(', ')
     product.accessories.clear()
     if related_cats:
         for category_str in related_cats:
@@ -145,37 +151,54 @@ def update_product(product, row, attributes_list):
                     cat = add_category(category_str, cat_slug)
                     if cat:
                         product.accessories.add(cat)
-    product.excerpt = row[9]
+    product.excerpt = row[10]
     try:
-        product.description = html_to_quill(row[10])
+        product.description = html_to_quill(row[11])
     except:
         pass
-    images_array = str(row[11]).split(', ')
+    images_array = str(row[12]).split(', ')
     if images_array:
         update_images(images_array, product)
 
     product.attributes.clear()
+    brand_str = row[13]
+    brand_slug = slugify(unidecode(brand_str))
+    if brand_slug:
+        try:
+            brand = Brand.objects.get(slug=brand_slug)
+            product.brand = brand
+        except:
+            if brand_str and brand_slug:
+                brand = Brand()
+                brand.slug = brand_slug
+                brand.title = brand_str
+                brand.save()
+                if brand:
+                    product.brand = brand
     if attributes_list:
         for index, attribute_key in enumerate(attributes_list):
-            attribute_value = str(row[12 + index])
-            is_public = True
-            if '*' in attribute_key:
-                is_public = False
+            try:
+                attribute_value = str(row[14 + index])
+                is_public = True
+                if '*' in attribute_key:
+                    is_public = False
 
-            cd_attribute_key = attribute_key.strip().replace('*', '')
-            cd_attribute_slug = slugify(unidecode(cd_attribute_key))
-            if attribute_value:
-                try:
-                    attribute = Attribute.objects.get(slug=cd_attribute_slug)
-                    attribute.public = is_public
-                    attribute.save()
-                except:
-                    attribute = Attribute()
-                    attribute.name = cd_attribute_key
-                    attribute.slug = cd_attribute_slug
-                    attribute.public = is_public
-                    attribute.save()
-                Kit.objects.create(attribute=attribute, product=product, value=attribute_value)
+                cd_attribute_key = attribute_key.strip().replace('*', '')
+                cd_attribute_slug = slugify(unidecode(cd_attribute_key))
+                if len(attribute_value) > 0:
+                    try:
+                        attribute = Attribute.objects.get(slug=cd_attribute_slug)
+                        attribute.public = is_public
+                        attribute.save()
+                    except:
+                        attribute = Attribute()
+                        attribute.name = cd_attribute_key
+                        attribute.slug = cd_attribute_slug
+                        attribute.public = is_public
+                        attribute.save()
+                    Kit.objects.create(attribute=attribute, product=product, value=attribute_value)
+            except:
+                pass
 
     product.save()
 
