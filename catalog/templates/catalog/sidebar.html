@@ -23,7 +23,7 @@
         {% endif %}
 
         {% for filter in filters %}
-
+        {% if filter.values %}
         <div class="sidebar-filters">
             <h3 class="sidebar-filters__header">{{ filter.name }}</h3>
             <ul class="sidebar-filters__items">
@@ -37,6 +37,7 @@
                 {% endfor %}
             </ul>
         </div>
+        {% endif %}
         {% endfor %}
         <button class="sidebar-filters__submit" type="submit" disabled>Применить</button>
     </form>

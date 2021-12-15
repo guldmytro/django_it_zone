@@ -90,7 +90,7 @@ filterForm.submit(function(e) {
     $('.catalog-results').slideUp(100);
     $('.sidebar_search input').val('');
     window.history.pushState(null, null, newUrl);
-    $('main.catalog').addClass('loading');
+    $('.variation-section').addClass('loading');
     $.ajax({
         url: newUrl,
         method: 'get',
@@ -102,7 +102,7 @@ filterForm.submit(function(e) {
             } else {
                 $('#v-1').html('<p>По Вашему запросу товаров не найдено.</p>');
             }
-            
+            $('.variation-section').removeClass('loading');
         }
     });
 });

@@ -57,7 +57,7 @@ class Attribute(models.Model):
 
 class SimpleManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(variations=None)
+        return super().get_queryset().filter(parent=None)
 
 
 class Product(models.Model):

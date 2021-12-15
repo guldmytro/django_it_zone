@@ -82,7 +82,7 @@ def detail(request, slug):
             'type': 'text'
         }]
     title = f'{brand.title}{TITLE_SUFFIX}'
-    products = Product.objects.filter(brand=brand)
+    products = Product.simple.filter(brand=brand)
     paginator = Paginator(products, 12)
     page = 1
     try:
@@ -112,7 +112,7 @@ def detail_paged(request, slug, paged):
             'url': '',
             'type': 'text'
         }]
-    products = Product.objects.filter(brand=brand)
+    products = Product.simple.filter(brand=brand)
     paginator = Paginator(products, 12)
     page = paged
     try:

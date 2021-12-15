@@ -244,12 +244,12 @@ $(document).ready(function() {
 
 // add to cart
 // change quantity input
-$('.quantity__group .inc').click(function() {
+$('body').on('click', '.quantity__group .inc', function() {
     const quantityInput = $(this).siblings('.quantity__input');
     quantityInput.val(Number(quantityInput.val()) + 1);
 });
 
-$('.quantity__group .decr').click(function() {
+$('body').on('click', '.quantity__group .decr', function() {
     const quantityInput = $(this).siblings('.quantity__input');
     let newValue = Number(quantityInput.val()) - 1;
     if (newValue < 1) {

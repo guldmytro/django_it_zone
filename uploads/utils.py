@@ -1,6 +1,6 @@
 from catalog.models import Attribute
 from django.contrib.sites.models import Site
-from catalog.models import Product, Category, Kit
+from catalog.models import Product, Category, Kit, Tag
 import csv
 from unidecode import unidecode
 from django.utils.text import slugify
@@ -15,15 +15,18 @@ def get_csv_header():
         'Идентификатор',
         'Заголовок *',
         'Артикул',
+        'Родительский артикул (для вариации товара)',
         'Цена *',
         'Цена со скидкой',
         'В наличии',
         'Количество продаж *',
         'Слаг Категории *',
         'Категория *',
+        'Группа (для вариации товара)',
         'Аксесуары',
         'Краткое описание',
         'Длинное описание',
+        'Схемы лицензирования (для вариативного товара)',
         'Картинки *',
         'Вендор'
     ]
@@ -65,21 +68,35 @@ def get_product_row(product, attributes, request):
     except:
         cat_name = ''
         cat_slug = ''
+    parent_sku = ''
+    try:
+        if product.parent:
+            parent_sku = product.parent.sku
+    except:
+        pass
+    brand = ''
+    try:
+        brand = product.brand.title
+    except:
+        pass
     row = [
         product.pk,
         product.name,
         product.sku,
+        parent_sku,
         product.price,
         product.price_sale,
         product.available,
         product.sales,
         cat_slug,
         cat_name,
+        product.tag,
         accessories,
         product.excerpt,
         product.description.html,
+        product.licence_schemes.html,
         images,
-        product.brand.title
+        brand
     ]
     row = row + attributes_values
     return row
@@ -89,7 +106,7 @@ def push_products(csv_file, request):
     file = open(csv_file)
     csvreader = csv.reader(file)
     header = next(csvreader)
-    attributes_list = header[14:]
+    attributes_list = header[17:]
     rows = []
     for row in csvreader:
         rows.append(row)
@@ -115,20 +132,19 @@ def update_product(product, row, attributes_list):
     product.name = row[1]
     product.save()
     product.sku = row[2]
-    product.price = Decimal(row[3])
     if row[4]:
-        product.price_sale = Decimal(row[4])
-    product.save()
+        product.price = Decimal(row[4])
+    if row[5]:
+        product.price_sale = Decimal(row[5])
+
     if product.price_sale:
         product.price_current = product.price_sale
     else:
         product.price_current = product.price
-    product.save()
     product.available = True
-    product.sales = row[6]
-    category_slug = row[7]
-    category_str = row[8]
-    product.save()
+    product.sales = row[7]
+    category_slug = row[8]
+    category_str = row[9]
     try:
         category = Category.objects.get(slug=category_slug)
         product.category = category
@@ -138,7 +154,7 @@ def update_product(product, row, attributes_list):
             if cat:
                 product.category = cat
 
-    related_cats = str(row[9]).split(', ')
+    related_cats = str(row[11]).split(', ')
     product.accessories.clear()
     if related_cats:
         for category_str in related_cats:
@@ -151,17 +167,21 @@ def update_product(product, row, attributes_list):
                     cat = add_category(category_str, cat_slug)
                     if cat:
                         product.accessories.add(cat)
-    product.excerpt = row[10]
+    product.excerpt = row[12]
     try:
-        product.description = html_to_quill(row[11])
+        product.description = html_to_quill(row[13])
     except:
         pass
-    images_array = str(row[12]).split(', ')
+    try:
+        product.licence_schemes = html_to_quill(row[14])
+    except:
+        pass
+    images_array = str(row[15]).split(', ')
     if images_array:
         update_images(images_array, product)
 
     product.attributes.clear()
-    brand_str = row[13]
+    brand_str = row[16]
     brand_slug = slugify(unidecode(brand_str))
     if brand_slug:
         try:
@@ -178,7 +198,7 @@ def update_product(product, row, attributes_list):
     if attributes_list:
         for index, attribute_key in enumerate(attributes_list):
             try:
-                attribute_value = str(row[14 + index])
+                attribute_value = str(row[17 + index])
                 is_public = True
                 if '*' in attribute_key:
                     is_public = False
@@ -199,12 +219,20 @@ def update_product(product, row, attributes_list):
                     Kit.objects.create(attribute=attribute, product=product, value=attribute_value)
             except:
                 pass
-
+    if row[3]:
+        try:
+            related_product = Product.objects.get(sku=row[3])
+            product.parent = related_product
+        except:
+            pass
+    if row[10]:
+        try:
+            group, created = Tag.objects.get_or_create(name=row[10])
+            if group:
+                product.tag = group
+        except:
+            pass
     product.save()
-
-
-def add_product():
-    pass
 
 
 def add_category(category_str, cat_slug):

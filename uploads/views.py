@@ -22,7 +22,7 @@ def products_fetch(request):
     basic_header = get_csv_header()
     attributes_header = get_attributes_header()
     writer.writerow(basic_header + attributes_header)
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('parent')
     attributes = Attribute.objects.all()
     for product in products:
         writer.writerow(get_product_row(product, attributes, request))

@@ -27,7 +27,7 @@ def get_filters(request, category, children_categories):
             # slug = slugify(kit.value, allow_unicode=True)
             # found = False
 
-            if kit.cnt > 0 and kit.product.category.name in cats and kit.value not in appended_values:
+            if kit.cnt > 0 and kit.product.parent == None and kit.product.category.name in cats and kit.value not in appended_values:
                 attribute_dict['values'].append({
                     'value': kit.value,
                 })

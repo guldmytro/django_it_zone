@@ -20,9 +20,9 @@ from django.views.decorators.cache import cache_page
 
 def index(request):
     articles = Article.published.all()[:12]
-    top_products = Product.objects.all().order_by('-sales')[:12]
+    top_products = Product.simple.all().order_by('-sales')[:12]
     exclude_list = list(item.id for item in top_products)
-    new_products = Product.objects.exclude(pk__in=exclude_list)[:12]
+    new_products = Product.simple.exclude(pk__in=exclude_list)[:12]
     new_products_r = list(new_products)
     shuffle(new_products_r)
     config = Config.objects.first()
@@ -110,10 +110,10 @@ def product_detail(request, slug):
             })
         except:
             pass
-    similar_products = list(Product.objects.filter(category=category).exclude(id=product.id))
+    similar_products = list(Product.simple.filter(category=category).exclude(id=product.id))
     shuffle(similar_products)
     accessories_cats = product.accessories.all()
-    accessories = list(Product.objects.filter(category__in=accessories_cats))
+    accessories = list(Product.simple.filter(category__in=accessories_cats))
     shuffle(accessories)
     context = {
         'product': product,
@@ -130,6 +130,7 @@ def product_detail(request, slug):
         'tags': tags,
         'filters': filters
     }
+    print(variations)
     return render(request, 'catalog/single.html', context)
 
 
@@ -204,10 +205,10 @@ def product_detail_filtered(request, slug, params):
             })
         except:
             pass
-    similar_products = list(Product.objects.filter(category=category).exclude(id=product.id))
+    similar_products = list(Product.simple.filter(category=category).exclude(id=product.id))
     shuffle(similar_products)
     accessories_cats = product.accessories.all()
-    accessories = list(Product.objects.filter(category__in=accessories_cats))
+    accessories = list(Product.simple.filter(category__in=accessories_cats))
     shuffle(accessories)
     context = {
         'product': product,
@@ -237,8 +238,7 @@ def products_by_cat(request, slug):
     for children_category in children_categories:
         q |= Q(category=children_category)
 
-    products_list = Product.objects.filter(q).order_by('-sales')
-
+    products_list = Product.simple.filter(q).order_by('-sales')
     form = SearchForm()
     query = None
     if 'query' in request.GET:
@@ -319,7 +319,7 @@ def products_by_cat(request, slug):
 
 def search(request):
     if 'query' in request.GET:
-        products_list = Product.objects.all()
+        products_list = Product.simple.all()
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
@@ -367,7 +367,7 @@ def products_by_attr(request, slug, params):
     for children_category in children_categories:
         q |= Q(category=children_category)
 
-    products_list = Product.objects.filter(q).order_by('-sales')
+    products_list = Product.simple.filter(q).order_by('-sales')
 
     form = SearchForm()
     query = None

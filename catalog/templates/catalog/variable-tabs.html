@@ -38,7 +38,9 @@
             {% for tag in tags %}
             <div class="variation-term">
                 <h3 class="variation-term__header">{{ tag.name }}</h3>
-                <p class="variation-term__description">{{ tag.description }}</p>
+                {% if tag.description %}
+                    <p class="variation-term__description">{{ tag.description }}</p>
+                {% endif %}
                 <div class="variation-term__related-products">
                     {% for product in tag.products.all %}
                         {% if filtered != 'yes' or product.id in var_list_products %}

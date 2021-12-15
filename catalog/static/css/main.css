@@ -3984,6 +3984,10 @@ main.catalog.loading .catalog__aside:hover {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 4fr);
     column-gap: 2rem;
     align-items: start;
+    transition: opacity 100ms ease;
+}
+.variation-section.loading {
+    opacity: 0.7;
 }
 .variation-section .btn_filter {
     border-radius: 10px;
