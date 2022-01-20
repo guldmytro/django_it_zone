@@ -18,6 +18,10 @@ from shop.settings import TITLE_SUFFIX
 from django.views.decorators.cache import cache_page
 
 
+def mailru(request):
+    return render(request, 'catalog/mailru.html', {})
+
+
 def index(request):
     articles = Article.published.all()[:12]
     top_products = Product.simple.all().order_by('-sales')[:12]

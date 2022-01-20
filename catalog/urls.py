@@ -5,6 +5,7 @@ app_name = 'catalog'
 
 urlpatterns = [
     path('', views.index, name='home'),
+    path('mailru-domain5W5yyJrtllzru9Pg.html/', views.mailru, name='mail_ru'),
     path('search/', views.search, name='search'),
     path('question/', views.question, name='question'),
     path('product/<slug:slug>/', views.product_detail, name='product_detail'),
